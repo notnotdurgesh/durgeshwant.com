@@ -36,6 +36,18 @@
   --font-hand: "Caveat", cursive;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+html.scroll-snap-container {
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-snap-start {
+  scroll-snap-align: start;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
@@ -63,10 +75,11 @@ body::before {
   opacity: 0.15;
 }
 
-@media (pointer: fine) {
-  body, a, button, input, textarea, select {
-    cursor: none;
-  }
+/* Custom Cursor Management */
+.custom-cursor-active, 
+.custom-cursor-active a, 
+.custom-cursor-active button {
+  cursor: none !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -85,27 +98,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Hide scrollbar for cleaner look */
 ::-webkit-scrollbar {
   display: none;
-}
-
-/* Lenis smooth scrolling styles */
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
 }
 
 .glass-panel {
@@ -184,4 +176,26 @@ html.lenis, html.lenis body {
 
 .prose pre::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+
+.dark::view-transition-new(root) {
+  z-index: 1;
 }

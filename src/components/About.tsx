@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,10 +7,55 @@ import { CONFIG } from '../config';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+
+const ScrambleText = ({ text }: { text: string }) => {
+  const [display, setDisplay] = useState(text);
+  const [isScrambling, setIsScrambling] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !isScrambling) {
+        setIsScrambling(true);
+        let iteration = 0;
+        const interval = setInterval(() => {
+          setDisplay(
+            text
+              .split('')
+              .map((char, index) => {
+                if (index < iteration) return text[index];
+                return chars[Math.floor(Math.random() * chars.length)];
+              })
+              .join('')
+          );
+          if (iteration >= text.length) {
+            clearInterval(interval);
+            setDisplay(text);
+          }
+          iteration += 1 / 3;
+        }, 30);
+      }
+    }, { threshold: 0.5 });
+
+    const el = document.getElementById('scramble-trigger');
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [text, isScrambling]);
+
+  return <span id="scramble-trigger">{display}</span>;
+};
+
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const tapeY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   useGSAP(() => {
     if (!containerRef.current || !textRef.current || !imageRef.current) return;
@@ -89,7 +135,7 @@ export default function About() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-light tracking-tight leading-tight text-foreground">
               I build scalable <br />
               <span className="italic text-primary/90">
-                systems
+                <ScrambleText text="systems" />
               </span>
             </h2>
             <p className="text-base md:text-xl text-muted leading-relaxed max-w-lg font-sans font-light">
@@ -115,7 +161,10 @@ export default function About() {
               className="w-full h-full object-cover sepia-[0.4] group-hover:sepia-[0.2] transition-all duration-1000 scale-100 group-hover:scale-105"
             />
             {/* Linen tape detail */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-[#fdfbf7]/60 backdrop-blur-sm transform rotate-[-2deg] shadow-sm z-20 border border-border/50" />
+            <motion.div 
+              style={{ y: tapeY }}
+              className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-[#fdfbf7]/60 backdrop-blur-sm transform rotate-[-2deg] shadow-sm z-20 border border-border/50" 
+            />
           </div>
 
         </div>

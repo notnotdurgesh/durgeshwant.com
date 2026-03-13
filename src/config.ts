@@ -38,6 +38,7 @@ export const CONFIG = {
       category: 'AI-Powered Spreadsheet',
       description: 'An AI-driven, Excel-like web spreadsheet featuring virtual scrolling, undo/redo, and a multimodal Gemini agent with over 30 tool actions for complex data transformations.',
       image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
+      video: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-screen-close-up-1728-large.mp4',
       color: '#c2a878', // Warm honey
       github: '#',
       live: '#'
