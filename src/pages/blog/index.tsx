@@ -43,7 +43,7 @@ export default function BlogListing() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      className="min-h-screen bg-background text-foreground pt-6 sm:pt-8 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-24"
+      className="min-h-screen bg-background text-foreground pt-12 sm:pt-16 md:pt-20 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-24"
     >
       <Helmet>
         <title>The Journal | Software Engineering Blog</title>
@@ -95,11 +95,8 @@ export default function BlogListing() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="relative w-full md:w-80 lg:w-96"
+              className="relative w-full md:w-80 lg:w-96 group"
             >
-              <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-muted" />
-              </div>
               <input
                 type="text"
                 placeholder="Search articles..."
@@ -107,6 +104,9 @@ export default function BlogListing() {
                 onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-card/40 backdrop-blur-xl border border-border/50 rounded-full py-3 sm:py-4 pl-11 sm:pl-14 pr-4 sm:pr-8 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans text-sm sm:text-base text-foreground placeholder:text-muted shadow-sm"
               />
+              <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none z-10">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-primary/70 group-focus-within:text-primary transition-colors duration-300" />
+              </div>
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
@@ -217,8 +217,8 @@ export default function BlogListing() {
                       {/* Content */}
                       <div className="md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center">
                         <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
-                          {featuredPost.meta.tags.map(tag => (
-                            <span key={tag} className="px-3 py-1 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary/10 text-primary rounded-full border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-500">
+                            {featuredPost.meta.tags.map(tag => (
+                            <span key={tag} className="px-3 py-1 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary/10 text-primary rounded-full border border-primary/20 group-hover:bg-primary group-hover:text-white dark:group-hover:text-background transition-colors duration-300">
                               {tag}
                             </span>
                           ))}
@@ -279,7 +279,7 @@ export default function BlogListing() {
                         <div className="p-5 sm:p-6 md:p-8 flex flex-col flex-grow">
                           <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
                             {post.meta.tags.map(tag => (
-                              <span key={tag} className="px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary/10 text-primary rounded-full border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-500">
+                              <span key={tag} className="px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary/10 text-primary rounded-full border border-primary/20 group-hover:bg-primary group-hover:text-white dark:group-hover:text-background transition-colors duration-300">
                                 {tag}
                               </span>
                             ))}

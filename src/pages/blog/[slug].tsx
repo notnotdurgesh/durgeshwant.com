@@ -133,15 +133,16 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         prose dark:prose-invert max-w-none font-sans text-foreground/90
         prose-sm sm:prose-base md:prose-lg lg:prose-xl
         [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:font-bold [&_h1,h2,h3,h4,h5,h6]:tracking-tight
-        [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:uppercase
+        [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:uppercase [&_h1,h2,h3,h4,h5,h6]:break-words
         [&_h1,h2,h3,h4,h5,h6]:mt-12 sm:[&_h1,h2,h3,h4,h5,h6]:mt-16 md:[&_h1,h2,h3,h4,h5,h6]:mt-20
         [&_h1,h2,h3,h4,h5,h6]:mb-4 sm:[&_h1,h2,h3,h4,h5,h6]:mb-6 md:[&_h1,h2,h3,h4,h5,h6]:mb-8
         [&_h1,h2,h3,h4,h5,h6]:scroll-mt-24
-        [&_h1]:text-3xl sm:[&_h1]:text-4xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl
-        [&_h1]:text-primary [&_h1]:italic [&_h1]:normal-case
-        [&_h2]:text-2xl sm:[&_h2]:text-3xl md:[&_h2]:text-4xl lg:[&_h2]:text-5xl
-        [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-4 md:[&_h2]:pb-6
-        [&_h3]:text-xl sm:[&_h3]:text-2xl md:[&_h3]:text-3xl lg:[&_h3]:text-4xl
+        [&_h1]:text-3xl sm:[&_h1]:text-4xl md:[&_h1]:text-5xl lg:[&_h1]:text-5xl
+        [&_h1]:text-primary [&_h1]:italic [&_h1]:normal-case [&_h1]:leading-[1.1]
+        [&_h2]:text-2xl sm:[&_h2]:text-3xl md:[&_h2]:text-4xl lg:[&_h2]:text-4xl
+        [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-4 md:[&_h2]:pb-6 [&_h2]:leading-[1.2]
+        [&_h3]:text-xl sm:[&_h3]:text-2xl md:[&_h3]:text-3xl lg:[&_h3]:text-3xl
+        [&_h3]:leading-[1.3]
         [&_p]:mb-6 sm:[&_p]:mb-8 md:[&_p]:mb-10
         [&_p]:leading-[1.75] sm:[&_p]:leading-[1.8]
         [&_p]:font-light
@@ -449,7 +450,7 @@ export default function BlogPost() {
       </AnimatePresence>
 
       {/* ── Hero Banner ── */}
-      <div className="relative w-full h-[55vh] sm:h-[65vh] lg:h-[70vh] min-h-[380px] overflow-hidden bg-muted/10 isolate [perspective:1000px] [contain:paint]">
+      <div className="relative w-full h-[60vh] sm:h-[65vh] lg:h-[75vh] min-h-[450px] overflow-hidden bg-muted/10 isolate [perspective:1000px] [contain:paint]">
         <img
           src={getAssetUrl(post.slug, post.meta.banner)}
           alt={post.meta.title}
@@ -457,45 +458,42 @@ export default function BlogPost() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent dark:via-background/40" />
 
-        <div className="absolute inset-0 flex flex-col justify-end px-4 sm:px-8 md:px-12 lg:px-24 pb-10 sm:pb-16 md:pb-20 max-w-6xl mx-auto">
-          <Link
-            to="/blog"
-            className="flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors w-fit mb-6 sm:mb-10 md:mb-12 font-mono text-xs uppercase tracking-[0.2em] bg-card/30 backdrop-blur-xl px-4 py-2 rounded-full border border-border/50"
-          >
-            <ArrowLeft className="w-3 h-3" /> Back to Journal
-          </Link>
-
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
-            {post.meta.tags.map(tag => (
-              <span key={tag} className="px-3 sm:px-4 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary text-primary-foreground rounded-full shadow-lg shadow-primary/20">
-                {tag}
-              </span>
-            ))}
+        <div className="absolute inset-0 flex flex-col px-4 sm:px-8 md:px-12 lg:px-24 max-w-7xl mx-auto py-12 sm:py-16 md:py-20 justify-between">
+          <div className="shrink-0">
+            <Link
+              to="/blog"
+              className="flex items-center gap-2 text-foreground/80 hover:text-foreground transition-all w-fit font-mono text-xs uppercase tracking-[0.2em] bg-card/30 backdrop-blur-xl px-4 py-2 rounded-full border border-border/50 hover:scale-105 active:scale-95 shadow-xl hover:shadow-primary/20"
+            >
+              <ArrowLeft className="w-3 h-3" /> Back to Journal
+            </Link>
           </div>
 
-          {/* 
-            SMART MOBILE TYPOGRAPHY:
-            - xs/sm: text-3xl (30px) — fits narrow screens nicely
-            - md:    text-5xl (48px) — tablet hero size
-            - lg:    text-7xl (72px) — desktop large
-            - xl:    text-8xl (96px) — ultra-wide
-          */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-display font-bold tracking-tight uppercase mb-4 sm:mb-6 md:mb-8 leading-[0.9] text-foreground drop-shadow-sm max-w-4xl">
-            {post.meta.title}
-          </h1>
+          <div className="mt-8 sm:mt-12">
+            <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+              {post.meta.tags.map(tag => (
+                <span key={tag} className="px-3 sm:px-4 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] bg-primary text-primary-foreground rounded-full shadow-lg shadow-primary/20">
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-muted">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>{format(new Date(post.meta.date), 'MMM d, yyyy')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>{post.meta.readingTime} read</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>{post.content.split(/\s+/).length} words</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold tracking-tight uppercase mb-4 sm:mb-6 md:mb-8 leading-[1.1] text-foreground drop-shadow-sm max-w-5xl break-words">
+              {post.meta.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-muted">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span>{format(new Date(post.meta.date), 'MMM d, yyyy')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span>{post.meta.readingTime} read</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span>{post.content.split(/\s+/).length} words</span>
+              </div>
             </div>
           </div>
         </div>
