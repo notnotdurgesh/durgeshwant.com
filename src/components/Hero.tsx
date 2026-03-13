@@ -45,7 +45,7 @@ export default function Hero() {
           trigger: containerRef.current,
           start: 'top top',
           end: 'bottom top',
-          scrub: true,
+          scrub: 1,
         }
       });
     });

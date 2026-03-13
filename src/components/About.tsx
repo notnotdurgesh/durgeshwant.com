@@ -33,7 +33,7 @@ const ScrambleText = ({ text }: { text: string }) => {
             setDisplay(text);
           }
           iteration += 1 / 3;
-        }, 30);
+        }, 150);
       }
     }, { threshold: 0.5 });
 

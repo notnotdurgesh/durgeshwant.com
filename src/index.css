@@ -40,14 +40,6 @@ html {
   scroll-behavior: smooth;
 }
 
-html.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-}
-
-.scroll-snap-start {
-  scroll-snap-align: start;
-}
-
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
@@ -190,12 +182,4 @@ h1, h2, h3, h4, h5, h6 {
 
 ::view-transition-new(root) {
   z-index: 9999;
-}
-
-.dark::view-transition-old(root) {
-  z-index: 9999;
-}
-
-.dark::view-transition-new(root) {
-  z-index: 1;
 }
