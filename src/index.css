@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Outfit:wght@200;300;400;500&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --color-background: #fdfbf7;
+  --color-foreground: #3a3530;
+  --color-primary: #a67c6d;
+  --color-accent: #7b8c73;
+  --color-muted: #8c857d;
+  --color-card: #f5f2eb;
+  --color-border: #e8e3d9;
+}
+
+.dark {
+  --color-background: #12100e;
+  --color-foreground: #fdfbf7;
+  --color-primary: #d4a373;
+  --color-accent: #a3b18a;
+  --color-muted: #a8a096;
+  --color-card: #1c1917;
+  --color-border: #292524;
+}
+
+@theme {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --color-muted: var(--color-muted);
+  --color-card: var(--color-card);
+  --color-border: var(--color-border);
+  
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", ui-serif, Georgia, serif;
+  --font-hand: "Caveat", cursive;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+/* Soft linen/watercolor texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.4;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+.dark body::before {
+  mix-blend-mode: overlay;
+  opacity: 0.15;
+}
+
+@media (pointer: fine) {
+  body, a, button, input, textarea, select {
+    cursor: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+/* Hide scrollbar for cleaner look */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Lenis smooth scrolling styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.glass-panel {
+  background: color-mix(in srgb, var(--color-card) 70%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-panel {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.text-glow {
+  text-shadow: 0 0 30px rgba(166, 124, 109, 0.15);
+}
+
+.text-glow-accent {
+  text-shadow: 0 0 30px rgba(123, 140, 115, 0.15);
+}
+
+/* Typography & Spacing Overrides */
+.prose {
+  --tw-prose-body: var(--color-foreground);
+  --tw-prose-headings: var(--color-foreground);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-foreground);
+  --tw-prose-counters: var(--color-muted);
+  --tw-prose-bullets: var(--color-primary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-foreground);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-primary);
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: #0d1117;
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.prose p {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 500;
+}
+
+.prose pre {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom Scrollbar for Code Blocks */
+.prose pre::-webkit-scrollbar {
+  display: block;
+  height: 8px;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
