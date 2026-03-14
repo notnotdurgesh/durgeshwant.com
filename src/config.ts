@@ -17,28 +17,28 @@ export const CONFIG = {
       company: "Self-Employed",
       date: "Feb 2026 - Present",
       description: "Contributing to various open-source projects like Google's Agent Development Kit Project and building my own projects.",
-      logo: "src/data/assets/experience/Google.png",
+      logo: "/assets/experience/Google.png",
     },
     {
       role: "Full Stack Developer",
       company: "Comfac Tech Options",
       date: "Feb 2025 - Feb 2026",
       description: "Architected and scaled a mission-critical internal workforce management tool, boosting operational efficiency across multiple departments by a measurable 40%. Engineered dynamic, high-performance list and edit views using React, TypeScript, and GraphQL.",
-      logo: "src/data/assets/experience/cto.png",
+      logo: "/assets/experience/cto.png",
     },
     {
       role: "Full Stack Developer",
       company: "Dynish Solutions",
       date: "Oct 2024 - Feb 2025",
       description: "Led a team of two engineers to architect and deploy a scalable navigation and routing system with Next.js, improving modularity and decreasing page load times by 35%. Implemented a robust, enterprise-grade Role-Based Access Control (RBAC) system.",
-      logo: "src/data/assets/experience/Dynish.png",
+      logo: "/assets/experience/Dynish.png",
     },
     {
       role: "SWE Intern",
       company: "Umenit Solutions",
       date: "June 2024 - August 2024",
       description: "Built a high-throughput analytics backend to process and analyze user data, resulting in a 20% increase in user engagement and retention metrics. Developed an automated mailing system for sales and lead generation.",
-      logo: "src/data/assets/experience/umenit.png",
+      logo: "/assets/experience/umenit.png",
     }
   ],
   projects: [
@@ -46,7 +46,7 @@ export const CONFIG = {
       title: 'God Chat',
       category: 'User First Workspace',
       description: 'A premium, agentic workspace for creators that transforms AI conversations into an interactive knowledge graph, predictive suggestions, and visual branching to empower sophisticated, non-linear brainstorming.',
-      image: 'src/data/assets/godchat/image.png',
+      image: '/assets/godchat/image.png',
       color: 'rgba(212, 0, 255, 1)ff', // Sage green
       github: 'https://github.com/notnotdurgesh/GodChat',
     },
@@ -54,7 +54,7 @@ export const CONFIG = {
       title: 'AutoXL',
       category: 'AI-Powered Spreadsheet',
       description: 'An AI-driven, Excel-like web spreadsheet featuring virtual scrolling, undo/redo, and a multimodal Gemini agent with over 30 tool actions for complex data transformations.',
-      image: 'src/data/assets/autoxl/product.png',
+      image: '/assets/autoxl/product.png',
       color: '#d63636ff', // Warm honey
       github: 'https://github.com/notnotdurgesh/autoXL',
       live: 'https://autoxl.online'
@@ -63,7 +63,7 @@ export const CONFIG = {
       title: 'FindFounder',
       category: 'Matchmaking Platform',
       description: 'A full-stack founder-developer matchmaking platform facilitating intelligent co-founder discovery with role-based routing, real-time notifications, and GitHub OAuth.',
-      image: 'src/data/assets/findFounder/home.png',
+      image: '/assets/findFounder/home.png',
       color: '#f38c0eff', // Muted wood
       github: 'https://github.com/notnotdurgesh/findFounder_fe',
     },
@@ -71,7 +71,7 @@ export const CONFIG = {
       title: 'Google-Build-and-Blog-20k25 ',
       category: 'Winning hackathon project',
       description: 'Ai enabled music studio to synthese music',
-      image: 'src/data/assets/probeat/image.png',
+      image: '/assets/probeat/image.png',
       color: '#15ff00ff', // Muted wood
       github: 'https://github.com/notnotdurgesh/Google-Build-and-Blog-20k25',
     },

@@ -67,9 +67,9 @@ export default function Skills() {
         
         {/* User Photo */}
         <div className="absolute z-10 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_rgba(166,124,109,0.2)]">
-          <img 
-            src="src\data\assets\skills-photo.png" 
-            alt="Reddy Durgeshwant" 
+          <img
+            src="/assets/skills-photo.png"
+            alt="Reddy Durgeshwant"
             className="w-full h-full object-cover sepia-[0.2]"
             referrerPolicy="no-referrer"
           />

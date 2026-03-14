@@ -103,23 +103,65 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
       );
     },
     pre({ children, ...props }: any) {
+      const [copied, setCopied] = useState(false);
+      const codeRef = useRef<HTMLPreElement>(null);
+
+      const handleCopy = () => {
+        const codeElement = codeRef.current?.querySelector('code');
+        const text = codeElement?.innerText || codeRef.current?.innerText || '';
+        
+        if (text) {
+          navigator.clipboard.writeText(text).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+          });
+        }
+      };
+
       return (
-        <div className="relative group/code my-8 sm:my-12 md:my-16 isolate">
+        <div className="relative group/code my-2 sm:my-3 md:my-4 isolate">
           <pre
-            className="bg-zinc-950 border border-white/10 shadow-2xl rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 overflow-x-auto text-sm sm:text-base transform-gpu"
+            ref={codeRef}
+            className="bg-zinc-950 border border-white/10 shadow-2xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 overflow-x-auto text-sm sm:text-base transform-gpu"
             {...props}
           >
             {children}
           </pre>
           <button
-            onClick={() => {
-              const code = (children as any)?.props?.children || '';
-              navigator.clipboard.writeText(typeof code === 'string' ? code : '');
-            }}
-            className="absolute top-3 right-3 sm:top-4 sm:right-4 p-1.5 sm:p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white opacity-0 group-hover/code:opacity-100 transition-all duration-200 backdrop-blur-sm border border-white/10"
+            onClick={handleCopy}
+            className={`
+              absolute top-2 right-2 sm:top-3 sm:right-3 p-1.5 rounded-lg 
+              bg-white/10 hover:bg-white/20 text-white/70 hover:text-white 
+              transition-all duration-200 backdrop-blur-sm border border-white/10
+              z-20 cursor-pointer
+              ${copied ? 'opacity-100 ring-1 ring-green-500/50' : 'opacity-0 group-hover/code:opacity-100 focus:opacity-100'}
+              md:opacity-0 md:group-hover/code:opacity-100
+            `}
             title="Copy code"
           >
-            <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            <AnimatePresence mode="wait">
+              {copied ? (
+                <motion.div 
+                  key="check" 
+                  initial={{ scale: 0.5, opacity: 0 }} 
+                  animate={{ scale: 1, opacity: 1 }} 
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Check className="w-3.5 h-3.5 text-green-400" />
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="copy" 
+                  initial={{ scale: 0.5, opacity: 0 }} 
+                  animate={{ scale: 1, opacity: 1 }} 
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       );
@@ -134,29 +176,29 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         prose-sm sm:prose-base md:prose-lg lg:prose-xl
         [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:font-bold [&_h1,h2,h3,h4,h5,h6]:tracking-tight
         [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:uppercase [&_h1,h2,h3,h4,h5,h6]:break-words
-        [&_h1,h2,h3,h4,h5,h6]:mt-12 sm:[&_h1,h2,h3,h4,h5,h6]:mt-16 md:[&_h1,h2,h3,h4,h5,h6]:mt-20
-        [&_h1,h2,h3,h4,h5,h6]:mb-4 sm:[&_h1,h2,h3,h4,h5,h6]:mb-6 md:[&_h1,h2,h3,h4,h5,h6]:mb-8
+        [&_h1,h2,h3,h4,h5,h6]:mt-4 sm:[&_h1,h2,h3,h4,h5,h6]:mt-5 md:[&_h1,h2,h3,h4,h5,h6]:mt-6
+        [&_h1,h2,h3,h4,h5,h6]:mb-1 sm:[&_h1,h2,h3,h4,h5,h6]:mb-1.5 md:[&_h1,h2,h3,h4,h5,h6]:mb-2
         [&_h1,h2,h3,h4,h5,h6]:scroll-mt-24
         [&_h1]:text-3xl sm:[&_h1]:text-4xl md:[&_h1]:text-5xl lg:[&_h1]:text-5xl
         [&_h1]:text-primary [&_h1]:italic [&_h1]:normal-case [&_h1]:leading-[1.1]
         [&_h2]:text-2xl sm:[&_h2]:text-3xl md:[&_h2]:text-4xl lg:[&_h2]:text-4xl
-        [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-4 md:[&_h2]:pb-6 [&_h2]:leading-[1.2]
+        [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-1 md:[&_h2]:pb-2 [&_h2]:leading-[1.2]
         [&_h3]:text-xl sm:[&_h3]:text-2xl md:[&_h3]:text-3xl lg:[&_h3]:text-3xl
         [&_h3]:leading-[1.3]
-        [&_p]:mb-6 sm:[&_p]:mb-8 md:[&_p]:mb-10
-        [&_p]:leading-[1.75] sm:[&_p]:leading-[1.8]
+        [&_p]:mb-2 sm:[&_p]:mb-3 md:[&_p]:mb-3
+        [&_p]:leading-[1.5] sm:[&_p]:leading-[1.55]
         [&_p]:font-light
         [&_a]:text-primary [&_a]:font-medium [&_a]:underline [&_a]:underline-offset-4
         [&_a]:decoration-primary/30 hover:[&_a]:decoration-primary transition-all
-        [&_img]:rounded-2xl sm:[&_img]:rounded-3xl [&_img]:shadow-xl sm:[&_img]:shadow-2xl
-        [&_img]:my-10 sm:[&_img]:my-16 md:[&_img]:my-20 [&_img]:mx-auto
+        [&_img]:rounded-xl sm:[&_img]:rounded-2xl [&_img]:shadow-xl sm:[&_img]:shadow-2xl
+        [&_img]:my-2 sm:[&_img]:my-3 md:[&_img]:my-4 [&_img]:mx-auto
         [&_img]:transform-gpu
         [&_blockquote]:border-l-0
         [&_blockquote]:bg-muted/30 [&_blockquote]:px-6 sm:[&_blockquote]:px-10 md:[&_blockquote]:px-12
-        [&_blockquote]:py-6 sm:[&_blockquote]:py-8 md:[&_blockquote]:py-12
-        [&_blockquote]:rounded-2xl sm:[&_blockquote]:rounded-3xl
+        [&_blockquote]:py-3 sm:[&_blockquote]:py-4 md:[&_blockquote]:py-5
+        [&_blockquote]:rounded-xl sm:[&_blockquote]:rounded-2xl
         [&_blockquote]:not-italic [&_blockquote]:text-foreground
-        [&_blockquote]:my-10 sm:[&_blockquote]:my-16 md:[&_blockquote]:my-20
+        [&_blockquote]:my-2 sm:[&_blockquote]:my-3 md:[&_blockquote]:my-4
         [&_blockquote]:font-display
         [&_blockquote]:text-xl sm:[&_blockquote]:text-2xl md:[&_blockquote]:text-3xl lg:[&_blockquote]:text-4xl
         [&_blockquote]:leading-tight [&_blockquote]:relative
@@ -170,11 +212,11 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         [&_code]:before:content-none [&_code]:after:content-none
         [&_code]:font-mono [&_code]:text-sm sm:[&_code]:text-base
         [&_pre]:!p-0 [&_pre]:bg-transparent [&_pre]:border-0 [&_pre]:rounded-none [&_pre]:shadow-none
-        [&_li]:mb-2 sm:[&_li]:mb-4 [&_li]:marker:text-primary
-        [&_ul]:my-6 sm:[&_ul]:my-10 [&_ol]:my-6 sm:[&_ol]:my-10
+        [&_li]:mb-0 sm:[&_li]:mb-0.5 [&_li]:marker:text-primary
+        [&_ul]:my-2 sm:[&_ul]:my-2.5 [&_ol]:my-2 sm:[&_ol]:my-2.5
         [&_strong]:text-foreground [&_strong]:font-bold
-        [&_hr]:border-border [&_hr]:my-12 sm:[&_hr]:my-20
-        [&_table]:my-8 sm:[&_table]:my-16 [&_table]:border-collapse
+        [&_hr]:border-border [&_hr]:my-4 sm:[&_hr]:my-6
+        [&_table]:my-2 sm:[&_table]:my-4 [&_table]:border-collapse
         [&_th]:border-b [&_th]:border-border [&_th]:py-3 sm:[&_th]:py-4 [&_th]:text-left
         [&_th]:font-mono [&_th]:text-[10px] sm:[&_th]:text-xs [&_th]:uppercase [&_th]:tracking-widest
         [&_td]:border-b [&_td]:border-border/50 [&_td]:py-3 sm:[&_td]:py-4
