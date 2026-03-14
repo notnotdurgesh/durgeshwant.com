@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { CONFIG } from '../config';
 
@@ -9,9 +10,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         
         <div className="flex flex-col items-center md:items-start gap-2">
-          <span className="font-display text-2xl font-bold tracking-tighter uppercase">
-            {CONFIG.personal.name.split(' ')[0]}<span className="text-primary">.</span>
-          </span>
+          <Link 
+            to="/" 
+            className="font-display text-2xl font-bold tracking-tighter uppercase hover:text-primary transition-colors duration-300 group"
+          >
+            {CONFIG.personal.name.split(' ')[0]}<span className="text-primary group-hover:text-foreground transition-colors duration-300">.</span>
+          </Link>
           <span className="text-muted text-xs font-sans uppercase tracking-widest">
             © {currentYear} All Rights Reserved
           </span>

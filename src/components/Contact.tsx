@@ -16,19 +16,28 @@ export default function Contact() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Simulate API call to a backend service (e.g., Formspree, EmailJS)
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simulate a successful response
-          resolve(true);
-        }, 1500);
+      const response = await fetch(`https://formsubmit.co/ajax/${CONFIG.personal.email}`, {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            message: data.message,
+            _subject: "New Contact from Portfolio!"
+        })
       });
-      
-      console.log('Form submitted:', data);
-      setIsSuccess(true);
-      toast.success('Message sent successfully!');
-      reset();
-      setTimeout(() => setIsSuccess(false), 5000);
+
+      if (response.ok) {
+        setIsSuccess(true);
+        toast.success('Message sent successfully!');
+        reset();
+        setTimeout(() => setIsSuccess(false), 5000);
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
     }

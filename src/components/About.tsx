@@ -147,7 +147,7 @@ export default function About() {
                 <span className="text-muted uppercase tracking-widest text-[10px] md:text-xs">Years Coding</span>
               </div>
               <div className="glass-panel p-4 md:p-5 rounded-sm shadow-sm border-b border-r border-primary/10">
-                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display font-light">20+</span>
+                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display font-light">35+</span>
                 <span className="text-muted uppercase tracking-widest text-[10px] md:text-xs">Projects Shipped</span>
               </div>
             </div>
@@ -156,8 +156,8 @@ export default function About() {
           <div ref={imageRef} className="relative aspect-[4/5] w-full max-w-sm md:max-w-md mx-auto md:ml-auto glass-panel p-3 md:p-4 rounded-sm shadow-xl border border-border group mt-8 md:mt-0 transform rotate-1">
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent z-10 mix-blend-multiply" />
             <img 
-              src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2564&auto=format&fit=crop" 
-              alt="Abstract art representation" 
+              src="src\data\assets\about-image.png" 
+              alt="Luffy wacving and smiling" 
               className="w-full h-full object-cover sepia-[0.4] group-hover:sepia-[0.2] transition-all duration-1000 scale-100 group-hover:scale-105"
             />
             {/* Linen tape detail */}

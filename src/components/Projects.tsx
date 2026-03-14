@@ -124,16 +124,6 @@ export default function Projects() {
                       alt={project.title} 
                       className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 sepia-[0.2] group-hover:sepia-0"
                     />
-                    {project.video && (
-                      <video
-                        src={project.video}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
-                      />
-                    )}
                     <div 
                       className="absolute inset-0 mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity duration-1000 z-0"
                       style={{ backgroundColor: project.color }}

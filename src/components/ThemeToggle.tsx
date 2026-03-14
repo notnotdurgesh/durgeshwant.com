@@ -1,26 +1,39 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Moon, Sun, PencilLine, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
   const isDark = theme === 'dark';
+  const isBlogRoute = location.pathname.startsWith('/blog');
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the user has already dismissed the suggestion or if they are in dark mode
     const hasSeenSuggestion = localStorage.getItem('hasSeenThemeSuggestion');
     
     if (!isDark && !hasSeenSuggestion) {
       const timer = setTimeout(() => {
         setShowSuggestion(true);
-      }, 2000); // Show after 2 seconds of being in light mode
+      }, 2000);
       return () => clearTimeout(timer);
     } else {
       setShowSuggestion(false);
     }
   }, [isDark]);
+
+  // Listen for sidebar state via body class
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsSidebarOpen(document.body.classList.contains('sidebar-open'));
+    });
+
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   const handleDismiss = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -37,7 +50,11 @@ export default function ThemeToggle() {
   };
 
   return (
-    <div className="fixed top-10 right-6 z-50 flex items-center gap-4">
+    <div 
+      className={`fixed top-10 right-6 flex items-center gap-4 transition-all duration-500 ${
+        isBlogRoute ? 'z-40' : 'z-50'
+      } ${isSidebarOpen ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100'}`}
+    >
       <AnimatePresence>
         {showSuggestion && (
           <motion.div
@@ -62,8 +79,6 @@ export default function ThemeToggle() {
               >
                 <X className="w-3 h-3 text-muted" />
               </button>
-
-              {/* Decorative "Pencil Scribble" underline */}
               <motion.div 
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -72,8 +87,6 @@ export default function ThemeToggle() {
                 style={{ filter: 'blur(0.5px)' }}
               />
             </div>
-            
-            {/* Arrow pointing to toggle */}
             <div className="absolute top-1/2 -right-2 -translate-y-1/2 w-2 h-2 bg-background border-t border-r border-primary/20 rotate-45 backdrop-blur-md" />
           </motion.div>
         )}
@@ -88,14 +101,8 @@ export default function ThemeToggle() {
           animate={{ rotate: isDark ? 0 : -12 }}
           transition={{ type: "spring", stiffness: 200 }}
         >
-          {isDark ? (
-            <Sun className="w-5 h-5" />
-          ) : (
-            <Moon className="w-5 h-5" />
-          )}
+          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </motion.div>
-        
-        {/* Subtle glow effect on the button when suggestion is active */}
         {showSuggestion && (
           <span className="absolute inset-0 bg-primary/20 animate-pulse pointer-events-none" />
         )}

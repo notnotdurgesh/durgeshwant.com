@@ -9,6 +9,15 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// Favicon SVG Generation
+const getFaviconUri = (theme: Theme) => {
+  const bgColor = theme === 'dark' ? '%2312100e' : '%23fdfbf7';
+  const rColor = theme === 'dark' ? 'white' : '%23a67c6d';
+  const dColor = theme === 'dark' ? '%23d4a373' : '%237b8c73';
+  
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='50' fill='${bgColor}' /%3E%3Ctext x='50' y='50' text-anchor='middle' dominant-baseline='central' font-family='sans-serif' font-weight='900' font-size='50'%3E%3Ctspan fill='${rColor}'%3ER%3C/tspan%3E%3Ctspan fill='${dColor}'%3ED.%3C/tspan%3E%3C/text%3E%3C/svg%3E`;
+};
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
@@ -27,6 +36,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.remove('dark');
     }
     localStorage.setItem('theme', theme);
+
+    // DYNAMIC FAVICON UPDATE
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+      favicon.setAttribute('href', getFaviconUri(theme));
+    }
   }, [theme]);
 
   const toggleTheme = (event?: React.MouseEvent) => {
@@ -63,7 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           clipPath: clipPath,
         },
         {
-          duration: 1000,
+          duration: 500,
           easing: 'ease-in-out',
           pseudoElement: '::view-transition-new(root)',
         }
