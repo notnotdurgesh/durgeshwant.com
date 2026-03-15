@@ -55,9 +55,16 @@ export function getAllPosts(): BlogPost[] {
       const contentPath = `/src/data/blogs/${slug}/index.md`;
       const content = (contentFiles[contentPath] as string) || '';
 
+      // Calculate dynamic reading time (avg 200 wpm)
+      const wordCount = content.split(/\s+/).length;
+      const calculatedReadingTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+
       posts.push({
         slug,
-        meta,
+        meta: {
+          ...meta,
+          readingTime: calculatedReadingTime
+        },
         content
       });
     }

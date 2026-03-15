@@ -1,0 +1,8 @@
+{
+  "title": "The Architecture of Unpredictability: A Comprehensive Exploration of Computational Randomness",
+  "date": "2026-03-15",
+  "description": "An exhaustive deep dive into how deterministic machines cultivate chaos through TRNGs, PRNGs, and the entropy pools of modern operating systems.",
+  "banner": "banner.png",
+  "tags": ["Computer Science", "Randomness", "Cryptography", "Architecture", "Memory Safety", "ASLR"],
+  "readingTime": "22 min"
+}

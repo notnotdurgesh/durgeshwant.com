@@ -84,7 +84,7 @@ export default function Experience() {
             </h2>
           </div>
           <p className="text-muted font-mono text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.4em]">
-            2024 — Present
+            2024 - Present
           </p>
         </div>
 

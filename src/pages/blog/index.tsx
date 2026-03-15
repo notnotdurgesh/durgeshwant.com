@@ -78,7 +78,7 @@ export default function BlogListing() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
               {/* 
                 SMART MOBILE TYPOGRAPHY:
-                - mobile:  text-4xl (36px) — bold but fits small screens
+                - mobile:  text-4xl (36px) - bold but fits small screens
                 - sm:      text-5xl (48px)
                 - md+:     text-7xl (72px)
               */}
