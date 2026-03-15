@@ -74,6 +74,31 @@ body::before {
   cursor: none !important;
 }
 
+/* Hide custom cursor when hovering over the contact form using pure CSS */
+body:has(#contact:hover) .custom-cursor-dot,
+body:has(#contact:hover) .custom-cursor-ring {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Restore exact default system cursors for the contact section */
+.custom-cursor-active #contact,
+.custom-cursor-active #contact * {
+  cursor: auto !important;
+}
+
+.custom-cursor-active #contact button,
+.custom-cursor-active #contact a,
+.custom-cursor-active #contact input[type="submit"] {
+  cursor: pointer !important;
+}
+
+.custom-cursor-active #contact input[type="text"],
+.custom-cursor-active #contact input[type="email"],
+.custom-cursor-active #contact textarea {
+  cursor: text !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
