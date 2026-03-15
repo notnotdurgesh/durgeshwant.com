@@ -4,7 +4,7 @@ Let’s be real: most people treat Markdown like a slightly more annoying versio
 
 But if you’re reading this on an engineering portfolio, you already know that "good enough" is the enemy of "perfect." Markdown is a declarative language for human-readable data. When used correctly, it’s a powerful engine for building structure out of chaos. 
 
-This is the definitive, no-fluff, slightly opinionated guide on how to actually use Markdown in 2026. No emojis, no filler—just pure, distilled structural wisdom.
+This is the definitive, no-fluff, slightly opinionated guide on how to actually use Markdown in 2026. No emojis, no filler-just pure, distilled structural wisdom.
 
 ---
 

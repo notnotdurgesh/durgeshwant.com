@@ -208,3 +208,39 @@ h1, h2, h3, h4, h5, h6 {
 ::view-transition-new(root) {
   z-index: 9999;
 }
+
+/* KaTeX Math Styling */
+.katex-display {
+  margin: 2.5rem 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 1rem 0 !important;
+  text-align: center;
+  /* Add a subtle glass background for display math if desired */
+  background: color-mix(in srgb, var(--color-primary) 3%, transparent);
+  border-radius: 1rem;
+}
+
+.katex {
+  font-size: 1.1em !important;
+  line-height: 1.2 !important;
+  text-rendering: auto !important;
+}
+
+/* Dark mode tweaks for math */
+.dark .katex {
+  color: var(--color-foreground);
+}
+
+.katex-html {
+  /* Prevent horizontal scrollbars for small inline math */
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Fix for mobile responsiveness of long equations */
+@media (max-width: 640px) {
+  .katex-display > .katex {
+    font-size: 0.95em !important;
+  }
+}

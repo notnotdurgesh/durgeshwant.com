@@ -6,10 +6,13 @@ import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkToc from 'remark-toc';
+import remarkMath from 'remark-math';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeKatex from 'rehype-katex';
 import 'highlight.js/styles/github-dark.css';
+import 'katex/dist/katex.min.css';
 import {
   ArrowLeft, Calendar, Clock, Share2, Twitter, Linkedin,
   Link as LinkIcon, Check, Copy, ArrowUp, List, X,
@@ -344,8 +347,8 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
       `}
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, [remarkToc, { heading: 'Table of Contents', tight: true }]]}
-        rehypePlugins={[rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }], rehypeHighlight]}
+        remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents', tight: true }]]}
+        rehypePlugins={[rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }], rehypeHighlight, rehypeKatex]}
         components={components}
       >
         {content}
