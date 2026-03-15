@@ -495,28 +495,38 @@ export default function BlogPost() {
       className="min-h-screen bg-background text-foreground pb-24"
     >
       <Helmet>
-        <title>{post.meta.title} | Portfolio Blog</title>
+        <title>{post.meta.title} | Reddy Durgeshwant</title>
         <meta name="description" content={post.meta.description} />
+        
+        {/* Open Graph */}
         <meta property="og:title" content={post.meta.title} />
         <meta property="og:description" content={post.meta.description} />
-        <meta property="og:image" content={getAssetUrl(post.slug, post.meta.banner)} />
+        <meta property="og:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
         <meta property="article:published_time" content={post.meta.date} />
-        <meta property="article:author" content="Portfolio Owner" />
+        <meta property="article:author" content="Reddy Durgeshwant" />
         {post.meta.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
+        
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@itsdurgesh" />
+        <meta name="twitter:creator" content="@itsdurgesh" />
         <meta name="twitter:title" content={post.meta.title} />
         <meta name="twitter:description" content={post.meta.description} />
-        <meta name="twitter:image" content={getAssetUrl(post.slug, post.meta.banner)} />
+        <meta name="twitter:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
+        
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org", "@type": "BlogPosting",
             "headline": post.meta.title, "description": post.meta.description,
-            "image": [getAssetUrl(post.slug, post.meta.banner)],
+            "image": [getAssetUrl(post.slug, post.meta.banner, true)],
             "datePublished": post.meta.date, "dateModified": post.meta.date,
-            "author": [{ "@type": "Person", "name": "Portfolio Owner", "url": window.location.origin }],
-            "publisher": { "@type": "Organization", "name": "Portfolio" },
+            "author": [{ "@type": "Person", "name": "Reddy Durgeshwant", "url": "https://durgeshwant.com" }],
+            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" },
             "mainEntityOfPage": { "@type": "WebPage", "@id": window.location.href },
             "keywords": post.meta.tags.join(", ")
           })}

@@ -38,6 +38,23 @@ function Portfolio() {
       <Helmet>
         <title>Reddy Durgeshwant | SWE & AI Engineer</title>
         <meta name="description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and AI Engineer specializing in building scalable web applications, AI integration, and modern UI/UX." />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://durgeshwant.com/" />
+        <meta property="og:title" content="Reddy Durgeshwant | Software Engineer & AI Engineer" />
+        <meta property="og:description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and CTO specializing in building scalable web applications, AI integration, and modern UI/UX." />
+        <meta property="og:image" content="https://durgeshwant.com/assets/about-image.png" />
+        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@itsdurgesh" />
+        <meta name="twitter:creator" content="@itsdurgesh" />
+        <meta name="twitter:title" content="Reddy Durgeshwant | Software Engineer & AI Engineer" />
+        <meta name="twitter:description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and CTO specializing in building scalable web applications, AI integration, and modern UI/UX." />
+        <meta name="twitter:image" content="https://durgeshwant.com/assets/about-image.png" />
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -49,7 +66,7 @@ function Portfolio() {
               "name": "Reddy Durgeshwant",
               "jobTitle": "SWE & AI Engineer",
               "description": "A passionate Software Engineer and AI Engineer specializing in building scalable web applications.",
-              "url": window.location.origin,
+              "url": "https://durgeshwant.com",
               "sameAs": [
                 "https://github.com/notnotdurgesh",
                 "https://www.linkedin.com/in/itsdurgesh/"

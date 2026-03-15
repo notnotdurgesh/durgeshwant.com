@@ -24,8 +24,9 @@ const contentFiles = import.meta.glob('/src/data/blogs/*/index.md', { query: '?r
 // We read all assets (images, audio) to get their public URLs
 const assetFiles = import.meta.glob('/src/data/blogs/**/*.{jpg,jpeg,png,webp,gif,svg,mp3,m4a,wav}', { query: '?url', import: 'default', eager: true });
 const DEFAULT_BANNER = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop';
+const SITE_URL = 'https://durgeshwant.com';
 
-export function getAssetUrl(slug: string, filename: string | undefined): string {
+export function getAssetUrl(slug: string, filename: string | undefined, absolute = false): string {
   // If no filename provided, return default banner
   if (!filename) return DEFAULT_BANNER;
 
@@ -38,7 +39,13 @@ export function getAssetUrl(slug: string, filename: string | undefined): string 
   const cleanFilename = filename.replace(/^\.\//, '').replace(/^\//, '');
   const path = `/src/data/blogs/${slug}/${cleanFilename}`;
   
-  return (assetFiles[path] as string) || DEFAULT_BANNER;
+  const url = (assetFiles[path] as string) || DEFAULT_BANNER;
+  
+  if (absolute && url.startsWith('/')) {
+    return `${SITE_URL}${url}`;
+  }
+  
+  return url;
 }
 
 export function getAllPosts(): BlogPost[] {

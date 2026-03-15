@@ -46,18 +46,32 @@ export default function BlogListing() {
       className="min-h-screen bg-background text-foreground pt-12 sm:pt-16 md:pt-20 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-24"
     >
       <Helmet>
-        <title>The Journal | Software Engineering Blog</title>
-        <meta name="description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems." />
-        <meta property="og:title" content="The Journal | Software Engineering Blog" />
-        <meta property="og:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems." />
+        <title>The Journal | Reddy Durgeshwant</title>
+        <meta name="description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="The Journal | Reddy Durgeshwant" />
+        <meta property="og:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
+        <meta property="og:image" content="https://durgeshwant.com/assets/about-image.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@itsdurgesh" />
+        <meta name="twitter:creator" content="@itsdurgesh" />
+        <meta name="twitter:title" content="The Journal | Reddy Durgeshwant" />
+        <meta name="twitter:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
+        <meta name="twitter:image" content="https://durgeshwant.com/assets/about-image.png" />
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org", "@type": "Blog",
             "name": "The Journal",
             "description": "Thoughts, tutorials, and insights on software engineering, design, and building scalable systems.",
             "url": window.location.href,
-            "publisher": { "@type": "Organization", "name": "Portfolio" }
+            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" }
           })}
         </script>
       </Helmet>
