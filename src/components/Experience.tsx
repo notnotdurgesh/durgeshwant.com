@@ -68,8 +68,8 @@ export default function Experience() {
     <section id="experience" ref={sectionRef} className="py-24 md:py-40 relative px-4 sm:px-8 md:px-12 lg:px-24 overflow-hidden">
       {/* Cinematic Background Text */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 whitespace-nowrap pointer-events-none opacity-[0.02] dark:opacity-[0.05] z-0">
-        <span className="experience-bg-text text-[40vw] md:text-[30vw] font-display font-bold uppercase tracking-tighter inline-block">
-          Experience Path Journey
+        <span className="experience-bg-text text-[30vw] md:text-[20vw] font-display font-bold uppercase tracking-tighter inline-block">
+          my journey
         </span>
       </div>
 

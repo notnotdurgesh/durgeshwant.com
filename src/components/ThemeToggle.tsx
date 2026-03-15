@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Moon, Sun, PencilLine, X } from 'lucide-react';
+import { Moon, Sun, Sparkles, X, Pencil, Lightbulb } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,7 +18,7 @@ export default function ThemeToggle() {
     if (!isDark && !hasSeenSuggestion) {
       const timer = setTimeout(() => {
         setShowSuggestion(true);
-      }, 2000);
+      }, 2500);
       return () => clearTimeout(timer);
     } else {
       setShowSuggestion(false);
@@ -58,43 +58,47 @@ export default function ThemeToggle() {
       <AnimatePresence>
         {showSuggestion && (
           <motion.div
-            initial={{ opacity: 0, x: 20, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.9 }}
+            initial={{ opacity: 0, x: 20, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, x: 10, filter: 'blur(5px)' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            <div className="bg-background/80 backdrop-blur-md border border-primary/20 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-3 min-w-[200px] group">
-              <div className="bg-primary/10 p-1.5 rounded-lg">
-                <PencilLine className="w-4 h-4 text-primary animate-pulse" />
+            <div className="bg-card/60 backdrop-blur-xl border border-border/50 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 min-w-max group">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary shrink-0 relative">
+                <Lightbulb className="w-4 h-4 animate-pulse" />
+                <div className="absolute inset-0 rounded-full border border-primary/20 animate-ping" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-mono leading-none mb-1">PRO TIP</span>
-                <p className="text-sm font-hand text-foreground/90 whitespace-nowrap">
-                  Looks better in dark mode...
+              
+              <div className="flex flex-col pr-2">
+                <span className="text-[9px] uppercase tracking-[0.25em] text-muted font-mono font-bold leading-none mb-1.5 flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-primary" /> Recommendation
+                </span>
+                <p className="text-sm font-sans font-medium text-foreground whitespace-nowrap leading-tight tracking-tight">
+                  Best experienced in dark mode
                 </p>
               </div>
+              
               <button 
                 onClick={handleDismiss}
-                className="ml-2 p-1 hover:bg-primary/10 rounded-full transition-colors cursor-pointer"
+                className="ml-1 p-1.5 text-muted hover:text-foreground hover:bg-muted/20 rounded-full transition-all active:scale-95"
+                title="Dismiss"
               >
-                <X className="w-3 h-3 text-muted" />
+                <X className="w-3.5 h-3.5" />
               </button>
-              <motion.div 
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="absolute -bottom-1 left-4 right-8 h-[2px] bg-primary/30 origin-left rounded-full"
-                style={{ filter: 'blur(0.5px)' }}
-              />
             </div>
-            <div className="absolute top-1/2 -right-2 -translate-y-1/2 w-2 h-2 bg-background border-t border-r border-primary/20 rotate-45 backdrop-blur-md" />
+            
+            {/* Elegant pointer arrow */}
+            <div className="absolute top-1/2 -right-[5px] -translate-y-1/2 w-2.5 h-2.5 bg-card/60 backdrop-blur-xl border-t border-r border-border/50 rotate-45" />
           </motion.div>
         )}
       </AnimatePresence>
 
       <button
         onClick={handleToggle}
-        className="p-3 glass-panel rounded-full text-muted hover:text-foreground transition-all shadow-lg border border-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none hover:scale-110 active:scale-95 cursor-pointer relative overflow-hidden group"
+        className={`p-3 glass-panel rounded-full transition-all shadow-lg border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none hover:scale-110 active:scale-95 cursor-pointer relative overflow-hidden group
+          ${showSuggestion ? 'border-primary shadow-primary/20 text-primary' : 'border-primary/20 text-muted hover:text-foreground'}
+        `}
         aria-label="Toggle Dark Mode"
       >
         <motion.div
@@ -103,9 +107,18 @@ export default function ThemeToggle() {
         >
           {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </motion.div>
-        {showSuggestion && (
-          <span className="absolute inset-0 bg-primary/20 animate-pulse pointer-events-none" />
-        )}
+        
+        {/* Subtle pulsing background if suggestion is active */}
+        <AnimatePresence>
+          {showSuggestion && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-primary/10 animate-pulse pointer-events-none" 
+            />
+          )}
+        </AnimatePresence>
       </button>
     </div>
   );
