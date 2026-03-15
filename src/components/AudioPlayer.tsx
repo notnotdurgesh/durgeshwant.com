@@ -111,6 +111,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         {/* Play/Pause Button */}
         <button
           onClick={togglePlay}
+          aria-label={isPlaying ? "Pause" : "Play"}
           className="w-16 h-16 shrink-0 rounded-full bg-primary text-background flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-primary/20"
         >
           {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
@@ -149,12 +150,14 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         <div className="flex items-center gap-4 shrink-0">
           <button
             onClick={changeSpeed}
+            aria-label={`Playback speed: ${playbackRate}x`}
             className="flex items-center gap-1 text-xs font-mono uppercase tracking-widest text-muted hover:text-primary transition-colors px-3 py-1.5 rounded-full border border-border hover:border-primary/50"
           >
             <FastForward className="w-3.5 h-3.5" /> {playbackRate}x
           </button>
           <button
             onClick={toggleMute}
+            aria-label={isMuted ? "Unmute" : "Mute"}
             className="p-2 text-muted hover:text-primary transition-colors rounded-full hover:bg-primary/10"
           >
             {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}

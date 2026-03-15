@@ -122,6 +122,7 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
               src={imageSrc} 
               alt={alt} 
               decoding="async"
+              loading="lazy"
               className="w-full max-h-[70vh] object-contain transform-gpu transition-all duration-700 grayscale-[0.2] group-hover:grayscale-0" 
               {...props} 
             />
@@ -770,6 +771,7 @@ export default function BlogPost() {
                       <img
                         src={getAssetUrl(related.slug, related.meta.banner)}
                         alt={related.meta.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                       />
                     </div>

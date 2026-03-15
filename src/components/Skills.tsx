@@ -70,6 +70,7 @@ export default function Skills() {
           <img
             src="/assets/skills-photo.png"
             alt="Reddy Durgeshwant"
+            loading="lazy"
             className="w-full h-full object-cover sepia-[0.2]"
             referrerPolicy="no-referrer"
           />

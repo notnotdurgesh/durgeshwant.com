@@ -46,13 +46,13 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="text-muted hover:text-foreground transition-colors">
+          <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub Profile" className="text-muted hover:text-foreground transition-colors">
             <Github className="w-5 h-5" />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-muted hover:text-foreground transition-colors">
+          <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn Profile" className="text-muted hover:text-foreground transition-colors">
             <Linkedin className="w-5 h-5" />
           </a>
-          <a href="mailto:durgeshwantreddy@gmail.com" className="text-muted hover:text-foreground transition-colors">
+          <a href="mailto:durgeshwantreddy@gmail.com" aria-label="Email Me" className="text-muted hover:text-foreground transition-colors">
             <Mail className="w-5 h-5" />
           </a>
         </div>
@@ -87,13 +87,13 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="flex items-center gap-4 pt-4 border-t border-border">
-                <a href="https://github.com" target="_blank" rel="noreferrer" className="text-muted hover:text-foreground transition-colors">
+                <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub Profile" className="text-muted hover:text-foreground transition-colors">
                   <Github className="w-5 h-5" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-muted hover:text-foreground transition-colors">
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn Profile" className="text-muted hover:text-foreground transition-colors">
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="mailto:durgeshwantreddy@gmail.com" className="text-muted hover:text-foreground transition-colors">
+                <a href="mailto:durgeshwantreddy@gmail.com" aria-label="Email Me" className="text-muted hover:text-foreground transition-colors">
                   <Mail className="w-5 h-5" />
                 </a>
               </div>

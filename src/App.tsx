@@ -25,7 +25,7 @@ import ThemeToggle from './components/ThemeToggle';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 
-gsap.registerPlugin(ScrollTrigger);
+import { Helmet } from 'react-helmet-async';
 
 function Portfolio() {
   return (
@@ -35,6 +35,29 @@ function Portfolio() {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
     >
+      <Helmet>
+        <title>Reddy Durgeshwant | SWE & AI Engineer</title>
+        <meta name="description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and AI Engineer specializing in building scalable web applications, AI integration, and modern UI/UX." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "dateCreated": "2024-01-01T12:00:00-05:00",
+            "dateModified": new Date().toISOString(),
+            "mainEntity": {
+              "@type": "Person",
+              "name": "Reddy Durgeshwant",
+              "jobTitle": "SWE & AI Engineer",
+              "description": "A passionate Software Engineer and AI Engineer specializing in building scalable web applications.",
+              "url": window.location.origin,
+              "sameAs": [
+                "https://github.com/notnotdurgesh",
+                "https://www.linkedin.com/in/itsdurgesh/"
+              ]
+            }
+          })}
+        </script>
+      </Helmet>
       <Hero />
       <About />
       <Projects />

@@ -23,16 +23,16 @@ export default function Footer() {
 
         <div className="flex items-center gap-6">
           {CONFIG.personal.links.github && (
-            <a href={CONFIG.personal.links.github} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
+            <a href={CONFIG.personal.links.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
               <Github className="w-5 h-5" />
             </a>
           )}
           {CONFIG.personal.links.linkedin && (
-            <a href={CONFIG.personal.links.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
+            <a href={CONFIG.personal.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
               <Linkedin className="w-5 h-5" />
             </a>
           )}
-          <a href={`mailto:${CONFIG.personal.email}`} className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
+          <a href={`mailto:${CONFIG.personal.email}`} aria-label="Email Me" className="text-muted hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">
             <Mail className="w-5 h-5" />
           </a>
         </div>

@@ -74,6 +74,7 @@ export default function Projects() {
                 <img 
                   src={project.image} 
                   alt={project.title} 
+                  loading="lazy"
                   className="w-full h-full object-cover opacity-10 sepia-[0.5]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
@@ -122,6 +123,7 @@ export default function Projects() {
                     <img 
                       src={project.image} 
                       alt={project.title} 
+                      loading="lazy"
                       className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 sepia-[0.2] group-hover:sepia-0"
                     />
                     <div 

@@ -157,7 +157,8 @@ export default function About() {
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent z-10 mix-blend-multiply" />
             <img
               src="/assets/about-image.png"
-              alt="Luffy wacving and smiling"
+              alt="Luffy waving and smiling"
+              loading="lazy"
               className="w-full h-full object-cover sepia-[0.4] group-hover:sepia-[0.2] transition-all duration-1000 scale-100 group-hover:scale-105"
             />
             {/* Linen tape detail */}
