@@ -52,7 +52,7 @@ export default function Skills() {
     <section ref={sectionRef} id="skills" className="min-h-screen relative flex items-center justify-center overflow-hidden py-24 px-4">
       <div className="absolute top-12 left-6 md:left-auto md:right-12 z-20">
         <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform rotate-2 inline-block">
-          Chapter 3: The Tech Stack
+          Chapter 4: The Tech Stack
         </span>
       </div>
 

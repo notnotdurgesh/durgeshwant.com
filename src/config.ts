@@ -2,8 +2,8 @@ export const CONFIG = {
   personal: {
     name: "Reddy Durgeshwant",
     role: "Full Stack Developer",
-    tagline: "Building real-world, high-performance web applications.",
-    about: "I am a Full Stack Developer focused on architecting robust and efficient systems. I specialize in modern web technologies to solve complex problems and deliver seamless, high-performance user experiences.",
+    tagline: "I craft high-performance web apps and intelligent AI systems.",
+    about: "I'm a Full Stack Developer who architects robust, scalable systems from the ground up. I bridge the gap between complex engineering and elegant user experience — turning ambitious ideas into fast, reliable products.",
     email: "durgeshwantreddy@gmail.com",
     phone: "+91-7702734399",
     links: {
@@ -74,11 +74,11 @@ export const CONFIG = {
   ],
   projects: [
         {
-      title: 'Google-Build-and-Blog-2k25 ',
-      category: 'Winning hackathon project',
-      description: 'Ai enabled music studio to synthese music',
+      title: 'Google-Build-and-Blog-2k25',
+      category: 'Winning Hackathon Project',
+      description: 'AI-enabled music studio to synthesize and layer original music tracks with Gemini.',
       image: '/assets/probeat/image.png',
-      color: '#15ff00ff', // Muted wood
+      color: '#15ff00',
       github: 'https://github.com/notnotdurgesh/Google-Build-and-Blog-20k25',
       skills: [
         { name: "React", icon: "Code" },
@@ -92,7 +92,7 @@ export const CONFIG = {
       category: 'User First Workspace',
       description: 'A premium, agentic workspace for creators that transforms AI conversations into an interactive knowledge graph, predictive suggestions, and visual branching to empower sophisticated, non-linear brainstorming.',
       image: '/assets/godchat/image.png',
-      color: 'rgba(212, 0, 255, 1)ff', // Sage green
+      color: 'rgba(212, 0, 255, 1)',
       github: 'https://github.com/notnotdurgesh/GodChat',
       skills: [
         { name: "React", icon: "Code" },
@@ -107,7 +107,7 @@ export const CONFIG = {
       category: 'AI-Powered Spreadsheet',
       description: 'An AI-driven, Excel-like web spreadsheet featuring virtual scrolling, undo/redo, and a multimodal Gemini agent with over 30 tool actions for complex data transformations.',
       image: '/assets/autoxl/product.png',
-      color: '#d63636ff', // Warm honey
+      color: '#d63636',
       github: 'https://github.com/notnotdurgesh/autoXL',
       live: 'https://autoxl.online',
       skills: [
@@ -123,7 +123,7 @@ export const CONFIG = {
       category: 'Matchmaking Platform',
       description: 'A full-stack founder-developer matchmaking platform facilitating intelligent co-founder discovery with role-based routing, real-time notifications, and GitHub OAuth.',
       image: '/assets/findFounder/home.png',
-      color: '#f38c0eff', // Muted wood
+      color: '#f38c0e',
       github: 'https://github.com/notnotdurgesh/findFounder_fe',
       skills: [
         { name: "Next.js", icon: "Globe" },

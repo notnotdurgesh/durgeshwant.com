@@ -48,7 +48,7 @@ export default function Contact() {
       <Toaster position="bottom-right" theme="dark" />
       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20">
         <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform rotate-1 inline-block">
-          Chapter 5: Contact
+          Chapter 6: Contact
         </span>
       </div>
 

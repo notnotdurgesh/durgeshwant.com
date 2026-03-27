@@ -11,7 +11,7 @@ export default function BlogSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
             <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform -rotate-2 inline-block mb-6">
-              Chapter 4: The Journal
+              Chapter 5: The Journal
             </span>
             <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase leading-tight text-foreground">
               Latest <span className="text-primary italic">Writings</span>
