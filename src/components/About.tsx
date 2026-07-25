@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CONFIG } from '../config';
+import { prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,38 +12,56 @@ const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#
 
 const ScrambleText = ({ text }: { text: string }) => {
   const [display, setDisplay] = useState(text);
-  const [isScrambling, setIsScrambling] = useState(false);
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !isScrambling) {
-        setIsScrambling(true);
+    const el = spanRef.current;
+    // Scrambling text is exactly the kind of motion reduced-motion users opt out
+    // of, and it makes the word unreadable while it runs.
+    if (!el || prefersReducedMotion()) return;
+
+    let interval: ReturnType<typeof setInterval> | undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || interval) return;
+
         let iteration = 0;
-        const interval = setInterval(() => {
-          setDisplay(
-            text
-              .split('')
-              .map((_, index) => {
-                if (index < iteration) return text[index];
-                return chars[Math.floor(Math.random() * chars.length)];
-              })
-              .join('')
-          );
+        interval = setInterval(() => {
           if (iteration >= text.length) {
             clearInterval(interval);
             setDisplay(text);
+            observer.disconnect();
+            return;
           }
+          setDisplay(
+            text
+              .split('')
+              .map((_, index) =>
+                index < iteration ? text[index] : chars[Math.floor(Math.random() * chars.length)]
+              )
+              .join('')
+          );
           iteration += 1 / 3;
         }, 150);
-      }
-    }, { threshold: 0.5 });
+      },
+      { threshold: 0.5 }
+    );
 
-    const el = document.getElementById('scramble-trigger');
-    if (el) observer.observe(el);
-    return () => observer.disconnect();
-  }, [text, isScrambling]);
+    observer.observe(el);
 
-  return <span id="scramble-trigger">{display}</span>;
+    return () => {
+      // Without this the interval kept setting state after unmount.
+      if (interval) clearInterval(interval);
+      observer.disconnect();
+    };
+  }, [text]);
+
+  return (
+    <span ref={spanRef} aria-label={text}>
+      <span aria-hidden="true">{display}</span>
+    </span>
+  );
 };
 
 export default function About() {
@@ -59,7 +78,9 @@ export default function About() {
 
   useGSAP(() => {
     if (!containerRef.current || !textRef.current || !imageRef.current) return;
-    
+    // Skipping setup leaves the section unpinned and fully visible.
+    if (prefersReducedMotion()) return;
+
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {

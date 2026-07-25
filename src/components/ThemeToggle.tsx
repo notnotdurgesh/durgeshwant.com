@@ -50,10 +50,13 @@ export default function ThemeToggle() {
   };
 
   return (
-    <div 
-      className={`fixed top-10 right-6 flex items-center gap-4 transition-all duration-500 ${
-        isBlogRoute ? 'z-40' : 'z-50'
-      } ${isSidebarOpen ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100'}`}
+    <div
+      // On blog routes the toggle has to share the top-right corner with the
+      // sticky mini header (h-14). It sits inside that band rather than on top
+      // of it, and the header reserves matching right padding.
+      className={`fixed z-50 flex items-center gap-4 transition-all duration-500
+        ${isBlogRoute ? 'top-2.5 right-4' : 'top-10 right-6'}
+        ${isSidebarOpen ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100'}`}
     >
       <AnimatePresence>
         {showSuggestion && (

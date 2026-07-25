@@ -81,11 +81,34 @@ body::before {
   opacity: 0.15;
 }
 
-/* Custom Cursor Management */
-.custom-cursor-active, 
-.custom-cursor-active a, 
-.custom-cursor-active button {
-  cursor: none !important;
+/* ── Reduced motion ─────────────────────────────────────────────────────────
+   Neutralises CSS-driven motion. GSAP, Lenis, the starfield and the ASCII torus
+   are gated separately in JS, because they set inline styles this cannot reach. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom Cursor Management.
+   Only hide the real cursor where a custom one is actually drawn: a fine
+   pointer, no reduced-motion preference. Otherwise the page would have no
+   visible cursor at all. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .custom-cursor-active,
+  .custom-cursor-active a,
+  .custom-cursor-active button {
+    cursor: none !important;
+  }
 }
 
 /* Hide custom cursor when hovering over the contact form using pure CSS */
@@ -126,9 +149,32 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-/* Hide scrollbar for cleaner look */
+/* Slim, themed scrollbar. Previously `display: none`, which removed the only
+   affordance telling a reader how long the page is and where they are in it. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 45%, transparent) transparent;
+}
+
 ::-webkit-scrollbar {
-  display: none;
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary) 65%, transparent);
+  background-clip: content-box;
 }
 
 .glass-panel {

@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CONFIG } from '../config';
+import { prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +15,9 @@ export default function Hero() {
 
   useGSAP(() => {
     if (!containerRef.current || !titleRef.current || !subtitleRef.current || !handRef.current) return;
-    
+    // Skipping setup leaves the markup in its natural, fully visible state.
+    if (prefersReducedMotion()) return;
+
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
     tl.fromTo(

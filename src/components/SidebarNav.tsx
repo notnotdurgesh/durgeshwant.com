@@ -1,15 +1,17 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Briefcase, Code2, Mail, BookOpen } from 'lucide-react';
+import { Home, User, Layers, Briefcase, Code2, Mail, BookOpen } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { id: 'hero',    icon: Home,     label: 'Home',     href: '/#hero' },
-  { id: 'about',   icon: User,     label: 'About',    href: '/#about' },
-  { id: 'work',    icon: Briefcase,label: 'Projects', href: '/#work' },
-  { id: 'skills',  icon: Code2,    label: 'Skills',   href: '/#skills' },
-  { id: 'blog',    icon: BookOpen, label: 'Blog',     href: '/#blog' },
-  { id: 'contact', icon: Mail,     label: 'Contact',  href: '/#contact' },
+  { id: 'hero',       icon: Home,      label: 'Home',       href: '/#hero' },
+  { id: 'about',      icon: User,      label: 'About',      href: '/#about' },
+  { id: 'work',       icon: Layers,    label: 'Projects',   href: '/#work' },
+  // "Chapter 3: The Path" existed as a section but had no way to reach it.
+  { id: 'experience', icon: Briefcase, label: 'Experience', href: '/#experience' },
+  { id: 'skills',     icon: Code2,     label: 'Skills',     href: '/#skills' },
+  { id: 'blog',       icon: BookOpen,  label: 'Blog',       href: '/#blog' },
+  { id: 'contact',    icon: Mail,      label: 'Contact',    href: '/#contact' },
 ];
 
 export default function SidebarNav() {
@@ -129,7 +131,8 @@ export default function SidebarNav() {
           to={href}
           onClick={(e) => handleNavClick(e, id)}
           className="group relative flex items-center justify-center w-12 h-12 rounded-full
-                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current
+                     focus-visible:ring-offset-0"
           aria-label={label}
           aria-current={isActive ? 'page' : undefined}
         >
@@ -176,7 +179,7 @@ export default function SidebarNav() {
         key={id}
         to={href}
         onClick={(e) => handleNavClick(e, id)}
-        className="relative flex flex-col items-center justify-center p-2 min-w-[2.5rem]
+        className="relative flex flex-col items-center justify-center p-1.5 min-w-[2.25rem]
                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
                    rounded-full"
         aria-label={label}
@@ -217,7 +220,7 @@ export default function SidebarNav() {
                    mix-blend-difference text-white"
         aria-label="Main navigation"
       >
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           {NAV_ITEMS.map((item) => renderNavItem(item, 'desktop'))}
         </div>
       </nav>
@@ -225,11 +228,12 @@ export default function SidebarNav() {
       {/* ── Mobile: floating bottom bar ── */}
       <nav
         className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50
-                   w-[92%] max-w-sm
+                   w-[94%] max-w-sm
                    bg-background/80 backdrop-blur-md
-                   rounded-full px-4 py-3
+                   rounded-full px-2.5 py-2.5
                    shadow-2xl shadow-black/20
-                   border border-border/40"
+                   border border-border/40
+                   [padding-bottom:calc(0.625rem+env(safe-area-inset-bottom,0px))]"
         aria-label="Main navigation"
       >
         <div className="flex items-center justify-between gap-1">

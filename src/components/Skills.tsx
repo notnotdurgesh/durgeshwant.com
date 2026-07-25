@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CONFIG } from '../config';
+import { prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +13,9 @@ export default function Skills() {
 
   useGSAP(() => {
     if (!sectionRef.current || !containerRef.current) return;
-    
+    // The constellation is legible standing still; rotating it is pure flourish.
+    if (prefersReducedMotion()) return;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,

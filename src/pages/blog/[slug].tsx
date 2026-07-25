@@ -515,7 +515,8 @@ export default function BlogPost() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="fixed top-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
           >
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+            {/* pr-16 reserves room for the fixed theme toggle in the same band. */}
+            <div className="max-w-5xl mx-auto pl-4 pr-16 sm:pl-6 h-14 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <Link to="/blog" className="shrink-0 p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground">
                   <ArrowLeft className="w-4 h-4" />
