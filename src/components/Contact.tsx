@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Send, CheckCircle2 } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
+import { motion } from 'framer-motion';
 import { CONFIG } from '../config';
 import { useTheme } from '../contexts/ThemeContext';
 import SectionLabel from './SectionLabel';
@@ -100,14 +101,20 @@ export default function Contact() {
           </div>
 
           {isSuccess ? (
-            <div
+            <motion.div
+              // animate-in/fade-in/zoom-in come from the tailwindcss-animate
+              // plugin, which is not installed — those three classes emitted no
+              // CSS, so this state simply appeared with no transition.
               role="status"
-              className="flex flex-col items-center justify-center py-12 text-primary animate-in fade-in zoom-in duration-500"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center justify-center py-12 text-primary"
             >
               <CheckCircle2 className="w-16 h-16 mb-4" aria-hidden="true" />
               <h3 className="text-2xl font-display mb-2">Message Sent</h3>
               <p className="text-muted font-sans font-light text-center">I'll get back to you soon.</p>
-            </div>
+            </motion.div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
               {/* Honeypot — off-screen rather than display:none so bots still see it */}

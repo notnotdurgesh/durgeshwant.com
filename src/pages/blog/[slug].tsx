@@ -571,7 +571,7 @@ export default function BlogPost() {
                 {tocItems.length > 0 && (
                   <button
                     onClick={() => setTocOpen(true)}
-                    className="lg:hidden p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground"
+                    className="xl:hidden p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground"
                     title="Table of Contents"
                   >
                     <List className="w-4 h-4" />
@@ -589,13 +589,13 @@ export default function BlogPost() {
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[200] bg-background/60 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-[200] bg-background/60 backdrop-blur-sm xl:hidden"
               onClick={() => setTocOpen(false)}
             />
             <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-              className="fixed top-0 right-0 bottom-0 z-[201] w-72 bg-background border-l border-border shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-[201] w-72 bg-background border-l border-border shadow-2xl xl:hidden overflow-y-auto"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -694,13 +694,13 @@ export default function BlogPost() {
       */}
       <div
         className="mx-auto w-full max-w-[82rem] px-4 sm:px-6 md:px-10 mt-12 sm:mt-16 md:mt-20
-                   lg:grid lg:grid-cols-[14rem_minmax(0,44rem)_14rem] xl:grid-cols-[15rem_minmax(0,46rem)_15rem]
-                   lg:justify-center lg:gap-10 xl:gap-14"
+                   xl:grid xl:grid-cols-[minmax(0,15rem)_minmax(0,46rem)_minmax(0,15rem)]
+                   xl:justify-center xl:gap-12"
       >
-        <div className="hidden lg:block" aria-hidden="true" />
+        <div className="hidden xl:block" aria-hidden="true" />
 
         {/* ── Main content column ── */}
-        <div className="min-w-0 mx-auto w-full max-w-[44rem] lg:max-w-none">
+        <div className="min-w-0 mx-auto w-full max-w-[44rem] xl:max-w-none">
 
           {/* Audio Player */}
           {post.meta.audio && (
@@ -820,9 +820,12 @@ export default function BlogPost() {
           )}
         </div>
 
-        {/* ── Desktop Sticky TOC Sidebar ── */}
+        {/* ── Sticky TOC rail ──
+            Only at xl. Between lg and xl the three tracks wanted 77rem inside a
+            64rem viewport, which squeezed the article to about 400px; below xl
+            the drawer in the sticky header covers it. */}
         {tocItems.length > 0 && (
-          <aside className="hidden lg:block">
+          <aside className="hidden xl:block">
             <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4 flex items-center gap-2">
                 <List className="w-3 h-3" /> Contents

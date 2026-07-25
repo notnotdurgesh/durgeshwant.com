@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && tsx scripts/postbuild.ts",
+    "build": "vite build && tsx scripts/postbuild.ts && tsx scripts/check-classes.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:classes": "tsx scripts/check-classes.ts",
+    "assets:optimize": "tsx scripts/optimize-images.ts",
+    "assets:brand": "tsx scripts/generate-brand-assets.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

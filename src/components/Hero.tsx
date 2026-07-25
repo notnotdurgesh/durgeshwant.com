@@ -80,7 +80,7 @@ export default function Hero() {
 
         <h1
           ref={titleRef}
-          className="text-[15vw] md:text-[8vw] font-display leading-[0.88] tracking-[-0.02em] mb-8 md:mb-10 text-foreground text-balance"
+          className="text-[14vw] md:text-[8vw] font-display leading-[0.9] tracking-[-0.02em] mb-8 md:mb-10 text-foreground"
         >
           {CONFIG.personal.name.split(' ')[0]}<br />
           <span className="italic text-primary/85">

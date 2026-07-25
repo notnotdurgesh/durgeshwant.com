@@ -178,7 +178,7 @@ export default function Experience() {
                         rendered as a half-visible glyph. */}
                     <span
                       aria-hidden="true"
-                      className={`absolute right-5 top-3 font-display text-6xl md:text-8xl leading-none
+                      className={`absolute right-5 top-2 font-display text-5xl md:text-7xl leading-none
                                   pointer-events-none select-none tabular-nums
                                   transition-opacity duration-700
                                   ${isActive ? 'opacity-[0.09]' : 'opacity-[0.035]'}`}
@@ -210,7 +210,7 @@ export default function Experience() {
                       {/* min-w-0 + pr keeps long roles wrapping instead of being
                           truncated — "Open-Source Contributor" was rendering as
                           "Open-Source Contri…". */}
-                      <div className="min-w-0 pr-14 md:pr-20">
+                      <div className="min-w-0 pr-16 md:pr-24">
                         <h3 className="text-xl md:text-2xl font-display text-foreground leading-[1.15] mb-1.5 text-balance">
                           {exp.role}
                         </h3>
