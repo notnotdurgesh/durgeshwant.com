@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { useParams, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
@@ -15,17 +15,7 @@ import 'highlight.js/styles/github-dark.css';
 import 'katex/dist/katex.min.css';
 import {
   ArrowLeft, Calendar, Clock, Share2, Twitter, Linkedin,
-  Link as LinkIcon, Check, Copy, ArrowUp, List, X,
-  BookOpen, ChevronRight
-} from 'lucide-react';
-
-interface TocItem {
-  id: string;
-  text: string;
-  level: number;
-}
-
-import { 
+  Check, Copy, ArrowUp, List, X, BookOpen, ChevronRight,
   Zap, Info, AlertTriangle, CheckCircle2, XCircle, Sparkles,
   ShieldAlert, Lightbulb, MessageSquare
 } from 'lucide-react';
@@ -33,75 +23,22 @@ import {
 import { format } from 'date-fns';
 import { getPostBySlug, getAllPosts, getAssetUrl } from '../../lib/blog';
 import AudioPlayer from '../../components/AudioPlayer';
+import { SITE } from '../../config';
 
-// ─── TOC Heading type ─────────────────────────────────────────────────────────
+// ─── TOC ─────────────────────────────────────────────────────────────────────
+// Derived from the rendered DOM rather than re-slugged from the markdown source:
+// rehype-slug uses github-slugger, whose output can't be reproduced by a naive
+// regex (it preserves the double hyphens left by removed punctuation, and
+// de-duplicates repeated headings with a numeric suffix). Reading the real
+// heading ids back off the DOM is the only way to guarantee the anchors resolve.
 interface TocItem {
   id: string;
   text: string;
   level: number;
 }
 
-// ─── Extract TOC from markdown ───────────────────────────────────────────────
-function extractToc(content: string): TocItem[] {
-  const headingRegex = /^(#{2,4})\s+(.+)$/gm;
-  const items: TocItem[] = [];
-  let match;
-  while ((match = headingRegex.exec(content)) !== null) {
-    const level = match[1].length;
-    const text = match[2].replace(/[*_`[\]]/g, '').trim();
-    // replicate rehype-slug logic
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-    items.push({ id, text, level });
-  }
-  return items;
-}
-
-// ─── Code block with copy button ─────────────────────────────────────────────
-function CodeBlock({ children, className, ...props }: any) {
-  const [copied, setCopied] = useState(false);
-  const codeRef = useRef<HTMLElement>(null);
-
-  const handleCopy = () => {
-    const text = codeRef.current?.innerText || '';
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  return (
-    <div className="relative group/code">
-      <pre className={`${className || ''}`} {...props}>
-        <code ref={codeRef}>{children}</code>
-      </pre>
-      <button
-        onClick={handleCopy}
-        className="absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white opacity-0 group-hover/code:opacity-100 transition-all duration-200 backdrop-blur-sm border border-white/10"
-        title="Copy code"
-      >
-        <AnimatePresence mode="wait">
-          {copied ? (
-            <motion.div key="check" initial={{ scale: 0.5 }} animate={{ scale: 1 }} exit={{ scale: 0.5 }}>
-              <Check className="w-3.5 h-3.5 text-green-400" />
-            </motion.div>
-          ) : (
-            <motion.div key="copy" initial={{ scale: 0.5 }} animate={{ scale: 1 }} exit={{ scale: 0.5 }}>
-              <Copy className="w-3.5 h-3.5" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </button>
-    </div>
-  );
-}
-
 // ─── Article Content Component (Memoized) ───────────────────────────────────
-const ArticleContent = memo(({ content, slug, articleRef }: { content: string, slug: string, articleRef: React.RefObject<HTMLElement> }) => {
+const ArticleContent = memo(({ content, slug, articleRef }: { content: string, slug: string, articleRef: React.RefObject<HTMLElement | null> }) => {
   const components = useMemo(() => ({
     img({ src, alt, ...props }: any) {
       const imageSrc = src?.startsWith('http') ? src : getAssetUrl(slug, src);
@@ -293,9 +230,6 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         </div>
       );
     },
-    sup() {
-      return null;
-    },
   }), [slug]);
 
   return (
@@ -304,12 +238,6 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
       className={`
         prose dark:prose-invert max-w-none font-sans text-foreground/90
         prose-base sm:prose-base md:prose-lg selection:bg-primary/30
-        
-        [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:font-bold [&_h1,h2,h3,h4,h5,h6]:tracking-tight
-        [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:break-words
-        [&_h1,h2,h3,h4,h5,h6]:mt-10 sm:[&_h1,h2,h3,h4,h5,h6]:mt-14
-        [&_h1,h2,h3,h4,h5,h6]:mb-4 sm:[&_h1,h2,h3,h4,h5,h6]:mb-6
-        [&_h1,h2,h3,h4,h5,h6]:scroll-mt-24
         
         [&_h1]:text-4xl sm:[&_h1]:text-4xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl
         [&_h1]:text-primary [&_h1]:italic [&_h1]:normal-case [&_h1]:leading-[1.1]
@@ -360,9 +288,11 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const [post, setPost] = useState(getPostBySlug(slug || ''));
-  const [allPosts] = useState(getAllPosts());
+  // Posts are bundled at build time, so lookup is synchronous and pure — there
+  // is nothing to hold in state, and deriving it removes the frame of blank
+  // page that the previous state-plus-redirect dance rendered.
+  const post = useMemo(() => getPostBySlug(slug || ''), [slug]);
+  const allPosts = useMemo(() => getAllPosts(), []);
   const [isCopied, setIsCopied] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeHeading, setActiveHeading] = useState('');
@@ -381,53 +311,77 @@ export default function BlogPost() {
   }, [tocOpen]);
 
   const articleRef = useRef<HTMLElement>(null);
-  const tocItems = useMemo(() => post ? extractToc(post.content) : [], [post]);
+  const headingsRef = useRef<HTMLElement[]>([]);
+  const [tocItems, setTocItems] = useState<TocItem[]>([]);
 
-  // ── Scroll events ────────────────────────────────────────────────────────────
+  // Splitting the article on whitespace is O(n) over several thousand words, so
+  // it is computed once per post rather than on every scroll tick.
+  const wordCount = useMemo(
+    () => (post ? post.content.trim().split(/\s+/).length : 0),
+    [post]
+  );
+
+  // ── Build the TOC from the rendered headings ─────────────────────────────────
   useEffect(() => {
-    const handleScroll = () => {
+    if (!post) return;
+    // Runs after ReactMarkdown has committed, so rehype-slug's ids are on the DOM.
+    const article = articleRef.current;
+    if (!article) return;
+
+    const headings = Array.from(
+      article.querySelectorAll<HTMLElement>('h2[id], h3[id], h4[id]')
+    );
+    headingsRef.current = headings;
+    setTocItems(
+      headings.map((el) => ({
+        id: el.id,
+        text: el.textContent?.trim() ?? '',
+        level: Number(el.tagName.slice(1)),
+      }))
+    );
+  }, [post]);
+
+  // ── Scroll events (rAF-throttled) ────────────────────────────────────────────
+  useEffect(() => {
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
       const y = window.scrollY;
       setShowBackToTop(y > 600);
       setStickyHeader(y > 500);
 
       // Remaining reading time (avg 200 wpm)
-      if (post) {
-        const wordCount = post.content.split(/\s+/).length;
-        const articleEl = articleRef.current;
-        if (articleEl) {
-          const rect = articleEl.getBoundingClientRect();
-          const totalHeight = articleEl.offsetHeight;
-          const scrolled = Math.max(0, -rect.top);
-          const fraction = Math.min(1, scrolled / totalHeight);
-          const wordsRead = Math.floor(fraction * wordCount);
-          const remaining = Math.max(0, Math.ceil((wordCount - wordsRead) / 200));
-          setReadingTimeLeft(remaining > 0 ? `${remaining} min left` : 'Done!');
-        }
+      const articleEl = articleRef.current;
+      if (articleEl && wordCount > 0) {
+        const rect = articleEl.getBoundingClientRect();
+        const totalHeight = articleEl.offsetHeight || 1;
+        const scrolled = Math.max(0, -rect.top);
+        const fraction = Math.min(1, scrolled / totalHeight);
+        const remaining = Math.max(0, Math.ceil(((1 - fraction) * wordCount) / 200));
+        setReadingTimeLeft(remaining > 0 ? `${remaining} min left` : 'Done!');
       }
 
-      // Active heading highlight in TOC
-      const headings = document.querySelectorAll('article h2, article h3, article h4');
+      // Active heading highlight in TOC — uses the cached node list
       let current = '';
-      headings.forEach((el) => {
-        const top = el.getBoundingClientRect().top;
-        if (top < 120) current = el.id;
-      });
+      for (const el of headingsRef.current) {
+        if (el.getBoundingClientRect().top < 120) current = el.id;
+        else break;
+      }
       setActiveHeading(current);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [post]);
+    const handleScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(measure);
+    };
 
-  useEffect(() => {
-    const foundPost = getPostBySlug(slug || '');
-    if (!foundPost) {
-      navigate('/blog');
-    } else {
-      setPost(foundPost);
-      window.scrollTo(0, 0);
-    }
-  }, [slug, navigate]);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    measure();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [wordCount, tocItems]);
 
   const lenis = useLenis();
 
@@ -452,7 +406,33 @@ export default function BlogPost() {
     return () => document.removeEventListener('click', handleInternalLinks);
   }, [lenis]);
 
-  if (!post) return null;
+  // An unknown slug used to render blank and then silently bounce to /blog,
+  // which reads to a crawler as a 200 for a page that does not exist.
+  if (!post) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 py-32">
+        <Helmet>
+          <title>Article not found | Reddy Durgeshwant</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-6">Not found</p>
+        <h1 className="text-4xl md:text-6xl font-display tracking-tight mb-6">
+          No such <span className="italic text-primary/90">entry</span>.
+        </h1>
+        <p className="text-muted font-sans font-light max-w-md mb-10 leading-relaxed">
+          This article does not exist, or it has been renamed since you saved the link.
+        </p>
+        <Link
+          to="/blog"
+          className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-sans text-sm uppercase tracking-widest
+                     hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                     focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-opacity"
+        >
+          Browse the journal
+        </Link>
+      </div>
+    );
+  }
 
   const currentIndex = allPosts.findIndex(p => p.slug === post.slug);
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
@@ -478,6 +458,11 @@ export default function BlogPost() {
     }
   };
 
+  const postUrl = `${SITE.url}/blog/${post.slug}`;
+  // Purpose-built 1200x630 JPEG rather than the WebP banner: several unfurlers
+  // (LinkedIn, WhatsApp) still will not render WebP.
+  const ogImage = `${SITE.url}/og/${post.slug}.jpg`;
+
   const scrollToHeading = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -500,38 +485,52 @@ export default function BlogPost() {
       <Helmet>
         <title>{post.meta.title} | Reddy Durgeshwant</title>
         <meta name="description" content={post.meta.description} />
-        
+        {/*
+          Previously the only canonical on the site was the one hardcoded to "/"
+          in index.html, so every article declared the homepage as its canonical
+          URL and asked Google to treat itself as a duplicate.
+        */}
+        <link rel="canonical" href={postUrl} />
+
         {/* Open Graph */}
         <meta property="og:title" content={post.meta.title} />
         <meta property="og:description" content={post.meta.description} />
-        <meta property="og:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={post.meta.title} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:site_name" content="Reddy Durgeshwant" />
         <meta property="article:published_time" content={post.meta.date} />
         <meta property="article:author" content="Reddy Durgeshwant" />
         {post.meta.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
-        
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@itsdurgesh" />
-        <meta name="twitter:creator" content="@itsdurgesh" />
+        <meta name="twitter:site" content={SITE.twitter} />
+        <meta name="twitter:creator" content={SITE.twitter} />
         <meta name="twitter:title" content={post.meta.title} />
         <meta name="twitter:description" content={post.meta.description} />
-        <meta name="twitter:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
-        
+        <meta name="twitter:image" content={ogImage} />
+
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org", "@type": "BlogPosting",
-            "headline": post.meta.title, "description": post.meta.description,
-            "image": [getAssetUrl(post.slug, post.meta.banner, true)],
-            "datePublished": post.meta.date, "dateModified": post.meta.date,
-            "author": [{ "@type": "Person", "name": "Reddy Durgeshwant", "url": "https://durgeshwant.com" }],
-            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" },
-            "mainEntityOfPage": { "@type": "WebPage", "@id": window.location.href },
-            "keywords": post.meta.tags.join(", ")
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.meta.title,
+            description: post.meta.description,
+            image: [ogImage],
+            datePublished: post.meta.date,
+            dateModified: post.meta.date,
+            wordCount,
+            timeRequired: `PT${Math.max(1, Math.ceil(wordCount / 200))}M`,
+            author: [{ '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url }],
+            publisher: { '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+            keywords: post.meta.tags.join(', '),
+            isPartOf: { '@type': 'Blog', name: 'The Journal', '@id': `${SITE.url}/blog` },
           })}
         </script>
       </Helmet>
@@ -548,14 +547,43 @@ export default function BlogPost() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="fixed top-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
           >
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <Link to="/blog" className="shrink-0 p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground">
-                  <ArrowLeft className="w-4 h-4" />
-                </Link>
-                <span className="font-display font-bold text-sm truncate">{post.meta.title}</span>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
+            {/*
+              Full-bleed, not max-w-5xl. Centring this bar inside a 64rem box
+              parked the back arrow somewhere in the middle-left of the screen,
+              out of line with everything else and looking like it had drifted.
+              It belongs on the viewport edge. pr-16 keeps clear of the fixed
+              theme toggle, which shares this band.
+            */}
+            <div className="relative w-full pl-3 sm:pl-5 pr-16 h-14 flex items-center">
+              <Link
+                to="/blog"
+                aria-label="Back to the journal"
+                className="relative z-10 shrink-0 p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              </Link>
+
+              {/*
+                Centred against the bar itself, not against the flex row. The row
+                is padded asymmetrically (pr-16 clears the theme toggle), so
+                anything centred *within* it lands off-centre on screen. Absolute
+                positioning against the full-width bar is what actually puts the
+                title on the viewport's centre line.
+
+                Interface face, not the display serif: Instrument Serif is a
+                display cut, and at 14px its thin strokes read as a different,
+                worse typeface rather than as the one used for the headings.
+              */}
+              <span
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 px-4 text-center truncate
+                           max-w-[calc(100%-12rem)] sm:max-w-[calc(100%-24rem)]
+                           font-sans text-sm font-medium"
+              >
+                {post.meta.title}
+              </span>
+
+              <div className="relative z-10 ml-auto flex items-center gap-3 shrink-0">
                 {readingTimeLeft && (
                   <span className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-muted">
                     {readingTimeLeft}
@@ -605,7 +633,9 @@ export default function BlogPost() {
                     <button
                       key={item.id}
                       onClick={() => scrollToHeading(item.id)}
+                      aria-current={activeHeading === item.id ? 'location' : undefined}
                       className={`w-full text-left text-sm py-2 px-3 rounded-lg transition-all duration-200 flex items-start gap-2
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
                         ${item.level === 2 ? 'font-medium' : 'pl-5 text-xs'}
                         ${activeHeading === item.id
                           ? 'bg-primary/10 text-primary'
@@ -655,7 +685,7 @@ export default function BlogPost() {
               ))}
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold tracking-tight uppercase mb-4 sm:mb-6 md:mb-8 leading-[1.1] text-foreground drop-shadow-sm max-w-5xl break-words">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display tracking-[-0.02em] mb-4 sm:mb-6 md:mb-8 leading-[1.02] text-foreground drop-shadow-sm max-w-4xl text-balance">
               {post.meta.title}
             </h1>
 
@@ -670,13 +700,20 @@ export default function BlogPost() {
               </div>
               <div className="flex items-center gap-2">
                 <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span>{post.content.split(/\s+/).length} words</span>
+                <span>{wordCount.toLocaleString()} words</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/*
+        Three tracks, not two. With a flex row of [article, TOC] the article
+        filled everything the sidebar did not, so the text column sat about
+        150px left of the viewport centre and ran to a ~100-character measure.
+        An empty track mirroring the sidebar puts the column back on the centre
+        line, and capping it at 44rem holds the line length near 70 characters.
+      */}
       {/* ── Two-column layout: article + desktop TOC sidebar ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-12 sm:mt-16 md:mt-20 flex gap-12 xl:gap-16">
 
@@ -695,8 +732,8 @@ export default function BlogPost() {
 
           {/* ── Blog Footer ── */}
           <div className="mt-12 sm:mt-16 md:mt-20 py-8 sm:py-10 md:py-12 border-y border-border/50 text-center space-y-3 sm:space-y-4">
-            <p className="font-display italic text-xl sm:text-2xl text-foreground/80">End of the blog</p>
-            <p className="text-muted font-light text-sm sm:text-base">If you enjoyed please consider sharing this blog, thank you!</p>
+            <p className="font-display italic text-2xl sm:text-3xl text-foreground/80">Thanks for reading.</p>
+            <p className="text-muted font-light text-sm sm:text-base">If it was useful, passing it on helps more than you'd think.</p>
           </div>
 
           {/* ── Share & Navigation ── */}
@@ -756,7 +793,7 @@ export default function BlogPost() {
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-muted mb-2 sm:mb-3 group-hover:text-primary transition-colors flex items-center gap-2">
                     <ArrowLeft className="w-3 h-3" /> Previous
                   </span>
-                  <span className="font-display font-bold text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{prevPost.meta.title}</span>
+                  <span className="font-display text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{prevPost.meta.title}</span>
                 </Link>
               ) : <div />}
 
@@ -765,7 +802,7 @@ export default function BlogPost() {
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-muted mb-2 sm:mb-3 group-hover:text-primary transition-colors flex items-center gap-2">
                     Next <motion.span animate={{ x: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>→</motion.span>
                   </span>
-                  <span className="font-display font-bold text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{nextPost.meta.title}</span>
+                  <span className="font-display text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{nextPost.meta.title}</span>
                 </Link>
               ) : <div />}
             </div>
@@ -774,7 +811,7 @@ export default function BlogPost() {
           {/* ── Related Posts ── */}
           {relatedPosts.length > 0 && (
             <div className="mt-20 sm:mt-28 md:mt-32">
-              <h3 className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight mb-8 sm:mb-12 flex items-center gap-4">
+              <h3 className="text-2xl sm:text-3xl font-display uppercase tracking-tight mb-8 sm:mb-12 flex items-center gap-4">
                 Explore More <div className="h-px flex-1 bg-border/50" />
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
@@ -788,7 +825,7 @@ export default function BlogPost() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                       />
                     </div>
-                    <h4 className="font-display font-bold text-base sm:text-xl group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                    <h4 className="font-display text-base sm:text-xl group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                       {related.meta.title}
                     </h4>
                     <p className="text-xs sm:text-sm text-muted mt-2 sm:mt-3 line-clamp-2 font-light leading-relaxed">
@@ -804,7 +841,10 @@ export default function BlogPost() {
         {/* ── Desktop Sticky TOC Sidebar ── */}
         {tocItems.length > 0 && (
           <aside className="hidden lg:block w-56 xl:w-64 shrink-0">
-            <div className="sticky top-24 max-h-full overflow-y-auto scrollbar-thin scrollbar-thumb-border">
+            {/* scroll-region carries the themed thin scrollbar. Without it this
+                container fell back to the browser default, which rendered as a
+                wide grey slab against the dark rail. */}
+            <div className="scroll-region sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4 flex items-center gap-2">
                 <List className="w-3 h-3" /> Contents
               </p>
@@ -813,8 +853,10 @@ export default function BlogPost() {
                   <button
                     key={item.id}
                     onClick={() => scrollToHeading(item.id)}
+                    aria-current={activeHeading === item.id ? 'location' : undefined}
                     className={`
                       w-full text-left text-xs py-1.5 px-2 rounded-lg transition-all duration-200
+                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
                       ${item.level === 2 ? 'font-medium' : 'pl-4 opacity-80'}
                       ${activeHeading === item.id
                         ? 'text-primary bg-primary/8 font-semibold'

@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-start gap-2">
           <Link 
             to="/" 
-            className="font-display text-2xl font-bold tracking-tighter uppercase hover:text-primary transition-colors duration-300 group"
+            className="font-display text-3xl tracking-[-0.02em] hover:text-primary transition-colors duration-300 group"
           >
             {CONFIG.personal.name.split(' ')[0]}<span className="text-primary group-hover:text-foreground transition-colors duration-300">.</span>
           </Link>

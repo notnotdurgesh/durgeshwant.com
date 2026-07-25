@@ -1,7 +1,23 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useTheme } from '../contexts/ThemeContext';
+
+/** Tracks the OS reduced-motion setting, including live changes. */
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = () => setReduced(query.matches);
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+
+  return reduced;
+}
 
 const createCircleTexture = () => {
   const canvas = document.createElement('canvas');
@@ -66,8 +82,11 @@ function StarfieldPoints() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
+        {/* args -> new THREE.BufferAttribute(array, itemSize); count is derived
+            from the array length. Passing count/array/itemSize as loose props is
+            not the supported R3F v9 form. */}
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={0.8}
@@ -86,10 +105,29 @@ function StarfieldPoints() {
 function CameraController() {
   const { camera } = useThree();
 
+  // document.scrollHeight forces a layout recalculation. Reading it once per
+  // rendered frame (as this did) thrashes layout continuously; it is cached and
+  // refreshed only when the document can actually have changed height.
+  const maxScrollRef = useRef(1);
+
+  useEffect(() => {
+    const measure = () => {
+      maxScrollRef.current = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    };
+    measure();
+
+    window.addEventListener('resize', measure, { passive: true });
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.documentElement);
+
+    return () => {
+      window.removeEventListener('resize', measure);
+      observer.disconnect();
+    };
+  }, []);
+
   useFrame((state) => {
-    const scrollY = window.scrollY;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = Math.max(0, Math.min(scrollY / maxScroll, 1));
+    const progress = Math.max(0, Math.min(window.scrollY / maxScrollRef.current, 1));
 
     const targetZ = 50 - progress * 80;
     const targetY = progress * 30;
@@ -107,14 +145,21 @@ function CameraController() {
 }
 
 export default function Starfield() {
+  const reduceMotion = usePrefersReducedMotion();
+
   return (
     <Canvas
       camera={{ position: [0, 0, 50], fov: 60 }}
-      gl={{ antialias: false, alpha: true }}
+      gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
       dpr={[1, 1.5]}
+      // 'demand' renders a single frame and then only on invalidation, which is
+      // what a reduced-motion user should get from a drifting starfield.
+      frameloop={reduceMotion ? 'demand' : 'always'}
+      // Drop resolution rather than frame rate when the GPU is struggling.
+      performance={{ min: 0.4 }}
     >
       <StarfieldPoints />
-      <CameraController />
+      {!reduceMotion && <CameraController />}
     </Canvas>
   );
 }

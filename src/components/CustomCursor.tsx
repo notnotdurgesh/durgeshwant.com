@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
@@ -15,10 +15,14 @@ export default function CustomCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    setIsTouchDevice(isTouch);
-    
-    if (isTouch) return;
+    // Also stand down for reduced motion: the ring is a spring-trailing element
+    // and index.css only restores the native cursor under the same condition.
+    const disabled =
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setIsTouchDevice(disabled);
+
+    if (disabled) return;
 
     const updateMousePosition = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -35,8 +39,8 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', updateMousePosition, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);

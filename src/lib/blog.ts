@@ -23,29 +23,21 @@ const metaFiles = import.meta.glob('/src/data/blogs/*/meta.json', { eager: true 
 const contentFiles = import.meta.glob('/src/data/blogs/*/index.md', { query: '?raw', import: 'default', eager: true });
 // We read all assets (images, audio) to get their public URLs
 const assetFiles = import.meta.glob('/src/data/blogs/**/*.{jpg,jpeg,png,webp,gif,svg,mp3,m4a,wav}', { query: '?url', import: 'default', eager: true });
-const DEFAULT_BANNER = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop';
-const SITE_URL = 'https://durgeshwant.com';
+// Local fallback. This was a remote Unsplash URL, which made a post with a
+// missing banner depend on a third-party host staying up.
+const DEFAULT_BANNER = '/og/default.jpg';
 
-export function getAssetUrl(slug: string, filename: string | undefined, absolute = false): string {
-  // If no filename provided, return default banner
+export function getAssetUrl(slug: string, filename: string | undefined): string {
   if (!filename) return DEFAULT_BANNER;
 
-  // If it's already an absolute URL, return it
-  if (filename.startsWith('http://') || filename.startsWith('https://') || filename.startsWith('data:')) {
-    return filename;
-  }
-  
-  // Clean up filename just in case it starts with ./ or /
-  const cleanFilename = filename.replace(/^\.\//, '').replace(/^\//, '');
+  // Already an absolute URL or a data URI — pass through untouched.
+  if (/^(https?:\/\/|data:)/.test(filename)) return filename;
+
+  // Tolerate "./name.webp" and "/name.webp" in markdown and meta.json.
+  const cleanFilename = filename.replace(/^\.?\//, '');
   const path = `/src/data/blogs/${slug}/${cleanFilename}`;
-  
-  const url = (assetFiles[path] as string) || DEFAULT_BANNER;
-  
-  if (absolute && url.startsWith('/')) {
-    return `${SITE_URL}${url}`;
-  }
-  
-  return url;
+
+  return (assetFiles[path] as string) || DEFAULT_BANNER;
 }
 
 export function getAllPosts(): BlogPost[] {

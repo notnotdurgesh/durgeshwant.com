@@ -1,11 +1,26 @@
+export const SITE = {
+  url: "https://durgeshwant.com",
+  /** Single source of truth for <title>, OG/Twitter cards and JSON-LD. */
+  title: "Reddy Durgeshwant | Full Stack & AI Engineer",
+  description:
+    "Portfolio of Reddy Durgeshwant, a Full Stack & AI Engineer building scalable web applications, AI integration, and considered user interfaces.",
+  twitter: "@itsdurgesh",
+} as const;
+
+export const JOURNAL = {
+  title: "The Journal | Reddy Durgeshwant",
+  description:
+    "Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant.",
+  url: `${SITE.url}/blog`,
+} as const;
+
 export const CONFIG = {
   personal: {
     name: "Reddy Durgeshwant",
-    role: "Full Stack Developer",
+    role: "Full Stack & AI Engineer",
     tagline: "I craft high-performance web apps and intelligent AI systems.",
-    about: "I'm a Full Stack Developer who architects robust, scalable systems from the ground up. I bridge the gap between complex engineering and elegant user experience — turning ambitious ideas into fast, reliable products.",
+    about: "I'm a Full Stack & AI Engineer who architects robust, scalable systems from the ground up. I bridge the gap between complex engineering and elegant user experience — turning ambitious ideas into fast, reliable products.",
     email: "durgeshwantreddy@gmail.com",
-    phone: "+91-7702734399",
     links: {
       linkedin: "https://www.linkedin.com/in/itsdurgesh/",
       github: "https://github.com/notnotdurgesh",
@@ -17,7 +32,7 @@ export const CONFIG = {
       company: "Self-Employed",
       date: "Feb 2026 - Present",
       description: "Contributing to various open-source projects like Google's Agent Development Kit Project and building my own projects.",
-      logo: "/assets/experience/Google.png",
+      logo: "/assets/experience/Google.webp",
       skills: [
         { name: "React", icon: "Code" },
         { name: "TypeScript", icon: "FileJson" },
@@ -31,7 +46,7 @@ export const CONFIG = {
       company: "Comfac Tech Options",
       date: "Feb 2025 - Feb 2026",
       description: "Architected and scaled a mission-critical internal workforce management tool, boosting operational efficiency across multiple departments by a measurable 40%. Engineered dynamic, high-performance list and edit views using React, TypeScript, and GraphQL.",
-      logo: "/assets/experience/cto.png",
+      logo: "/assets/experience/cto.webp",
       skills: [
         { name: "React", icon: "Code" },
         { name: "TypeScript", icon: "FileJson" },
@@ -46,7 +61,7 @@ export const CONFIG = {
       company: "Dynish Solutions",
       date: "Oct 2024 - Feb 2025",
       description: "Led a team of two engineers to architect and deploy a scalable navigation and routing system with Next.js, improving modularity and decreasing page load times by 35%. Implemented a robust, enterprise-grade Role-Based Access Control (RBAC) system.",
-      logo: "/assets/experience/Dynish.png",
+      logo: "/assets/experience/Dynish.webp",
       skills: [
         { name: "Next.js", icon: "Globe" },
         { name: "React", icon: "Code" },
@@ -61,7 +76,7 @@ export const CONFIG = {
       company: "Umenit Solutions",
       date: "June 2024 - August 2024",
       description: "Built a high-throughput analytics backend to process and analyze user data, resulting in a 20% increase in user engagement and retention metrics. Developed an automated mailing system for sales and lead generation.",
-      logo: "/assets/experience/umenit.png",
+      logo: "/assets/experience/umenit.webp",
       skills: [
         { name: "Node.js", icon: "Server" },
         { name: "Python", icon: "Terminal" },
@@ -77,7 +92,7 @@ export const CONFIG = {
       title: 'Google-Build-and-Blog-2k25',
       category: 'Winning Hackathon Project',
       description: 'AI-enabled music studio to synthesize and layer original music tracks with Gemini.',
-      image: '/assets/probeat/image.png',
+      image: '/assets/probeat/image.webp',
       color: '#15ff00',
       github: 'https://github.com/notnotdurgesh/Google-Build-and-Blog-20k25',
       skills: [
@@ -91,7 +106,7 @@ export const CONFIG = {
       title: 'God Chat',
       category: 'User First Workspace',
       description: 'A premium, agentic workspace for creators that transforms AI conversations into an interactive knowledge graph, predictive suggestions, and visual branching to empower sophisticated, non-linear brainstorming.',
-      image: '/assets/godchat/image.png',
+      image: '/assets/godchat/image.webp',
       color: 'rgba(212, 0, 255, 1)',
       github: 'https://github.com/notnotdurgesh/GodChat',
       skills: [
@@ -106,7 +121,7 @@ export const CONFIG = {
       title: 'AutoXL',
       category: 'AI-Powered Spreadsheet',
       description: 'An AI-driven, Excel-like web spreadsheet featuring virtual scrolling, undo/redo, and a multimodal Gemini agent with over 30 tool actions for complex data transformations.',
-      image: '/assets/autoxl/product.png',
+      image: '/assets/autoxl/product.webp',
       color: '#d63636',
       github: 'https://github.com/notnotdurgesh/autoXL',
       live: 'https://autoxl.online',
@@ -122,7 +137,7 @@ export const CONFIG = {
       title: 'FindFounder',
       category: 'Matchmaking Platform',
       description: 'A full-stack founder-developer matchmaking platform facilitating intelligent co-founder discovery with role-based routing, real-time notifications, and GitHub OAuth.',
-      image: '/assets/findFounder/home.png',
+      image: '/assets/findFounder/home.webp',
       color: '#f38c0e',
       github: 'https://github.com/notnotdurgesh/findFounder_fe',
       skills: [
@@ -134,15 +149,19 @@ export const CONFIG = {
       ]
     },
   ],
-  skills: [
-    { name: 'React / Next.js', orbit: 1, angle: 0 },
-    { name: 'Git / Bitbucket', orbit: 1, angle: 120 },
-    { name: 'Express.js / TS - Node.js', orbit: 1, angle: 240 },
-    { name: 'REST / GraphQL', orbit: 2, angle: 45 },
-    { name: 'Tailwind / MUI / AntD / ShadCN', orbit: 2, angle: 165 },
-    { name: 'NoSQL / SQL', orbit: 2, angle: 285 },
-    { name: 'Python / Flask / FastAPI', orbit: 3, angle: 90 },
-    { name: 'AWS / Docker / GCP / Vercel', orbit: 3, angle: 210 },
-    { name: 'GSAP / Motion / Three.js', orbit: 3, angle: 330 },
-  ]
 };
+
+/**
+ * Feeds `knowsAbout` in the Person structured data. There is no stack section
+ * on the page — the skills a reader cares about are the ones attached to the
+ * roles and projects above, in context. This list exists purely so search
+ * engines still get the full picture.
+ */
+export const ALL_SKILLS = [
+  'TypeScript', 'JavaScript', 'Python', 'SQL',
+  'React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'GSAP', 'Three.js', 'Vite',
+  'Node.js', 'Express', 'FastAPI', 'Flask', 'GraphQL', 'REST', 'RBAC',
+  'PostgreSQL', 'MongoDB', 'Redis', 'Prisma',
+  'Gemini', 'Generative AI', 'Agentic workflows',
+  'AWS', 'GCP', 'Docker', 'Vercel', 'Git',
+];

@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX, FastForward } from 'lucide-react';
 
 interface AudioPlayerProps {
@@ -21,32 +20,40 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
     if (!audio) return;
 
     const updateProgress = () => {
-      if (!audio) return;
       setCurrentTime(audio.currentTime);
-      setProgress((audio.currentTime / audio.duration) * 100);
+      // duration is NaN until metadata loads, and Infinity for live streams.
+      // Guarding here stops the bar being written as width: "NaN%".
+      const total = audio.duration;
+      setProgress(Number.isFinite(total) && total > 0 ? (audio.currentTime / total) * 100 : 0);
     };
 
     const handleLoadedMetadata = () => {
-      if (!audio) return;
-      setDuration(audio.duration);
+      setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
     };
 
     const handleEnded = () => {
-      setIsPlaying(false);
       setProgress(0);
       setCurrentTime(0);
     };
 
+    // Drive the button off the element's real state rather than assuming the
+    // toggle succeeded — play() can be rejected by autoplay policy or a
+    // decode error, which previously left the UI showing "playing" in silence.
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
 
     return () => {
-      if (audio) {
-        audio.removeEventListener('timeupdate', updateProgress);
-        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        audio.removeEventListener('ended', handleEnded);
-      }
+      audio.removeEventListener('timeupdate', updateProgress);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
   }, []);
 
@@ -59,24 +66,32 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
     };
   }, []);
 
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+  const togglePlay = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      return;
+    }
+
+    try {
+      await audio.play();
+    } catch (error) {
+      // Autoplay policy, a network failure or an unsupported codec.
+      console.error('Audio playback failed:', error);
+      setIsPlaying(false);
     }
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(duration) || duration <= 0) return;
+
     const time = (Number(e.target.value) / 100) * duration;
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
-      setProgress(Number(e.target.value));
-    }
+    audio.currentTime = time;
+    setCurrentTime(time);
+    setProgress(Number(e.target.value));
   };
 
   const toggleMute = () => {
@@ -120,7 +135,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         {/* Info & Progress */}
         <div className="flex-grow w-full space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-display font-bold text-lg text-foreground tracking-tight line-clamp-1">
+            <h3 className="font-display text-lg text-foreground tracking-tight line-clamp-1">
               Listen: {title}
             </h3>
             <div className="flex items-center gap-4 text-muted font-mono text-xs tracking-widest">
@@ -130,18 +145,21 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
 
           {/* Progress Bar */}
           <div className="relative w-full h-2 bg-muted/20 rounded-full overflow-hidden group/slider cursor-pointer">
-            <motion.div
-              className="absolute top-0 left-0 h-full bg-primary"
+            <div
+              className="absolute top-0 left-0 h-full bg-primary transition-[width] duration-150 ease-linear"
               style={{ width: `${progress}%` }}
-              layout
             />
             <input
               type="range"
               min="0"
               max="100"
+              step="0.1"
               value={progress}
               onChange={handleSeek}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              aria-label={`Seek within ${title}`}
+              aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer
+                         focus-visible:opacity-100 focus-visible:outline-none"
             />
           </div>
         </div>

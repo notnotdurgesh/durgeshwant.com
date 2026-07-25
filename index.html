@@ -1,32 +1,54 @@
 <!doctype html>
-<html lang="en" class="dark" prefix="og: https://ogp.me/ns#">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!--
+      Theme is resolved before first paint. Without this the document renders
+      with whatever class is hardcoded here and then flips once React hydrates,
+      which reads as a flash of the wrong theme for anyone whose stored
+      preference differs.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme = stored === 'light' || stored === 'dark'
+            ? stored
+            : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = 'dark';
+        }
+      })();
+    </script>
+
     <!-- Primary Meta Tags -->
-    <title>Reddy Durgeshwant | SWE & AI Engineer</title>
-    <meta name="title" content="Reddy Durgeshwant | SWE & AI Engineer" />
-    <meta name="description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer specializing in building scalable web applications, AI integration, and modern UI/UX." />
-    <meta name="keywords" content="Reddy Durgeshwant, Software Engineer, React, Next.js, Node.js, Web Development, Full Stack Developer, AI, Portfolio" />
+    <title>Reddy Durgeshwant | Full Stack &amp; AI Engineer</title>
+    <meta name="title" content="Reddy Durgeshwant | Full Stack & AI Engineer" />
+    <meta name="description" content="Portfolio of Reddy Durgeshwant, a Full Stack & AI Engineer building scalable web applications, AI integration, and considered user interfaces." />
+    <meta name="keywords" content="Reddy Durgeshwant, Full Stack Developer, AI Engineer, Software Engineer, React, Next.js, Node.js, TypeScript, Portfolio" />
     <meta name="author" content="Reddy Durgeshwant" />
     <link rel="canonical" href="https://durgeshwant.com/" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://durgeshwant.com/" />
-    <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
-    <meta property="og:title" content="Reddy Durgeshwant | Software Engineer & AI Engineer" />
-    <meta property="og:description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and CTO specializing in building scalable web applications, AI integration, and modern UI/UX." />
-    <meta property="og:image" content="https://durgeshwant.com/assets/about-image.png" />
-    <meta property="og:image:secure_url" content="https://durgeshwant.com/assets/about-image.png" />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:site_name" content="Reddy Durgeshwant" />
+    <meta property="og:title" content="Reddy Durgeshwant | Full Stack & AI Engineer" />
+    <meta property="og:description" content="Portfolio of Reddy Durgeshwant, a Full Stack & AI Engineer building scalable web applications, AI integration, and considered user interfaces." />
+    <meta property="og:image" content="https://durgeshwant.com/og/default.jpg" />
+    <meta property="og:image:secure_url" content="https://durgeshwant.com/og/default.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Reddy Durgeshwant | SWE & AI Engineer" />
+    <meta property="og:image:alt" content="Reddy Durgeshwant — Full Stack & AI Engineer" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
@@ -34,17 +56,46 @@
     <meta name="twitter:site" content="@itsdurgesh" />
     <meta name="twitter:creator" content="@itsdurgesh" />
     <meta name="twitter:url" content="https://durgeshwant.com/" />
-    <meta name="twitter:title" content="Reddy Durgeshwant | Software Engineer & AI Engineer" />
-    <meta name="twitter:description" content="Portfolio of Reddy Durgeshwant, a passionate Software Engineer and CTO specializing in building scalable web applications, AI integration, and modern UI/UX." />
-    <meta name="twitter:image" content="https://durgeshwant.com/assets/about-image.png" />
-    <meta name="twitter:image:alt" content="Reddy Durgeshwant | SWE & AI Engineer" />
+    <meta name="twitter:title" content="Reddy Durgeshwant | Full Stack & AI Engineer" />
+    <meta name="twitter:description" content="Portfolio of Reddy Durgeshwant, a Full Stack & AI Engineer building scalable web applications, AI integration, and considered user interfaces." />
+    <meta name="twitter:image" content="https://durgeshwant.com/og/default.jpg" />
+    <meta name="twitter:image:alt" content="Reddy Durgeshwant — Full Stack & AI Engineer" />
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cstyle%3E .bg %7B fill: %233a3530; %7D .r %7B fill: white; %7D .d %7B fill: %23a67c6d; %7D text %7B font-family: sans-serif; font-weight: 900; font-size: 48px; %7D @media (prefers-color-scheme: dark) %7B .bg %7B fill: %23000000; %7D .d %7B fill: %23d4a373; %7D %7D %3C/style%3E%3Ccircle class='bg' cx='50' cy='50' r='48' /%3E%3Ctext x='50' y='50' text-anchor='middle' dominant-baseline='central'%3E%3Ctspan class='r'%3ER%3C/tspan%3E%3Ctspan class='d'%3ED.%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
-    <link rel="apple-touch-icon" href="/assets/about-image.png" />
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cstyle%3E .bg %7B fill: %23fdfbf7; %7D .r %7B fill: %23a67c6d; %7D .d %7B fill: %237b8c73; %7D text %7B font-family: Georgia, serif; font-weight: 700; font-size: 42px; %7D @media (prefers-color-scheme: dark) %7B .bg %7B fill: %2312100e; %7D .r %7B fill: %23fdfbf7; %7D .d %7B fill: %23d4a373; %7D %7D %3C/style%3E%3Crect width='100' height='100' rx='22' class='bg' /%3E%3Ctext x='50' y='52' text-anchor='middle' dominant-baseline='central'%3E%3Ctspan class='r'%3ER%3C/tspan%3E%3Ctspan class='d'%3ED.%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!--
+      Fonts are requested here rather than via @import in index.css: an @import
+      inside a stylesheet is only discovered after that stylesheet has been
+      downloaded and parsed, which serialises two round trips before any text
+      can render.
+
+      Instrument Serif  display   — headings and the hero
+      Newsreader        reading   — long-form article body
+      Geist             interface — labels, buttons, cards
+      JetBrains Mono    mono      — code and small-caps metadata
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap"
+    />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="max-width:44rem;margin:12vh auto;padding:0 1.5rem;font-family:Georgia,serif;line-height:1.7">
+        <h1 style="font-size:2rem;margin-bottom:.75rem">Reddy Durgeshwant</h1>
+        <p style="opacity:.75">Full Stack &amp; AI Engineer. This portfolio needs JavaScript enabled.
+        You can still reach me at <a href="mailto:durgeshwantreddy@gmail.com">durgeshwantreddy@gmail.com</a>,
+        on <a href="https://github.com/notnotdurgesh">GitHub</a>, or on
+        <a href="https://www.linkedin.com/in/itsdurgesh/">LinkedIn</a>.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

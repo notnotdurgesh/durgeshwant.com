@@ -2,9 +2,10 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Calendar, Clock, ArrowLeft, ArrowRight, Tag, X } from 'lucide-react';
+import { Search, Calendar, Clock, ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { getAllPosts, getAssetUrl } from '../../lib/blog';
+import { SITE, JOURNAL } from '../../config';
 
 export default function BlogListing() {
   const allPosts = getAllPosts();
@@ -46,32 +47,44 @@ export default function BlogListing() {
       className="min-h-screen bg-background text-foreground pt-12 sm:pt-16 md:pt-20 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-24"
     >
       <Helmet>
-        <title>The Journal | Reddy Durgeshwant</title>
-        <meta name="description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        
+        <title>{JOURNAL.title}</title>
+        <meta name="description" content={JOURNAL.description} />
+        <link rel="canonical" href={JOURNAL.url} />
+
         {/* Open Graph */}
-        <meta property="og:title" content="The Journal | Reddy Durgeshwant" />
-        <meta property="og:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        <meta property="og:image" content="https://durgeshwant.com/assets/about-image.png" />
+        <meta property="og:title" content={JOURNAL.title} />
+        <meta property="og:description" content={JOURNAL.description} />
+        <meta property="og:image" content={`${SITE.url}/og/default.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+        <meta property="og:url" content={JOURNAL.url} />
+        <meta property="og:site_name" content="Reddy Durgeshwant" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@itsdurgesh" />
-        <meta name="twitter:creator" content="@itsdurgesh" />
-        <meta name="twitter:title" content="The Journal | Reddy Durgeshwant" />
-        <meta name="twitter:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        <meta name="twitter:image" content="https://durgeshwant.com/assets/about-image.png" />
+        <meta name="twitter:site" content={SITE.twitter} />
+        <meta name="twitter:creator" content={SITE.twitter} />
+        <meta name="twitter:title" content={JOURNAL.title} />
+        <meta name="twitter:description" content={JOURNAL.description} />
+        <meta name="twitter:image" content={`${SITE.url}/og/default.jpg`} />
+
+        <link rel="alternate" type="application/rss+xml" title="The Journal" href={`${SITE.url}/rss.xml`} />
 
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org", "@type": "Blog",
-            "name": "The Journal",
-            "description": "Thoughts, tutorials, and insights on software engineering, design, and building scalable systems.",
-            "url": window.location.href,
-            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" }
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'The Journal',
+            description: JOURNAL.description,
+            url: JOURNAL.url,
+            author: { '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url },
+            blogPost: allPosts.map((post) => ({
+              '@type': 'BlogPosting',
+              headline: post.meta.title,
+              url: `${SITE.url}/blog/${post.slug}`,
+              datePublished: post.meta.date,
+            })),
           })}
         </script>
       </Helmet>
@@ -90,13 +103,10 @@ export default function BlogListing() {
         <div className="flex flex-col gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-              {/* 
-                SMART MOBILE TYPOGRAPHY:
-                - mobile:  text-4xl (36px) - bold but fits small screens
-                - sm:      text-5xl (48px)
-                - md+:     text-7xl (72px)
-              */}
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tighter uppercase mb-3 sm:mb-4 leading-tight">
+              {/* Uppercase + tracking-tighter was fine on a geometric sans; on a
+                  high-contrast serif it jams the stems together. Sentence case
+                  with a slight negative track reads far cleaner. */}
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-display tracking-[-0.02em] mb-3 sm:mb-4 leading-[1.02]">
                 The <span className="text-primary italic">Journal</span>
               </h1>
               <p className="text-foreground/70 font-sans font-light text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
@@ -191,7 +201,10 @@ export default function BlogListing() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             className="text-center py-20 sm:py-24 space-y-4"
           >
-            <p className="text-muted font-sans text-base sm:text-lg italic">No articles found.</p>
+            {/* Set in the display face: it is the only one of the four with a
+                real italic cut loaded, and font-synthesis-style is off, so an
+                italic on the interface sans would silently render upright. */}
+            <p className="text-muted font-display text-2xl sm:text-3xl italic">No articles found.</p>
             <button
               onClick={() => { setSearchQuery(''); setActiveTag(null); }}
               className="text-xs font-mono uppercase tracking-widest text-primary hover:underline"
@@ -217,7 +230,7 @@ export default function BlogListing() {
                         <img
                           src={getAssetUrl(featuredPost.slug, featuredPost.meta.banner)}
                           alt={featuredPost.meta.title}
-                          className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
+                          className="w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/40 hidden md:block" />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent md:hidden" />
@@ -237,7 +250,7 @@ export default function BlogListing() {
                             </span>
                           ))}
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-display font-bold mb-3 sm:mb-4 group-hover:text-primary transition-colors leading-tight">
+                        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-display mb-3 sm:mb-4 group-hover:text-primary transition-colors leading-tight">
                           {featuredPost.meta.title}
                         </h2>
                         <p className="text-foreground/60 font-sans font-light text-sm sm:text-base mb-6 sm:mb-8 line-clamp-3 leading-relaxed">
@@ -283,7 +296,7 @@ export default function BlogListing() {
                           <img
                             src={getAssetUrl(post.slug, post.meta.banner)}
                             alt={post.meta.title}
-                            className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
+                            className="w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700" />
@@ -299,7 +312,7 @@ export default function BlogListing() {
                             ))}
                           </div>
 
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-display font-bold mb-3 sm:mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                          <h2 className="text-lg sm:text-xl md:text-2xl font-display mb-3 sm:mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
                             {post.meta.title}
                           </h2>
 

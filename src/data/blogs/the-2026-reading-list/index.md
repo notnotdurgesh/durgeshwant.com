@@ -14,7 +14,7 @@ This isn’t a "top 5" list. It’s a curated collection of classics that built 
 These books fix your habits. They are timeless, but here’s why they are still my #1 recommendations right now.
 
 ### **The Pragmatic Programmer (20th Anniversary Edition)** – Andrew Hunt & David Thomas
-![The Pragmatic Programmer](books/pragmatic-programmer.png)
+![The Pragmatic Programmer](books/pragmatic-programmer.webp)
 
 **Why lead with this?** It’s the developer’s bible. It covers everything from thinking like an engineer to dealing with the influx of AI tools without losing your soul. Concepts like "tracer bullets" and "DRY" are more relevant than ever when LLMs are generating 40% of our boilerplate.
 
@@ -24,7 +24,7 @@ These books fix your habits. They are timeless, but here’s why they are still 
 > **Personal Take:** Start here. It’s funny, wise, and makes you feel like a wizard. Warning: after reading this, you *will* judge your old code like it’s a bad ex.
 
 ### **A Philosophy of Software Design** – John Ousterhout
-![A Philosophy of Software Design](books/philosophy-of-software-design.png)
+![A Philosophy of Software Design](books/philosophy-of-software-design.webp)
 
 **The Pitch:** It’s short, profound, and focuses on the real enemy: **Complexity**. While most books tell you *how* to write code, Ousterhout tells you *why* simple modules are the difference between a project that survives 2026 and one that dies in legacy hell.
 
@@ -37,7 +37,7 @@ These books fix your habits. They are timeless, but here’s why they are still 
 *Stop Copy-Pasting from Stack Overflow.*
 
 ### **Head First Design Patterns** – Eric Freeman et al.
-![Head First Design Patterns](books/head-first-design-patterns.png)
+![Head First Design Patterns](books/head-first-design-patterns.webp)
 
 **The Vibe:** This book is like learning from a chill uncle who draws memes. Visual, story-based, and surprisingly deep. It makes patterns like Singleton, Observer, and Factory stick in your brain forever.
 
@@ -45,7 +45,7 @@ These books fix your habits. They are timeless, but here’s why they are still 
 > If you're a junior or just joined a new team, this is the cheat code for understanding how "senior" systems are actually built.
 
 ### **Software Architecture: The Hard Parts** – Mark Richards & Neal Ford
-![Software Architecture: The Hard Parts](books/software-architecture-the-hard-parts.png)
+![Software Architecture: The Hard Parts](books/software-architecture-the-hard-parts.webp)
 
 **Why now?** Distributed systems are messy. This book tackles the stuff that actually hurts: trade-offs, modularity, and tech debt in a cloud-first world.
 
@@ -55,7 +55,7 @@ These books fix your habits. They are timeless, but here’s why they are still 
 *The "Scale to Millions" Core.*
 
 ### **Designing Data-Intensive Applications** – Martin Kleppmann
-![Designing Data-Intensive Applications](books/designing-data-intensive-applications.png)
+![Designing Data-Intensive Applications](books/designing-data-intensive-applications.webp)
 
 **The GOAT.** If you haven't read "The Boar Book" yet, stop reading this blog and go buy it. It explores the deep dive into databases, consistency, partitioning, and streaming. 
 
@@ -68,7 +68,7 @@ These books fix your habits. They are timeless, but here’s why they are still 
 *Because 2026 = AI Everywhere.*
 
 ### **AI Engineering** – Chip Huyen
-![AI Engineering](books/ai-engineering.png)
+![AI Engineering](books/ai-engineering.webp)
 
 **The News:** Don’t just "chat with GPT." Build systems that *use* it. Chip Huyen covers the literal engineering side-from RAG and agents to productionizing foundation models. It's the most "future-proof" book in this list.
 

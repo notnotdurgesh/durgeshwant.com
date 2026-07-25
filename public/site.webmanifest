@@ -1,0 +1,15 @@
+{
+  "name": "Reddy Durgeshwant — Full Stack & AI Engineer",
+  "short_name": "Durgeshwant",
+  "description": "Portfolio of Reddy Durgeshwant, a Full Stack & AI Engineer building scalable web applications, AI integration, and considered user interfaces.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#12100e",
+  "theme_color": "#12100e",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
