@@ -547,11 +547,22 @@ export default function BlogPost() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="fixed top-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
           >
-            {/* pr-16 reserves room for the fixed theme toggle in the same band. */}
-            <div className="max-w-5xl mx-auto pl-4 pr-16 sm:pl-6 h-14 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <Link to="/blog" className="shrink-0 p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground">
-                  <ArrowLeft className="w-4 h-4" />
+            {/*
+              Full-bleed, not max-w-5xl. Centring this bar inside a 64rem box
+              parked the back arrow somewhere in the middle-left of the screen,
+              out of line with everything else and looking like it had drifted.
+              It belongs on the viewport edge. pr-16 keeps clear of the fixed
+              theme toggle, which shares this band.
+            */}
+            <div className="w-full pl-3 sm:pl-5 pr-16 h-14 flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+                <Link
+                  to="/blog"
+                  aria-label="Back to the journal"
+                  className="shrink-0 p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <ArrowLeft className="w-4 h-4" aria-hidden="true" />
                 </Link>
                 {/* Interface face, not the display serif. Instrument Serif is a
                     display cut — at 14px in a chrome bar its thin strokes and
