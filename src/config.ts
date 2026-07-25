@@ -7,6 +7,13 @@ export const SITE = {
   twitter: "@itsdurgesh",
 } as const;
 
+export const JOURNAL = {
+  title: "The Journal | Reddy Durgeshwant",
+  description:
+    "Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant.",
+  url: `${SITE.url}/blog`,
+} as const;
+
 export const CONFIG = {
   personal: {
     name: "Reddy Durgeshwant",

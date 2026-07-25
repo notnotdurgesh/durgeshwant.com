@@ -23,6 +23,7 @@ import {
 import { format } from 'date-fns';
 import { getPostBySlug, getAllPosts, getAssetUrl } from '../../lib/blog';
 import AudioPlayer from '../../components/AudioPlayer';
+import { SITE } from '../../config';
 
 // ─── TOC ─────────────────────────────────────────────────────────────────────
 // Derived from the rendered DOM rather than re-slugged from the markdown source:
@@ -445,6 +446,11 @@ export default function BlogPost() {
     }
   };
 
+  const postUrl = `${SITE.url}/blog/${post.slug}`;
+  // Purpose-built 1200x630 JPEG rather than the WebP banner: several unfurlers
+  // (LinkedIn, WhatsApp) still will not render WebP.
+  const ogImage = `${SITE.url}/og/${post.slug}.jpg`;
+
   const scrollToHeading = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -467,38 +473,52 @@ export default function BlogPost() {
       <Helmet>
         <title>{post.meta.title} | Reddy Durgeshwant</title>
         <meta name="description" content={post.meta.description} />
-        
+        {/*
+          Previously the only canonical on the site was the one hardcoded to "/"
+          in index.html, so every article declared the homepage as its canonical
+          URL and asked Google to treat itself as a duplicate.
+        */}
+        <link rel="canonical" href={postUrl} />
+
         {/* Open Graph */}
         <meta property="og:title" content={post.meta.title} />
         <meta property="og:description" content={post.meta.description} />
-        <meta property="og:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={post.meta.title} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:site_name" content="Reddy Durgeshwant" />
         <meta property="article:published_time" content={post.meta.date} />
         <meta property="article:author" content="Reddy Durgeshwant" />
         {post.meta.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
-        
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@itsdurgesh" />
-        <meta name="twitter:creator" content="@itsdurgesh" />
+        <meta name="twitter:site" content={SITE.twitter} />
+        <meta name="twitter:creator" content={SITE.twitter} />
         <meta name="twitter:title" content={post.meta.title} />
         <meta name="twitter:description" content={post.meta.description} />
-        <meta name="twitter:image" content={getAssetUrl(post.slug, post.meta.banner, true)} />
-        
+        <meta name="twitter:image" content={ogImage} />
+
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org", "@type": "BlogPosting",
-            "headline": post.meta.title, "description": post.meta.description,
-            "image": [getAssetUrl(post.slug, post.meta.banner, true)],
-            "datePublished": post.meta.date, "dateModified": post.meta.date,
-            "author": [{ "@type": "Person", "name": "Reddy Durgeshwant", "url": "https://durgeshwant.com" }],
-            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" },
-            "mainEntityOfPage": { "@type": "WebPage", "@id": window.location.href },
-            "keywords": post.meta.tags.join(", ")
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.meta.title,
+            description: post.meta.description,
+            image: [ogImage],
+            datePublished: post.meta.date,
+            dateModified: post.meta.date,
+            wordCount,
+            timeRequired: `PT${Math.max(1, Math.ceil(wordCount / 200))}M`,
+            author: [{ '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url }],
+            publisher: { '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+            keywords: post.meta.tags.join(', '),
+            isPartOf: { '@type': 'Blog', name: 'The Journal', '@id': `${SITE.url}/blog` },
           })}
         </script>
       </Helmet>

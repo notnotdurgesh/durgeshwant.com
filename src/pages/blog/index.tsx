@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { Search, Calendar, Clock, ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { getAllPosts, getAssetUrl } from '../../lib/blog';
+import { SITE, JOURNAL } from '../../config';
 
 export default function BlogListing() {
   const allPosts = getAllPosts();
@@ -46,32 +47,44 @@ export default function BlogListing() {
       className="min-h-screen bg-background text-foreground pt-12 sm:pt-16 md:pt-20 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-24"
     >
       <Helmet>
-        <title>The Journal | Reddy Durgeshwant</title>
-        <meta name="description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        
+        <title>{JOURNAL.title}</title>
+        <meta name="description" content={JOURNAL.description} />
+        <link rel="canonical" href={JOURNAL.url} />
+
         {/* Open Graph */}
-        <meta property="og:title" content="The Journal | Reddy Durgeshwant" />
-        <meta property="og:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        <meta property="og:image" content="https://durgeshwant.com/assets/about-image.png" />
+        <meta property="og:title" content={JOURNAL.title} />
+        <meta property="og:description" content={JOURNAL.description} />
+        <meta property="og:image" content={`${SITE.url}/og/default.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:site_name" content="Reddy Durgeshwant Portfolio" />
+        <meta property="og:url" content={JOURNAL.url} />
+        <meta property="og:site_name" content="Reddy Durgeshwant" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@itsdurgesh" />
-        <meta name="twitter:creator" content="@itsdurgesh" />
-        <meta name="twitter:title" content="The Journal | Reddy Durgeshwant" />
-        <meta name="twitter:description" content="Thoughts, tutorials, and insights on software engineering, design, and building scalable systems by Reddy Durgeshwant." />
-        <meta name="twitter:image" content="https://durgeshwant.com/assets/about-image.png" />
+        <meta name="twitter:site" content={SITE.twitter} />
+        <meta name="twitter:creator" content={SITE.twitter} />
+        <meta name="twitter:title" content={JOURNAL.title} />
+        <meta name="twitter:description" content={JOURNAL.description} />
+        <meta name="twitter:image" content={`${SITE.url}/og/default.jpg`} />
+
+        <link rel="alternate" type="application/rss+xml" title="The Journal" href={`${SITE.url}/rss.xml`} />
 
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org", "@type": "Blog",
-            "name": "The Journal",
-            "description": "Thoughts, tutorials, and insights on software engineering, design, and building scalable systems.",
-            "url": window.location.href,
-            "publisher": { "@type": "Organization", "name": "Reddy Durgeshwant" }
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'The Journal',
+            description: JOURNAL.description,
+            url: JOURNAL.url,
+            author: { '@type': 'Person', name: 'Reddy Durgeshwant', url: SITE.url },
+            blogPost: allPosts.map((post) => ({
+              '@type': 'BlogPosting',
+              headline: post.meta.title,
+              url: `${SITE.url}/blog/${post.slug}`,
+              datePublished: post.meta.date,
+            })),
           })}
         </script>
       </Helmet>
