@@ -3,19 +3,16 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "//": "SPA fallback. Vercel matches the filesystem before applying rewrites, so the per-route index.html files emitted by scripts/postbuild.ts are served for / , /blog and /blog/<slug>; only genuinely unknown paths fall through to here.",
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "//": "Vite fingerprints everything under /assets, so it can be cached forever.",
       "source": "/assets/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
-      "//": "Stable filenames: cache for a day, revalidate in the background for a week.",
       "source": "/(og|icons)/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
     },
@@ -24,7 +21,6 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
     },
     {
-      "//": "HTML must revalidate or a deploy would not reach anyone who has visited before.",
       "source": "/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
