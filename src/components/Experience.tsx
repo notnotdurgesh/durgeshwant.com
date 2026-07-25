@@ -85,7 +85,7 @@ export default function Experience() {
       id="experience"
       ref={sectionRef}
       aria-labelledby="experience-heading"
-      className="py-24 md:py-40 relative px-4 sm:px-8 md:px-12 lg:px-24"
+      className="py-20 sm:py-24 md:py-40 relative px-5 sm:px-8 md:px-12 lg:px-24"
     >
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-20 md:mb-32">
@@ -151,7 +151,7 @@ export default function Experience() {
                   <article
                     data-active={isActive || undefined}
                     className="glass-panel relative isolate overflow-hidden rounded-2xl
-                               p-6 md:p-10 border border-border/60
+                               p-5 sm:p-6 md:p-10 border border-border/60
                                transition-[transform,border-color,box-shadow] duration-500 ease-out
                                data-active:border-primary/55
                                data-active:shadow-[0_24px_70px_-30px_color-mix(in_srgb,var(--color-primary)_55%,transparent)]
@@ -178,7 +178,7 @@ export default function Experience() {
                         rendered as a half-visible glyph. */}
                     <span
                       aria-hidden="true"
-                      className={`absolute right-5 top-2 font-display text-5xl md:text-7xl leading-none
+                      className={`absolute right-4 top-2 font-display text-4xl sm:text-5xl md:text-7xl leading-none
                                   pointer-events-none select-none tabular-nums
                                   transition-opacity duration-700
                                   ${isActive ? 'opacity-[0.09]' : 'opacity-[0.035]'}`}
@@ -210,7 +210,7 @@ export default function Experience() {
                       {/* min-w-0 + pr keeps long roles wrapping instead of being
                           truncated — "Open-Source Contributor" was rendering as
                           "Open-Source Contri…". */}
-                      <div className="min-w-0 pr-16 md:pr-24">
+                      <div className="min-w-0 pr-11 sm:pr-16 md:pr-24">
                         <h3 className="text-xl md:text-2xl font-display text-foreground leading-[1.15] mb-1.5 text-balance">
                           {exp.role}
                         </h3>

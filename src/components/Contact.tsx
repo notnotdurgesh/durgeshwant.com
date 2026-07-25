@@ -70,7 +70,7 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="min-h-screen relative flex items-center justify-center py-24 pb-32 md:pb-24 px-6 overflow-hidden"
+      className="min-h-screen relative flex items-center justify-center py-20 sm:py-24 pb-32 md:pb-24 px-5 sm:px-6 overflow-hidden"
     >
       <Toaster position="bottom-right" theme={theme} richColors closeButton />
 
@@ -79,13 +79,13 @@ export default function Contact() {
       </div>
 
       <div className="w-full max-w-2xl z-10 relative">
-        <div className="glass-panel p-8 md:p-12 rounded-sm shadow-xl border border-border relative">
+        <div className="glass-panel p-5 sm:p-8 md:p-12 rounded-sm shadow-xl border border-border relative">
           {/* Paper texture detail */}
           <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary/10 rotate-12 blur-md" aria-hidden="true" />
           <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent/10 -rotate-12 blur-md" aria-hidden="true" />
 
           <div className="text-center mb-8 md:mb-12">
-            <h2 id="contact-heading" className="text-4xl md:text-5xl font-display mb-4 text-foreground leading-[1.1] text-balance">
+            <h2 id="contact-heading" className="text-3xl sm:text-4xl md:text-5xl font-display mb-3 sm:mb-4 text-foreground leading-[1.1] text-balance">
               Let's <span className="italic text-primary">talk</span>.
             </h2>
             <p className="text-muted font-sans font-light">

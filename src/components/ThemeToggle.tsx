@@ -70,17 +70,19 @@ export default function ThemeToggle() {
             // "Back to Home" link. Drop it underneath instead.
             className="absolute top-full right-0 mt-3 sm:relative sm:top-auto sm:mt-0"
           >
-            <div className="bg-card/60 backdrop-blur-xl border border-border/50 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 sm:gap-4 min-w-max group">
+            {/* min-w-max only from sm up. On a 320px phone the nowrap headline
+                forced this ~300px wide, leaving it a hair from the screen edge. */}
+            <div className="bg-card/60 backdrop-blur-xl border border-border/50 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 sm:gap-4 w-[min(17rem,calc(100vw-2rem))] sm:w-auto sm:min-w-max group">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary shrink-0 relative">
                 <Lightbulb className="w-4 h-4 animate-pulse" />
                 <div className="absolute inset-0 rounded-full border border-primary/20 animate-ping" />
               </div>
               
-              <div className="flex flex-col pr-2">
+              <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
                 <span className="text-[9px] uppercase tracking-[0.25em] text-muted font-mono font-bold leading-none mb-1.5 flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-primary" /> Recommendation
                 </span>
-                <p className="text-sm font-sans font-medium text-foreground whitespace-nowrap leading-tight tracking-tight">
+                <p className="text-sm font-sans font-medium text-foreground leading-tight tracking-tight sm:whitespace-nowrap">
                   Best experienced in dark mode
                 </p>
               </div>

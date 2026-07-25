@@ -318,11 +318,21 @@ aside nav::-webkit-scrollbar-thumb:hover,
 */
 .prose {
   font-family: var(--font-serif);
-  font-size: 1.1875rem;
-  line-height: 1.75;
+  /* 17px on a phone, 19px from tablet up. A fixed 19px measured about 38
+     characters per line at 360px, which reads as large-print rather than as
+     comfortable. */
+  font-size: 1.0625rem;
+  line-height: 1.7;
   font-weight: 400;
   font-optical-sizing: auto;
   text-wrap: pretty;
+}
+
+@media (min-width: 640px) {
+  .prose {
+    font-size: 1.1875rem;
+    line-height: 1.75;
+  }
 }
 
 .prose p,
@@ -367,8 +377,18 @@ aside nav::-webkit-scrollbar-thumb:hover,
 .prose pre,
 .prose pre code {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
-  line-height: 1.7;
+  /* Code cannot reflow, so it has to shrink instead of scrolling constantly on
+     a narrow screen. */
+  font-size: 0.78rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 640px) {
+  .prose pre,
+  .prose pre code {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
 }
 
 .prose pre {

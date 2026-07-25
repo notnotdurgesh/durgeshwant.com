@@ -114,7 +114,7 @@ function NotFound() {
       </Helmet>
 
       <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-6">Error 404</p>
-      <h1 className="text-5xl md:text-7xl font-display tracking-tight mb-6">
+      <h1 className="text-4xl sm:text-5xl md:text-7xl font-display tracking-tight mb-6 text-balance">
         This page is <span className="italic text-primary/90">unwritten</span>.
       </h1>
       <p className="text-muted font-sans font-light max-w-md mb-10 leading-relaxed">

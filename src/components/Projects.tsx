@@ -77,7 +77,7 @@ export default function Projects() {
         id="work"
         className={`w-full relative ${reduceMotion ? '' : 'md:h-screen md:overflow-hidden'}`}
       >
-        <div className="absolute top-12 left-6 md:left-12 z-20">
+        <div className="absolute top-10 sm:top-12 left-5 sm:left-6 md:left-12 z-20">
           <SectionLabel index={2}>Selected work</SectionLabel>
         </div>
 
@@ -93,7 +93,7 @@ export default function Projects() {
           {CONFIG.projects.map((project, index) => (
             <div
               key={project.title}
-              className={`project-panel w-full h-auto flex items-center justify-center relative px-6 py-12 border-b border-border ${
+              className={`project-panel w-full h-auto flex items-center justify-center relative px-5 sm:px-6 py-10 sm:py-12 border-b border-border ${
                 reduceMotion ? '' : 'md:w-screen md:shrink-0 md:h-full md:px-24 md:py-0 md:border-none'
               }`}
             >
@@ -119,10 +119,15 @@ export default function Projects() {
                     <span aria-hidden="true" className="h-px w-6 opacity-40" style={{ backgroundColor: project.color }} />
                     {project.category}
                   </p>
-                  <h3 className="text-4xl sm:text-5xl md:text-7xl font-display tracking-[-0.02em] leading-[0.95] text-foreground text-balance">
+                  {/* break-words matters here: "Google-Build-and-Blog-2k25" is a
+                      single unbreakable token at 36px on a 360px screen. */}
+                  {/* Only the sub-640px step changes; sm and md keep the sizes
+                      they had so desktop is untouched. */}
+                  <h3 className="text-[2rem] sm:text-5xl md:text-7xl font-display tracking-[-0.02em]
+                                 leading-[0.98] sm:leading-[0.95] text-foreground break-words hyphens-auto">
                     {project.title}
                   </h3>
-                  <p className="text-base md:text-xl text-muted max-w-md leading-relaxed font-sans font-light">
+                  <p className="text-sm sm:text-base md:text-xl text-muted max-w-md leading-relaxed font-sans font-light text-pretty">
                     {project.description}
                   </p>
 
@@ -163,7 +168,7 @@ export default function Projects() {
                       alt={`Screenshot of ${project.title}`}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 sepia-[0.2] group-hover:sepia-0"
+                      className="w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-1000 sepia-[0.2] group-hover:sepia-0"
                     />
                     <div
                       className="absolute inset-0 mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity duration-1000 z-0"

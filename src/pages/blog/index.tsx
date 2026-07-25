@@ -230,7 +230,7 @@ export default function BlogListing() {
                         <img
                           src={getAssetUrl(featuredPost.slug, featuredPost.meta.banner)}
                           alt={featuredPost.meta.title}
-                          className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
+                          className="w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/40 hidden md:block" />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent md:hidden" />
@@ -296,7 +296,7 @@ export default function BlogListing() {
                           <img
                             src={getAssetUrl(post.slug, post.meta.banner)}
                             alt={post.meta.title}
-                            className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
+                            className="w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-1000 grayscale-[0.2] dark:grayscale-0 group-hover:grayscale-0 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700" />

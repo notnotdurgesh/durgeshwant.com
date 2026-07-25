@@ -148,7 +148,7 @@ export default function About() {
           <div className="absolute bottom-[10%] right-[5%] w-96 h-96 bg-accent/20 rounded-full blur-[150px]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center w-full z-10">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 grid md:grid-cols-2 gap-10 sm:gap-12 md:gap-20 items-center w-full z-10">
           
           <div ref={textRef} className="space-y-6 md:space-y-8">
             <SectionLabel index={1}>About</SectionLabel>
