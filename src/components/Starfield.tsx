@@ -66,8 +66,11 @@ function StarfieldPoints() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
+        {/* args -> new THREE.BufferAttribute(array, itemSize); count is derived
+            from the array length. Passing count/array/itemSize as loose props is
+            not the supported R3F v9 form. */}
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={0.8}

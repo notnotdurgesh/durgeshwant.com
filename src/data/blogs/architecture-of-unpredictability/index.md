@@ -17,7 +17,7 @@ This report deconstructs the architecture of unpredictability. We’ll dissect t
 
 To understand how a computer generates a random number, one must first distinguish between the two primary methodologies of randomness: **True Random Number Generators (TRNGs)** and **Pseudo-Random Number Generators (PRNGs)**. 
 
-![TRNG vs PRNG Comparison Diagram](trng_comparison.png)
+![TRNG vs PRNG Comparison Diagram](trng_comparison.webp)
 
 ### True Random Number Generators (TRNGs): Harvesting the Universe
 
@@ -58,7 +58,7 @@ The kernel digitizes these fragments of chaos and "stirs" them into a buffer-the
 
 Randomness isn't just for security; it's the lifeblood of modern Deep Learning. Without it, your Neural Networks would be stuck in a permanent state of "mediocrity."
 
-![AI Weight Initialization & Dropout Diagram](ai_randomness.png)
+![AI Weight Initialization & Dropout Diagram](ai_randomness.webp)
 
 ### Weight Initialization: Breaking Symmetry
 When you initialize a Neural Network, you cannot set all weights to zero. If you did, every neuron in a layer would calculate the exact same gradient during backpropagation, and they would all update identically. The network would effectively be a single neuron repeated thousands of times.

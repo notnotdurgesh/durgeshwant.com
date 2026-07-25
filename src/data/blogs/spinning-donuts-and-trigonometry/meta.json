@@ -2,6 +2,6 @@
   "title": "Donuts, Math, and ASCII: The Geometry of a Spin",
   "date": "2026-03-15",
   "description": "Ever wondered how a few lines of C code (and some trigonometry) can create a 3D spinning donut in your terminal? Let's dive into the science, the fun, and the math behind the ASCII donut.",
-  "banner": "torus_geometry.png",
+  "banner": "torus_geometry.webp",
   "tags": ["Math", "Animation", "ASCII", "React"]
 }

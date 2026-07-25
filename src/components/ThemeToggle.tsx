@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Moon, Sun, Sparkles, X, Pencil, Lightbulb } from 'lucide-react';
+import { Moon, Sun, X, Lightbulb } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 

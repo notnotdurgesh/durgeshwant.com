@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
@@ -37,7 +37,7 @@ interface TocItem {
 }
 
 // ─── Article Content Component (Memoized) ───────────────────────────────────
-const ArticleContent = memo(({ content, slug, articleRef }: { content: string, slug: string, articleRef: React.RefObject<HTMLElement> }) => {
+const ArticleContent = memo(({ content, slug, articleRef }: { content: string, slug: string, articleRef: React.RefObject<HTMLElement | null> }) => {
   const components = useMemo(() => ({
     img({ src, alt, ...props }: any) {
       const imageSrc = src?.startsWith('http') ? src : getAssetUrl(slug, src);

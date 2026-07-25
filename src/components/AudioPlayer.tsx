@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, FastForward } from 'lucide-react';
 
 interface AudioPlayerProps {

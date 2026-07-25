@@ -4,7 +4,7 @@ Have you ever looked at a terminal and thought, *"You know what's missing? A del
 
 No? Just me? Well, regardless of your culinary-computational preferences, the **ASCII Donut** (originally created by Andy Sloane) is a masterpiece of "minimalist" engineering. It’s a beautiful blend of trigonometry, projection physics, and the kind of obsession that only a programmer at 3 AM can truly appreciate.
 
-![The Geometry of a Donut](./torus_geometry.png)
+![The Geometry of a Donut](./torus_geometry.webp)
 
 Today, we're going to break down how this works-from a circle in 2D to a spinning masterpiece in your CLI.
 

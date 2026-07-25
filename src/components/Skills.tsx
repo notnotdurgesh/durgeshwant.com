@@ -68,7 +68,7 @@ export default function Skills() {
         {/* User Photo */}
         <div className="absolute z-10 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_color-mix(in_srgb,var(--color-primary)_25%,transparent)]">
           <img
-            src="/assets/skills-photo.png"
+            src="/assets/skills-photo.webp"
             alt="Reddy Durgeshwant"
             loading="lazy"
             className="w-full h-full object-cover sepia-[0.2]"

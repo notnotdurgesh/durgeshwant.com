@@ -2,6 +2,15 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+  Tailwind v4 resolves `dark:` against prefers-color-scheme by default. This site
+  drives its theme from a `.dark` class on <html> (set by the toggle and by the
+  pre-paint script in index.html), so without this the CSS custom properties
+  would follow the toggle while every `dark:` utility — dark:prose-invert,
+  dark:bg-card, dark:grayscale-0 — silently followed the OS instead.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --color-background: #fdfbf7;
   --color-foreground: #3a3530;

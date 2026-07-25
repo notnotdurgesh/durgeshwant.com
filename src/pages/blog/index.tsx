@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Calendar, Clock, ArrowLeft, ArrowRight, Tag, X } from 'lucide-react';
+import { Search, Calendar, Clock, ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { getAllPosts, getAssetUrl } from '../../lib/blog';
 
