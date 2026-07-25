@@ -239,7 +239,7 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         prose dark:prose-invert max-w-none font-sans text-foreground/90
         prose-base sm:prose-base md:prose-lg selection:bg-primary/30
         
-        [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:font-bold [&_h1,h2,h3,h4,h5,h6]:tracking-tight
+        [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:tracking-tight
         [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:break-words
         [&_h1,h2,h3,h4,h5,h6]:mt-10 sm:[&_h1,h2,h3,h4,h5,h6]:mt-14
         [&_h1,h2,h3,h4,h5,h6]:mb-4 sm:[&_h1,h2,h3,h4,h5,h6]:mb-6
@@ -422,7 +422,7 @@ export default function BlogPost() {
           <meta name="robots" content="noindex, follow" />
         </Helmet>
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-6">Not found</p>
-        <h1 className="text-4xl md:text-6xl font-display font-light tracking-tight mb-6">
+        <h1 className="text-4xl md:text-6xl font-display tracking-tight mb-6">
           No such <span className="italic text-primary/90">entry</span>.
         </h1>
         <p className="text-muted font-sans font-light max-w-md mb-10 leading-relaxed">
@@ -559,7 +559,7 @@ export default function BlogPost() {
                 <Link to="/blog" className="shrink-0 p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground">
                   <ArrowLeft className="w-4 h-4" />
                 </Link>
-                <span className="font-display font-bold text-sm truncate">{post.meta.title}</span>
+                <span className="font-display text-sm truncate">{post.meta.title}</span>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {readingTimeLeft && (
@@ -663,7 +663,7 @@ export default function BlogPost() {
               ))}
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold tracking-tight uppercase mb-4 sm:mb-6 md:mb-8 leading-[1.1] text-foreground drop-shadow-sm max-w-5xl break-words">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display tracking-[-0.02em] mb-4 sm:mb-6 md:mb-8 leading-[1.02] text-foreground drop-shadow-sm max-w-4xl text-balance">
               {post.meta.title}
             </h1>
 
@@ -685,11 +685,22 @@ export default function BlogPost() {
         </div>
       </div>
 
-      {/* ── Two-column layout: article + desktop TOC sidebar ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-12 sm:mt-16 md:mt-20 flex gap-12 xl:gap-16">
+      {/*
+        Three tracks, not two. With a flex row of [article, TOC] the article
+        filled everything the sidebar did not, so the text column sat about
+        150px left of the viewport centre and ran to a ~100-character measure.
+        An empty track mirroring the sidebar puts the column back on the centre
+        line, and capping it at 44rem holds the line length near 70 characters.
+      */}
+      <div
+        className="mx-auto w-full max-w-[82rem] px-4 sm:px-6 md:px-10 mt-12 sm:mt-16 md:mt-20
+                   lg:grid lg:grid-cols-[14rem_minmax(0,44rem)_14rem] xl:grid-cols-[15rem_minmax(0,46rem)_15rem]
+                   lg:justify-center lg:gap-10 xl:gap-14"
+      >
+        <div className="hidden lg:block" aria-hidden="true" />
 
         {/* ── Main content column ── */}
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 mx-auto w-full max-w-[44rem] lg:max-w-none">
 
           {/* Audio Player */}
           {post.meta.audio && (
@@ -703,8 +714,8 @@ export default function BlogPost() {
 
           {/* ── Blog Footer ── */}
           <div className="mt-12 sm:mt-16 md:mt-20 py-8 sm:py-10 md:py-12 border-y border-border/50 text-center space-y-3 sm:space-y-4">
-            <p className="font-display italic text-xl sm:text-2xl text-foreground/80">End of the blog</p>
-            <p className="text-muted font-light text-sm sm:text-base">If you enjoyed please consider sharing this blog, thank you!</p>
+            <p className="font-display italic text-2xl sm:text-3xl text-foreground/80">Thanks for reading.</p>
+            <p className="text-muted font-light text-sm sm:text-base">If it was useful, passing it on helps more than you'd think.</p>
           </div>
 
           {/* ── Share & Navigation ── */}
@@ -764,7 +775,7 @@ export default function BlogPost() {
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-muted mb-2 sm:mb-3 group-hover:text-primary transition-colors flex items-center gap-2">
                     <ArrowLeft className="w-3 h-3" /> Previous
                   </span>
-                  <span className="font-display font-bold text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{prevPost.meta.title}</span>
+                  <span className="font-display text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{prevPost.meta.title}</span>
                 </Link>
               ) : <div />}
 
@@ -773,7 +784,7 @@ export default function BlogPost() {
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-muted mb-2 sm:mb-3 group-hover:text-primary transition-colors flex items-center gap-2">
                     Next <motion.span animate={{ x: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>→</motion.span>
                   </span>
-                  <span className="font-display font-bold text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{nextPost.meta.title}</span>
+                  <span className="font-display text-base sm:text-xl line-clamp-2 text-foreground leading-snug">{nextPost.meta.title}</span>
                 </Link>
               ) : <div />}
             </div>
@@ -782,7 +793,7 @@ export default function BlogPost() {
           {/* ── Related Posts ── */}
           {relatedPosts.length > 0 && (
             <div className="mt-20 sm:mt-28 md:mt-32">
-              <h3 className="text-2xl sm:text-3xl font-display font-bold uppercase tracking-tight mb-8 sm:mb-12 flex items-center gap-4">
+              <h3 className="text-2xl sm:text-3xl font-display uppercase tracking-tight mb-8 sm:mb-12 flex items-center gap-4">
                 Explore More <div className="h-px flex-1 bg-border/50" />
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
@@ -796,7 +807,7 @@ export default function BlogPost() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 transform-gpu [backface-visibility:hidden] [transform-style:preserve-3d] will-change-transform [transform:translate3d(0,0,0)]"
                       />
                     </div>
-                    <h4 className="font-display font-bold text-base sm:text-xl group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                    <h4 className="font-display text-base sm:text-xl group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                       {related.meta.title}
                     </h4>
                     <p className="text-xs sm:text-sm text-muted mt-2 sm:mt-3 line-clamp-2 font-light leading-relaxed">
@@ -811,8 +822,8 @@ export default function BlogPost() {
 
         {/* ── Desktop Sticky TOC Sidebar ── */}
         {tocItems.length > 0 && (
-          <aside className="hidden lg:block w-56 xl:w-64 shrink-0">
-            <div className="sticky top-24 max-h-full overflow-y-auto scrollbar-thin scrollbar-thumb-border">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4 flex items-center gap-2">
                 <List className="w-3 h-3" /> Contents
               </p>

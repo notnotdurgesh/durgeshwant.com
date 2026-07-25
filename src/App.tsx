@@ -19,7 +19,7 @@ import BlogSection from './components/BlogSection';
 import ThemeToggle from './components/ThemeToggle';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { CONFIG, SITE } from './config';
+import { CONFIG, SITE, ALL_SKILLS } from './config';
 
 // The blog carries katex, highlight.js and every post's markdown. Splitting it
 // out keeps that weight off the landing page, which is the page that has to be
@@ -84,7 +84,7 @@ function Portfolio() {
               url: SITE.url,
               image: `${SITE.url}/og/default.jpg`,
               sameAs: [CONFIG.personal.links.github, CONFIG.personal.links.linkedin],
-              knowsAbout: CONFIG.skills.map((s) => s.name),
+              knowsAbout: ALL_SKILLS,
             },
           })}
         </script>
@@ -116,12 +116,12 @@ function NotFound() {
       </Helmet>
 
       <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-6">Error 404</p>
-      <h1 className="text-5xl md:text-7xl font-display font-light tracking-tight mb-6">
+      <h1 className="text-5xl md:text-7xl font-display tracking-tight mb-6">
         This page is <span className="italic text-primary/90">unwritten</span>.
       </h1>
       <p className="text-muted font-sans font-light max-w-md mb-10 leading-relaxed">
-        The chapter you were looking for does not exist. It may have been renamed, or it never made
-        it past the draft.
+        The page you were looking for does not exist. It may have been renamed, or it never made it
+        past the draft.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
         <Link
@@ -215,8 +215,11 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     return () => document.body.classList.remove('custom-cursor-active');
   }, [isBlogPostRoute]);
 
+  // overflow-x-clip below, not -hidden: `hidden` on one axis computes the other
+  // axis to `auto`, which turned this into a second scroll container sitting
+  // behind the document's own — the source of the duplicated scrollbar.
   return (
-    <div className="relative w-full min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-white overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-background text-foreground font-sans overflow-x-clip">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300]

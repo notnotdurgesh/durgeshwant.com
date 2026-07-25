@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, Github } from 'lucide-react';
 import { CONFIG } from '../config';
 import { useReducedMotionPreference } from '../lib/motion';
+import SectionLabel from './SectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,9 +78,7 @@ export default function Projects() {
         className={`w-full relative ${reduceMotion ? '' : 'md:h-screen md:overflow-hidden'}`}
       >
         <div className="absolute top-12 left-6 md:left-12 z-20">
-          <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform -rotate-2 inline-block">
-            Chapter 2: The Projects
-          </span>
+          <SectionLabel index={2}>Selected work</SectionLabel>
         </div>
 
         <div
@@ -112,10 +111,15 @@ export default function Projects() {
 
               <div className="relative z-10 w-full max-w-7xl grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="space-y-4 md:space-y-6">
-                  <p className="font-hand text-xl md:text-2xl tracking-wide" style={{ color: project.color }}>
-                    Page {String(index + 1).padStart(2, '0')} // {project.category}
+                  <p
+                    className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.28em] flex items-center gap-3"
+                    style={{ color: project.color }}
+                  >
+                    <span className="tabular-nums opacity-70">{String(index + 1).padStart(2, '0')}</span>
+                    <span aria-hidden="true" className="h-px w-6 opacity-40" style={{ backgroundColor: project.color }} />
+                    {project.category}
                   </p>
-                  <h3 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight uppercase leading-none text-foreground">
+                  <h3 className="text-4xl sm:text-5xl md:text-7xl font-display tracking-[-0.02em] leading-[0.95] text-foreground text-balance">
                     {project.title}
                   </h3>
                   <p className="text-base md:text-xl text-muted max-w-md leading-relaxed font-sans font-light">

@@ -149,15 +149,47 @@ export const CONFIG = {
       ]
     },
   ],
-  skills: [
-    { name: 'React / Next.js', orbit: 1, angle: 0 },
-    { name: 'Git / Bitbucket', orbit: 1, angle: 120 },
-    { name: 'Express.js / TS - Node.js', orbit: 1, angle: 240 },
-    { name: 'REST / GraphQL', orbit: 2, angle: 45 },
-    { name: 'Tailwind / MUI / AntD / ShadCN', orbit: 2, angle: 165 },
-    { name: 'NoSQL / SQL', orbit: 2, angle: 285 },
-    { name: 'Python / Flask / FastAPI', orbit: 3, angle: 90 },
-    { name: 'AWS / Docker / GCP / Vercel', orbit: 3, angle: 210 },
-    { name: 'GSAP / Motion / Three.js', orbit: 3, angle: 330 },
-  ]
+  /**
+   * The stack, grouped. Every entry here is drawn from the roles and projects
+   * above or from the skill lists already present in this repo — nothing is
+   * claimed that was not already claimed somewhere.
+   *
+   * `note` is the one-line "what I actually do with it" that turns a logo wall
+   * into something a reader learns from.
+   */
+  stack: [
+    {
+      title: 'Languages',
+      note: 'What I reach for first',
+      items: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'C / C++', 'HTML / CSS'],
+    },
+    {
+      title: 'Frontend',
+      note: 'Interfaces and the motion in them',
+      items: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'GSAP', 'Three.js', 'Vite', 'shadcn/ui', 'MUI', 'Ant Design'],
+    },
+    {
+      title: 'Backend',
+      note: 'APIs, auth and the boring reliable parts',
+      items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'GraphQL', 'REST', 'RBAC', 'Clerk'],
+    },
+    {
+      title: 'Data',
+      note: 'Modelling, querying, caching',
+      items: ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma'],
+    },
+    {
+      title: 'AI',
+      note: 'Where most of my recent work sits',
+      items: ['Gemini', 'Generative AI', 'Agentic workflows', 'Google ADK', 'Tool calling'],
+    },
+    {
+      title: 'Platform',
+      note: 'Shipping it and keeping it up',
+      items: ['AWS', 'GCP', 'Docker', 'Vercel', 'Netlify', 'GitHub Actions', 'Git', 'Bitbucket', 'Figma'],
+    },
+  ],
 };
+
+/** Flat list for structured data (`knowsAbout`). */
+export const ALL_SKILLS = CONFIG.stack.flatMap((group) => group.items);

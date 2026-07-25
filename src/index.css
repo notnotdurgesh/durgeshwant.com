@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Outfit:wght@200;300;400;500&display=swap');
+/* Font files are requested from index.html — see the comment there for why. */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -45,22 +45,43 @@
   --color-card: var(--color-card);
   --color-border: var(--color-border);
 
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Newsreader", ui-serif, Georgia, serif;
-  --font-hand: "Caveat", cursive;
+  /*
+    Four roles, one job each:
+      display — Instrument Serif. High-contrast editorial serif; earns its keep
+                at 48px and above, which is the only place it is used.
+      serif   — Newsreader. Variable optical size, drawn for on-screen reading;
+                carries article body copy.
+      sans    — Geist. Neutral interface face for labels, buttons and cards.
+      mono    — JetBrains Mono. Code, plus the small-caps metadata rows that
+                previously fell back to whatever ui-monospace resolved to.
+  */
+  --font-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+/*
+  No `scroll-behavior: smooth` here on purpose. Lenis drives smooth scrolling
+  and explicitly requires the native version to be off, otherwise the two
+  interpolate the same scroll and fight each other.
+*/
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  /*
+    `clip`, not `hidden`. Per the overflow spec, setting one axis to a value
+    other than `visible` computes the other axis to `auto` — so `overflow-x:
+    hidden` quietly turned <body> into its own scroll container on top of the
+    document's, which is where the second scrollbar came from. `clip` has no
+    such side effect because a clip container cannot be scrolled at all.
+  */
+  overflow-x: clip;
   transition: background-color 0.8s ease, color 0.8s ease;
 }
 
@@ -138,41 +159,93 @@ body:has(#contact:hover) .custom-cursor-ring {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
+  font-weight: 400;
+  /* Instrument Serif is drawn tight; it needs air between lines, not letters. */
+  letter-spacing: -0.005em;
 }
 
-.font-hand {
-  font-family: var(--font-hand);
+/*
+  Instrument Serif ships exactly one weight. Any font-weight utility landing on
+  it makes the browser synthesise the face — a smeared, mechanically-slanted
+  fake bold that is immediately obvious at display sizes. This pins the weight
+  and disables synthesis outright, so a stray `font-bold` degrades to "no
+  effect" rather than "visibly wrong". Unlayered rules outrank Tailwind's
+  utility layer, so this holds without !important.
+*/
+.font-display {
+  font-weight: 400;
+  font-synthesis-weight: none;
+}
+
+/* Newsreader and Geist are variable and can be synthesised safely, but italics
+   should always come from the real italic cut. */
+body {
+  font-synthesis-style: none;
 }
 
 ::selection {
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-primary-foreground);
 }
 
-/* Slim, themed scrollbar. Previously `display: none`, which removed the only
-   affordance telling a reader how long the page is and where they are in it. */
-* {
+/*
+  Scrollbars.
+
+  The page itself carries its own scroll indicator — the vertical rail on
+  desktop, the top progress bar on mobile and article pages — so the document
+  scrollbar is hidden and does not sit next to the rail looking like a
+  duplicate. Containers that scroll *inside* the page keep a real scrollbar,
+  because nothing else signals that they can be scrolled.
+*/
+html,
+body {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.scroll-region,
+.prose pre,
+aside nav,
+[data-scrollable] {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--color-primary) 45%, transparent) transparent;
 }
 
-::-webkit-scrollbar {
+.scroll-region::-webkit-scrollbar,
+.prose pre::-webkit-scrollbar,
+aside nav::-webkit-scrollbar,
+[data-scrollable]::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-::-webkit-scrollbar-track {
+.scroll-region::-webkit-scrollbar-track,
+.prose pre::-webkit-scrollbar-track,
+aside nav::-webkit-scrollbar-track,
+[data-scrollable]::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.scroll-region::-webkit-scrollbar-thumb,
+.prose pre::-webkit-scrollbar-thumb,
+aside nav::-webkit-scrollbar-thumb,
+[data-scrollable]::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--color-primary) 35%, transparent);
   border: 3px solid transparent;
   background-clip: content-box;
   border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.scroll-region::-webkit-scrollbar-thumb:hover,
+.prose pre::-webkit-scrollbar-thumb:hover,
+aside nav::-webkit-scrollbar-thumb:hover,
+[data-scrollable]::-webkit-scrollbar-thumb:hover {
   background: color-mix(in srgb, var(--color-primary) 65%, transparent);
   background-clip: content-box;
 }
@@ -216,24 +289,61 @@ h1, h2, h3, h4, h5, h6 {
   --tw-prose-td-borders: var(--color-border);
 }
 
-.prose h1, .prose h2, .prose h3, .prose h4 {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+/*
+  Article body is set in Newsreader, not the interface sans. It has a variable
+  optical-size axis and was drawn for continuous reading, which is what a
+  2,000-word article actually is. 1.75 leading at ~19px with a 68ch measure
+  keeps lines in the 60-75 character range that reads comfortably.
+*/
+.prose {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.75;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  text-wrap: pretty;
 }
 
-.prose p {
+.prose p,
+.prose li,
+.prose blockquote {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Small-caps metadata, captions and figure labels stay in the interface face. */
+.prose figcaption,
+.prose th {
   font-family: var(--font-sans);
-  font-weight: 300;
-  line-height: 1.8;
 }
 
 .prose code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
   font-weight: 500;
+  font-size: 0.85em;
+}
+
+.prose pre,
+.prose pre code {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.7;
 }
 
 .prose pre {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Hanging bullets keep the left edge of the text column truly straight. */
+.prose ul > li::marker {
+  color: var(--color-primary);
 }
 
 /* ── GFM Footnotes ──────────────────────────────────────────────────────────
@@ -241,7 +351,7 @@ h1, h2, h3, h4, h5, h6 {
    <section data-footnotes> at the end. Both are styled here so references stay
    legible without fighting the prose link styles. */
 .prose a[data-footnote-ref] {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.7em;
   font-weight: 600;
   text-decoration: none;
@@ -281,23 +391,19 @@ h1, h2, h3, h4, h5, h6 {
   margin-inline-start: 0.4em;
 }
 
-/* Custom Scrollbar for Code Blocks */
-.prose pre::-webkit-scrollbar {
-  display: block;
-  height: 8px;
-}
-
-.prose pre::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+/* Code blocks sit on a near-black surface in both themes, so their scrollbar is
+   tinted light rather than reusing the page's primary. */
 .prose pre::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-width: 2px;
 }
 
 .prose pre::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.prose pre {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 ::view-transition-old(root),

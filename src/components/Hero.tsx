@@ -74,31 +74,31 @@ export default function Hero() {
       className="min-h-[100svh] flex flex-col items-center justify-between relative px-6 text-center pt-32 pb-12"
     >
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 w-full max-w-5xl mx-auto">
-        <div ref={handRef} className="font-mono text-sm md:text-base uppercase tracking-widest text-primary mb-4 md:mb-6 opacity-90">
-          welcome, I'm
+        <div ref={handRef} className="font-mono text-[11px] md:text-xs uppercase tracking-[0.35em] text-primary mb-6 md:mb-8">
+          {CONFIG.personal.role}
         </div>
-        
-        <h1 
+
+        <h1
           ref={titleRef}
-          className="text-[14vw] md:text-[7vw] font-display font-light leading-[0.9] tracking-tight mb-6 md:mb-8 text-foreground mt-4 md:mt-0"
+          className="text-[15vw] md:text-[8vw] font-display leading-[0.88] tracking-[-0.02em] mb-8 md:mb-10 text-foreground text-balance"
         >
           {CONFIG.personal.name.split(' ')[0]}<br />
-          <span className="italic text-primary/80">
+          <span className="italic text-primary/85">
             {CONFIG.personal.name.split(' ')[1] || ''}
           </span>
         </h1>
-        
-        <p 
+
+        <p
           ref={subtitleRef}
-          className="text-lg md:text-2xl text-muted max-w-2xl mx-auto font-sans font-light leading-relaxed tracking-wide"
+          className="text-lg md:text-2xl text-muted max-w-xl mx-auto font-sans font-light leading-relaxed text-balance"
         >
           {CONFIG.personal.tagline}
         </p>
       </div>
 
       <div className="relative flex flex-col items-center gap-4 opacity-40 mt-8">
-        <span className="font-mono text-sm uppercase tracking-widest text-primary whitespace-nowrap">scroll to explore</span>
-        <div className="w-[1px] h-12 md:h-16 bg-gradient-to-b from-primary to-transparent" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary whitespace-nowrap">Scroll</span>
+        <div className="w-px h-12 md:h-16 bg-gradient-to-b from-primary to-transparent" />
       </div>
     </section>
   );

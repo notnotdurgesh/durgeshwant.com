@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { getAllPosts, getAssetUrl } from '../lib/blog';
+import SectionLabel from './SectionLabel';
 
 export default function BlogSection() {
   const posts = getAllPosts().slice(0, 3);
@@ -10,15 +11,13 @@ export default function BlogSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
-            <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform -rotate-2 inline-block mb-6">
-              Chapter 5: The Journal
-            </span>
-            <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase leading-tight text-foreground">
-              Latest <span className="text-primary italic">Writings</span>
+            <SectionLabel index={5} className="mb-6">Writing</SectionLabel>
+            <h2 className="text-4xl md:text-6xl font-display tracking-[-0.015em] leading-[1.05] text-foreground text-balance">
+              Notes on things I've <span className="text-primary italic">taken apart</span>
             </h2>
           </div>
-          <Link to="/blog" className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all group">
-            Explore All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <Link to="/blog" className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-muted hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all group shrink-0">
+            All posts <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
@@ -36,7 +35,7 @@ export default function BlogSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700" />
                 </div>
                 <div className="p-8 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-display font-bold mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight text-foreground">
+                  <h3 className="text-2xl font-display mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-[1.15] text-foreground">
                     {post.meta.title}
                   </h3>
                   <p className="text-foreground/60 font-sans font-light text-base line-clamp-3 leading-relaxed">

@@ -4,6 +4,7 @@ import { Send, CheckCircle2 } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 import { CONFIG } from '../config';
 import { useTheme } from '../contexts/ThemeContext';
+import SectionLabel from './SectionLabel';
 
 type FormData = {
   name: string;
@@ -73,9 +74,7 @@ export default function Contact() {
       <Toaster position="bottom-right" theme={theme} richColors closeButton />
 
       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20">
-        <span className="px-4 py-1.5 border border-primary/30 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform rotate-1 inline-block">
-          Chapter 6: Contact
-        </span>
+        <SectionLabel index={6}>Contact</SectionLabel>
       </div>
 
       <div className="w-full max-w-2xl z-10 relative">
@@ -85,8 +84,8 @@ export default function Contact() {
           <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent/10 -rotate-12 blur-md" aria-hidden="true" />
 
           <div className="text-center mb-8 md:mb-12">
-            <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-medium mb-4 text-foreground">
-              Let's build something <span className="italic text-primary">impactful</span>.
+            <h2 id="contact-heading" className="text-4xl md:text-5xl font-display mb-4 text-foreground leading-[1.1] text-balance">
+              Let's <span className="italic text-primary">talk</span>.
             </h2>
             <p className="text-muted font-sans font-light">
               Reach out at{' '}

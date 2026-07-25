@@ -135,7 +135,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         {/* Info & Progress */}
         <div className="flex-grow w-full space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-display font-bold text-lg text-foreground tracking-tight line-clamp-1">
+            <h3 className="font-display text-lg text-foreground tracking-tight line-clamp-1">
               Listen: {title}
             </h3>
             <div className="flex items-center gap-4 text-muted font-mono text-xs tracking-widest">

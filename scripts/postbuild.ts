@@ -18,7 +18,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE, JOURNAL, CONFIG } from '../src/config';
+import { SITE, JOURNAL, CONFIG, ALL_SKILLS } from '../src/config';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -247,7 +247,7 @@ async function main() {
           url: SITE.url,
           image: `${SITE.url}/og/default.jpg`,
           sameAs: [CONFIG.personal.links.github, CONFIG.personal.links.linkedin],
-          knowsAbout: CONFIG.skills.map((s) => s.name),
+          knowsAbout: ALL_SKILLS,
         },
       },
     })

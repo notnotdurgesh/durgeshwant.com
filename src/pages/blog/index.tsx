@@ -103,13 +103,10 @@ export default function BlogListing() {
         <div className="flex flex-col gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-              {/* 
-                SMART MOBILE TYPOGRAPHY:
-                - mobile:  text-4xl (36px) - bold but fits small screens
-                - sm:      text-5xl (48px)
-                - md+:     text-7xl (72px)
-              */}
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tighter uppercase mb-3 sm:mb-4 leading-tight">
+              {/* Uppercase + tracking-tighter was fine on a geometric sans; on a
+                  high-contrast serif it jams the stems together. Sentence case
+                  with a slight negative track reads far cleaner. */}
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-display tracking-[-0.02em] mb-3 sm:mb-4 leading-[1.02]">
                 The <span className="text-primary italic">Journal</span>
               </h1>
               <p className="text-foreground/70 font-sans font-light text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
@@ -250,7 +247,7 @@ export default function BlogListing() {
                             </span>
                           ))}
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-display font-bold mb-3 sm:mb-4 group-hover:text-primary transition-colors leading-tight">
+                        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-display mb-3 sm:mb-4 group-hover:text-primary transition-colors leading-tight">
                           {featuredPost.meta.title}
                         </h2>
                         <p className="text-foreground/60 font-sans font-light text-sm sm:text-base mb-6 sm:mb-8 line-clamp-3 leading-relaxed">
@@ -312,7 +309,7 @@ export default function BlogListing() {
                             ))}
                           </div>
 
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-display font-bold mb-3 sm:mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                          <h2 className="text-lg sm:text-xl md:text-2xl font-display mb-3 sm:mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
                             {post.meta.title}
                           </h2>
 

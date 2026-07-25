@@ -67,9 +67,23 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Fonts: preconnect early so the display face is not render-blocking late -->
+    <!--
+      Fonts are requested here rather than via @import in index.css: an @import
+      inside a stylesheet is only discovered after that stylesheet has been
+      downloaded and parsed, which serialises two round trips before any text
+      can render.
+
+      Instrument Serif  display   — headings and the hero
+      Newsreader        reading   — long-form article body
+      Geist             interface — labels, buttons, cards
+      JetBrains Mono    mono      — code and small-caps metadata
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap"
+    />
   </head>
   <body>
     <div id="root"></div>

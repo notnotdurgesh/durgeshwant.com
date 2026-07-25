@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CONFIG } from '../config';
 import { prefersReducedMotion } from '../lib/motion';
+import SectionLabel from './SectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -150,13 +151,11 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center w-full z-10">
           
           <div ref={textRef} className="space-y-6 md:space-y-8">
-            <div className="inline-block px-4 py-1.5 border border-primary/20 bg-primary/5 text-primary font-mono text-sm uppercase tracking-widest backdrop-blur-md rounded-sm transform -rotate-1">
-              Chapter 1: The Engineer
-            </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-light tracking-tight leading-tight text-foreground">
-              I build scalable <br />
+            <SectionLabel index={1}>About</SectionLabel>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display tracking-[-0.015em] leading-[1.05] text-foreground text-balance">
+              I build systems that <br />
               <span className="italic text-primary/90">
-                <ScrambleText text="systems" />
+                <ScrambleText text="hold up" />
               </span>
             </h2>
             <p className="text-base md:text-xl text-muted leading-relaxed max-w-lg font-sans font-light">
@@ -164,11 +163,11 @@ export default function About() {
             </p>
             <div className="flex gap-6 font-sans text-xs md:text-sm pt-4">
               <div className="glass-panel p-4 md:p-5 rounded-sm shadow-sm border-b border-r border-primary/10">
-                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display font-light">04+</span>
+                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display">4+</span>
                 <span className="text-muted uppercase tracking-widest text-[10px] md:text-xs">Years Coding</span>
               </div>
               <div className="glass-panel p-4 md:p-5 rounded-sm shadow-sm border-b border-r border-primary/10">
-                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display font-light">35+</span>
+                <span className="block text-primary text-2xl md:text-3xl mb-1 font-display">35+</span>
                 <span className="text-muted uppercase tracking-widest text-[10px] md:text-xs">Projects Shipped</span>
               </div>
             </div>
