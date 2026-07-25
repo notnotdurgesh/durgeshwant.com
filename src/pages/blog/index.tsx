@@ -201,7 +201,10 @@ export default function BlogListing() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             className="text-center py-20 sm:py-24 space-y-4"
           >
-            <p className="text-muted font-sans text-base sm:text-lg italic">No articles found.</p>
+            {/* Set in the display face: it is the only one of the four with a
+                real italic cut loaded, and font-synthesis-style is off, so an
+                italic on the interface sans would silently render upright. */}
+            <p className="text-muted font-display text-2xl sm:text-3xl italic">No articles found.</p>
             <button
               onClick={() => { setSearchQuery(''); setActiveTag(null); }}
               className="text-xs font-mono uppercase tracking-widest text-primary hover:underline"
