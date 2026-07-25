@@ -149,47 +149,19 @@ export const CONFIG = {
       ]
     },
   ],
-  /**
-   * The stack, grouped. Every entry here is drawn from the roles and projects
-   * above or from the skill lists already present in this repo — nothing is
-   * claimed that was not already claimed somewhere.
-   *
-   * `note` is the one-line "what I actually do with it" that turns a logo wall
-   * into something a reader learns from.
-   */
-  stack: [
-    {
-      title: 'Languages',
-      note: 'What I reach for first',
-      items: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'C / C++', 'HTML / CSS'],
-    },
-    {
-      title: 'Frontend',
-      note: 'Interfaces and the motion in them',
-      items: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'GSAP', 'Three.js', 'Vite', 'shadcn/ui', 'MUI', 'Ant Design'],
-    },
-    {
-      title: 'Backend',
-      note: 'APIs, auth and the boring reliable parts',
-      items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'GraphQL', 'REST', 'RBAC', 'Clerk'],
-    },
-    {
-      title: 'Data',
-      note: 'Modelling, querying, caching',
-      items: ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma'],
-    },
-    {
-      title: 'AI',
-      note: 'Where most of my recent work sits',
-      items: ['Gemini', 'Generative AI', 'Agentic workflows', 'Google ADK', 'Tool calling'],
-    },
-    {
-      title: 'Platform',
-      note: 'Shipping it and keeping it up',
-      items: ['AWS', 'GCP', 'Docker', 'Vercel', 'Netlify', 'GitHub Actions', 'Git', 'Bitbucket', 'Figma'],
-    },
-  ],
 };
 
-/** Flat list for structured data (`knowsAbout`). */
-export const ALL_SKILLS = CONFIG.stack.flatMap((group) => group.items);
+/**
+ * Feeds `knowsAbout` in the Person structured data. There is no stack section
+ * on the page — the skills a reader cares about are the ones attached to the
+ * roles and projects above, in context. This list exists purely so search
+ * engines still get the full picture.
+ */
+export const ALL_SKILLS = [
+  'TypeScript', 'JavaScript', 'Python', 'SQL',
+  'React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'GSAP', 'Three.js', 'Vite',
+  'Node.js', 'Express', 'FastAPI', 'Flask', 'GraphQL', 'REST', 'RBAC',
+  'PostgreSQL', 'MongoDB', 'Redis', 'Prisma',
+  'Gemini', 'Generative AI', 'Agentic workflows',
+  'AWS', 'GCP', 'Docker', 'Vercel', 'Git',
+];

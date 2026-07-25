@@ -1,15 +1,14 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Layers, Briefcase, Code2, Mail, BookOpen } from 'lucide-react';
+import { Home, User, Layers, Briefcase, Mail, BookOpen } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'hero',       icon: Home,      label: 'Home',       href: '/#hero' },
   { id: 'about',      icon: User,      label: 'About',      href: '/#about' },
   { id: 'work',       icon: Layers,    label: 'Projects',   href: '/#work' },
-  // "Chapter 3: The Path" existed as a section but had no way to reach it.
+  // The experience section had no route in before this entry existed.
   { id: 'experience', icon: Briefcase, label: 'Experience', href: '/#experience' },
-  { id: 'skills',     icon: Code2,     label: 'Skills',     href: '/#skills' },
   { id: 'blog',       icon: BookOpen,  label: 'Blog',       href: '/#blog' },
   { id: 'contact',    icon: Mail,      label: 'Contact',    href: '/#contact' },
 ];

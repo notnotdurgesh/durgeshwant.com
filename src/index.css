@@ -214,15 +214,20 @@ body::-webkit-scrollbar {
 aside nav,
 [data-scrollable] {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-primary) 45%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--color-border) 90%, var(--color-primary)) transparent;
+}
+
+.scroll-region {
+  /* Reserve the track so text does not reflow when the bar appears. */
+  scrollbar-gutter: stable;
 }
 
 .scroll-region::-webkit-scrollbar,
 .prose pre::-webkit-scrollbar,
 aside nav::-webkit-scrollbar,
 [data-scrollable]::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 8px;
 }
 
 .scroll-region::-webkit-scrollbar-track,
@@ -236,10 +241,26 @@ aside nav::-webkit-scrollbar-track,
 .prose pre::-webkit-scrollbar-thumb,
 aside nav::-webkit-scrollbar-thumb,
 [data-scrollable]::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-primary) 35%, transparent);
-  border: 3px solid transparent;
+  background: color-mix(in srgb, var(--color-border) 90%, var(--color-primary));
+  border: 2px solid transparent;
   background-clip: content-box;
   border-radius: 999px;
+}
+
+/* Windows draws stepper arrows on the default bar, which is most of why the
+   unstyled version looked like a control panel widget dropped into the page. */
+.scroll-region::-webkit-scrollbar-button,
+.prose pre::-webkit-scrollbar-button,
+aside nav::-webkit-scrollbar-button,
+[data-scrollable]::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.scroll-region::-webkit-scrollbar-corner,
+[data-scrollable]::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .scroll-region::-webkit-scrollbar-thumb:hover,
@@ -316,6 +337,19 @@ aside nav::-webkit-scrollbar-thumb:hover,
   font-weight: 400;
   letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+/*
+  These were written as `[&_h1,h2,h3,h4,h5,h6]:…` utilities on the article.
+  A comma is not valid inside an arbitrary variant, so Tailwind discarded all
+  five of them without a word — including the scroll offset, which is why
+  jumping to a heading from the table of contents parked it underneath the
+  sticky header instead of below it.
+*/
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  /* Clears the h-14 sticky header plus breathing room. */
+  scroll-margin-top: 6rem;
+  overflow-wrap: break-word;
 }
 
 /* Small-caps metadata, captions and figure labels stay in the interface face. */

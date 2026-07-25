@@ -11,7 +11,7 @@ export default function BlogSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
-            <SectionLabel index={5} className="mb-6">Writing</SectionLabel>
+            <SectionLabel index={4} className="mb-6">Writing</SectionLabel>
             <h2 className="text-4xl md:text-6xl font-display tracking-[-0.015em] leading-[1.05] text-foreground text-balance">
               Notes on things I've <span className="text-primary italic">taken apart</span>
             </h2>

@@ -239,12 +239,6 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         prose dark:prose-invert max-w-none font-sans text-foreground/90
         prose-base sm:prose-base md:prose-lg selection:bg-primary/30
         
-        [&_h1,h2,h3,h4,h5,h6]:font-display [&_h1,h2,h3,h4,h5,h6]:tracking-tight
-        [&_h1,h2,h3,h4,h5,h6]:text-foreground [&_h1,h2,h3,h4,h5,h6]:break-words
-        [&_h1,h2,h3,h4,h5,h6]:mt-10 sm:[&_h1,h2,h3,h4,h5,h6]:mt-14
-        [&_h1,h2,h3,h4,h5,h6]:mb-4 sm:[&_h1,h2,h3,h4,h5,h6]:mb-6
-        [&_h1,h2,h3,h4,h5,h6]:scroll-mt-24
-        
         [&_h1]:text-4xl sm:[&_h1]:text-4xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl
         [&_h1]:text-primary [&_h1]:italic [&_h1]:normal-case [&_h1]:leading-[1.1]
         
@@ -559,7 +553,11 @@ export default function BlogPost() {
                 <Link to="/blog" className="shrink-0 p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground">
                   <ArrowLeft className="w-4 h-4" />
                 </Link>
-                <span className="font-display text-sm truncate">{post.meta.title}</span>
+                {/* Interface face, not the display serif. Instrument Serif is a
+                    display cut — at 14px in a chrome bar its thin strokes and
+                    tight fit read as a different, worse typeface rather than as
+                    the same one used for the headings. */}
+                <span className="font-sans text-sm font-medium truncate">{post.meta.title}</span>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {readingTimeLeft && (
@@ -571,7 +569,7 @@ export default function BlogPost() {
                 {tocItems.length > 0 && (
                   <button
                     onClick={() => setTocOpen(true)}
-                    className="xl:hidden p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground"
+                    className="lg:hidden p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground"
                     title="Table of Contents"
                   >
                     <List className="w-4 h-4" />
@@ -589,13 +587,13 @@ export default function BlogPost() {
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[200] bg-background/60 backdrop-blur-sm xl:hidden"
+              className="fixed inset-0 z-[200] bg-background/60 backdrop-blur-sm lg:hidden"
               onClick={() => setTocOpen(false)}
             />
             <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-              className="fixed top-0 right-0 bottom-0 z-[201] w-72 bg-background border-l border-border shadow-2xl xl:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-[201] w-72 bg-background border-l border-border shadow-2xl lg:hidden overflow-y-auto"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -692,15 +690,11 @@ export default function BlogPost() {
         An empty track mirroring the sidebar puts the column back on the centre
         line, and capping it at 44rem holds the line length near 70 characters.
       */}
-      <div
-        className="mx-auto w-full max-w-[82rem] px-4 sm:px-6 md:px-10 mt-12 sm:mt-16 md:mt-20
-                   xl:grid xl:grid-cols-[minmax(0,15rem)_minmax(0,46rem)_minmax(0,15rem)]
-                   xl:justify-center xl:gap-12"
-      >
-        <div className="hidden xl:block" aria-hidden="true" />
+      {/* ── Two-column layout: article + desktop TOC sidebar ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-12 sm:mt-16 md:mt-20 flex gap-12 xl:gap-16">
 
         {/* ── Main content column ── */}
-        <div className="min-w-0 mx-auto w-full max-w-[44rem] xl:max-w-none">
+        <div className="min-w-0 flex-1">
 
           {/* Audio Player */}
           {post.meta.audio && (
@@ -820,13 +814,13 @@ export default function BlogPost() {
           )}
         </div>
 
-        {/* ── Sticky TOC rail ──
-            Only at xl. Between lg and xl the three tracks wanted 77rem inside a
-            64rem viewport, which squeezed the article to about 400px; below xl
-            the drawer in the sticky header covers it. */}
+        {/* ── Desktop Sticky TOC Sidebar ── */}
         {tocItems.length > 0 && (
-          <aside className="hidden xl:block">
-            <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+          <aside className="hidden lg:block w-56 xl:w-64 shrink-0">
+            {/* scroll-region carries the themed thin scrollbar. Without it this
+                container fell back to the browser default, which rendered as a
+                wide grey slab against the dark rail. */}
+            <div className="scroll-region sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4 flex items-center gap-2">
                 <List className="w-3 h-3" /> Contents
               </p>

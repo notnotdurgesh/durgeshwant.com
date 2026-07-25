@@ -75,7 +75,7 @@ export default function Contact() {
       <Toaster position="bottom-right" theme={theme} richColors closeButton />
 
       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20">
-        <SectionLabel index={6}>Contact</SectionLabel>
+        <SectionLabel index={5}>Contact</SectionLabel>
       </div>
 
       <div className="w-full max-w-2xl z-10 relative">

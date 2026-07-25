@@ -24,8 +24,7 @@ const DIST = path.join(ROOT, 'dist');
 const NON_UTILITY = new Set([
   'glass-panel', 'text-glow', 'text-glow-accent', 'font-hand',
   'custom-cursor-active', 'custom-cursor-dot', 'custom-cursor-ring',
-  'project-panel', 'experience-item', 'stack-group', 'center-core',
-  'skill-node', 'experience-bg-text', 'scroll-region',
+  'project-panel', 'experience-item', 'scroll-region',
   'prose', 'katex', 'katex-display', 'sidebar-open',
 ]);
 
@@ -63,6 +62,7 @@ async function main() {
 
   const files = await walk(SRC);
   const missing = new Map<string, Set<string>>();
+  const invalid = new Map<string, Set<string>>();
   let checked = 0;
 
   for (const file of files) {
@@ -81,6 +81,21 @@ async function main() {
         if (/^[?:'"`|&]/.test(token)) continue;
 
         checked++;
+
+        /*
+         * A comma inside an arbitrary variant is invalid and Tailwind drops the
+         * whole utility silently. `[&_h1,h2,h3,h4,h5,h6]:scroll-mt-24` looked
+         * entirely reasonable and produced nothing at all. The presence check
+         * below cannot catch these reliably, because the escaped selector never
+         * appears in the output *and* the token is easy to mistake for a valid
+         * group, so it is flagged on sight.
+         */
+        if (/^\[&[^\]]*,[^\]]*\]:/.test(token)) {
+          if (!invalid.has(token)) invalid.set(token, new Set());
+          invalid.get(token)!.add(path.relative(ROOT, file));
+          continue;
+        }
+
         if (!css.includes(`.${escapeForCss(token)}`)) {
           if (!missing.has(token)) missing.set(token, new Set());
           missing.get(token)!.add(path.relative(ROOT, file));
@@ -89,16 +104,27 @@ async function main() {
     }
   }
 
-  if (missing.size === 0) {
+  if (missing.size === 0 && invalid.size === 0) {
     console.log(`All ${checked} class references resolve to emitted CSS.`);
     return;
   }
 
-  console.error(`\n${missing.size} class(es) produce no CSS:\n`);
-  for (const [token, where] of [...missing].sort()) {
-    console.error(`  ${token.padEnd(42)} ${[...where].join(', ')}`);
+  if (invalid.size) {
+    console.error(`\n${invalid.size} arbitrary variant(s) contain a comma and are silently dropped:\n`);
+    for (const [token, where] of [...invalid].sort()) {
+      console.error(`  ${token.padEnd(48)} ${[...where].join(', ')}`);
+    }
+    console.error('\n  Use a single selector per variant, :is(...) inside the selector, or plain CSS.');
   }
-  console.error('\nEither the utility is misspelled or its theme token was never declared.');
+
+  if (missing.size) {
+    console.error(`\n${missing.size} class(es) produce no CSS:\n`);
+    for (const [token, where] of [...missing].sort()) {
+      console.error(`  ${token.padEnd(48)} ${[...where].join(', ')}`);
+    }
+    console.error('\n  Either the utility is misspelled or its theme token was never declared.');
+  }
+
   process.exit(1);
 }
 
