@@ -54,7 +54,7 @@ export default function ThemeToggle() {
       // On blog routes the toggle has to share the top-right corner with the
       // sticky mini header (h-14). It sits inside that band rather than on top
       // of it, and the header reserves matching right padding.
-      className={`fixed z-50 flex items-center gap-4 transition-all duration-500
+      className={`fixed z-50 flex items-center gap-4 transition-all duration-500 max-sm:isolate
         ${isBlogRoute ? 'top-2.5 right-4' : 'top-10 right-6'}
         ${isSidebarOpen ? 'opacity-0 pointer-events-none translate-x-10' : 'opacity-100'}`}
     >
@@ -65,9 +65,12 @@ export default function ThemeToggle() {
             animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, x: 10, filter: 'blur(5px)' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
+            // Below 640px there is no room to sit beside the button — at its
+            // natural width it reached across the viewport and covered the
+            // "Back to Home" link. Drop it underneath instead.
+            className="absolute top-full right-0 mt-3 sm:relative sm:top-auto sm:mt-0"
           >
-            <div className="bg-card/60 backdrop-blur-xl border border-border/50 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 min-w-max group">
+            <div className="bg-card/60 backdrop-blur-xl border border-border/50 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 sm:gap-4 min-w-max group">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary shrink-0 relative">
                 <Lightbulb className="w-4 h-4 animate-pulse" />
                 <div className="absolute inset-0 rounded-full border border-primary/20 animate-ping" />
@@ -91,8 +94,8 @@ export default function ThemeToggle() {
               </button>
             </div>
             
-            {/* Elegant pointer arrow */}
-            <div className="absolute top-1/2 -right-[5px] -translate-y-1/2 w-2.5 h-2.5 bg-card/60 backdrop-blur-xl border-t border-r border-border/50 rotate-45" />
+            {/* Pointer arrow — right-facing beside the button, up-facing below it */}
+            <div className="absolute -top-[5px] right-5 sm:top-1/2 sm:-right-[5px] sm:left-auto sm:-translate-y-1/2 w-2.5 h-2.5 bg-card/60 backdrop-blur-xl border-t border-l sm:border-l-0 sm:border-r border-border/50 rotate-45" />
           </motion.div>
         )}
       </AnimatePresence>

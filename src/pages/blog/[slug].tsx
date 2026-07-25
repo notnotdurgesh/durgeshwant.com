@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { Helmet } from 'react-helmet-async';
@@ -294,9 +294,11 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const [post, setPost] = useState(getPostBySlug(slug || ''));
-  const [allPosts] = useState(getAllPosts());
+  // Posts are bundled at build time, so lookup is synchronous and pure — there
+  // is nothing to hold in state, and deriving it removes the frame of blank
+  // page that the previous state-plus-redirect dance rendered.
+  const post = useMemo(() => getPostBySlug(slug || ''), [slug]);
+  const allPosts = useMemo(() => getAllPosts(), []);
   const [isCopied, setIsCopied] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeHeading, setActiveHeading] = useState('');
@@ -387,16 +389,6 @@ export default function BlogPost() {
     };
   }, [wordCount, tocItems]);
 
-  useEffect(() => {
-    const foundPost = getPostBySlug(slug || '');
-    if (!foundPost) {
-      navigate('/blog');
-    } else {
-      setPost(foundPost);
-      window.scrollTo(0, 0);
-    }
-  }, [slug, navigate]);
-
   const lenis = useLenis();
 
   const scrollToTop = useCallback(() => {
@@ -420,7 +412,33 @@ export default function BlogPost() {
     return () => document.removeEventListener('click', handleInternalLinks);
   }, [lenis]);
 
-  if (!post) return null;
+  // An unknown slug used to render blank and then silently bounce to /blog,
+  // which reads to a crawler as a 200 for a page that does not exist.
+  if (!post) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 py-32">
+        <Helmet>
+          <title>Article not found | Reddy Durgeshwant</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-6">Not found</p>
+        <h1 className="text-4xl md:text-6xl font-display font-light tracking-tight mb-6">
+          No such <span className="italic text-primary/90">entry</span>.
+        </h1>
+        <p className="text-muted font-sans font-light max-w-md mb-10 leading-relaxed">
+          This article does not exist, or it has been renamed since you saved the link.
+        </p>
+        <Link
+          to="/blog"
+          className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-sans text-sm uppercase tracking-widest
+                     hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                     focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-opacity"
+        >
+          Browse the journal
+        </Link>
+      </div>
+    );
+  }
 
   const currentIndex = allPosts.findIndex(p => p.slug === post.slug);
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
