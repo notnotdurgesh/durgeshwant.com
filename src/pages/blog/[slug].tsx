@@ -554,23 +554,36 @@ export default function BlogPost() {
               It belongs on the viewport edge. pr-16 keeps clear of the fixed
               theme toggle, which shares this band.
             */}
-            <div className="w-full pl-3 sm:pl-5 pr-16 h-14 flex items-center justify-between gap-6">
-              <div className="flex items-center gap-4 sm:gap-6 min-w-0">
-                <Link
-                  to="/blog"
-                  aria-label="Back to the journal"
-                  className="shrink-0 p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground
-                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                >
-                  <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-                </Link>
-                {/* Interface face, not the display serif. Instrument Serif is a
-                    display cut — at 14px in a chrome bar its thin strokes and
-                    tight fit read as a different, worse typeface rather than as
-                    the same one used for the headings. */}
-                <span className="font-sans text-sm font-medium truncate">{post.meta.title}</span>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
+            <div className="relative w-full pl-3 sm:pl-5 pr-16 h-14 flex items-center">
+              <Link
+                to="/blog"
+                aria-label="Back to the journal"
+                className="relative z-10 shrink-0 p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted hover:text-foreground
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              </Link>
+
+              {/*
+                Centred against the bar itself, not against the flex row. The row
+                is padded asymmetrically (pr-16 clears the theme toggle), so
+                anything centred *within* it lands off-centre on screen. Absolute
+                positioning against the full-width bar is what actually puts the
+                title on the viewport's centre line.
+
+                Interface face, not the display serif: Instrument Serif is a
+                display cut, and at 14px its thin strokes read as a different,
+                worse typeface rather than as the one used for the headings.
+              */}
+              <span
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 px-4 text-center truncate
+                           max-w-[calc(100%-12rem)] sm:max-w-[calc(100%-24rem)]
+                           font-sans text-sm font-medium"
+              >
+                {post.meta.title}
+              </span>
+
+              <div className="relative z-10 ml-auto flex items-center gap-3 shrink-0">
                 {readingTimeLeft && (
                   <span className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-muted">
                     {readingTimeLeft}
