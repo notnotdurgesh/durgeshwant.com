@@ -66,7 +66,7 @@ export default function Skills() {
         <div className="center-core absolute w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary/10 blur-xl z-0" />
         
         {/* User Photo */}
-        <div className="absolute z-10 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_rgba(166,124,109,0.2)]">
+        <div className="absolute z-10 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_color-mix(in_srgb,var(--color-primary)_25%,transparent)]">
           <img
             src="/assets/skills-photo.png"
             alt="Reddy Durgeshwant"

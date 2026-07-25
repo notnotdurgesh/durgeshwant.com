@@ -103,7 +103,7 @@ export default function Experience() {
             {/* 5. The Liquid Ball (Framer Motion) */}
             <motion.div 
               style={{ top: ballY }}
-              className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 md:w-6 md:h-6 rounded-full bg-primary shadow-[0_0_30px_rgba(var(--color-primary),0.8)] z-30"
+              className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 md:w-6 md:h-6 rounded-full bg-primary shadow-[0_0_30px_color-mix(in_srgb,var(--color-primary)_80%,transparent)] z-30"
             >
               <div className="absolute inset-1.5 rounded-full bg-white/30" />
             </motion.div>
@@ -121,7 +121,7 @@ export default function Experience() {
 
               {/* Content Card */}
               <div className="w-full md:w-[42%] group">
-                <div className="glass-panel p-6 md:p-12 rounded-2xl border border-border/50 hover:border-primary/50 transition-all duration-700 hover:shadow-[0_20px_80px_-20px_rgba(var(--color-primary),0.2)] hover:-translate-y-3 relative overflow-hidden isolate">
+                <div className="glass-panel p-6 md:p-12 rounded-2xl border border-border/50 hover:border-primary/50 transition-all duration-700 hover:shadow-[0_20px_80px_-20px_color-mix(in_srgb,var(--color-primary)_20%,transparent)] hover:-translate-y-3 relative overflow-hidden isolate">
                   <span className="absolute -right-4 -top-8 text-8xl md:text-[10rem] font-display font-bold opacity-[0.02] group-hover:opacity-[0.05] transition-opacity duration-700 pointer-events-none">
                     0{CONFIG.experience.length - index}
                   </span>

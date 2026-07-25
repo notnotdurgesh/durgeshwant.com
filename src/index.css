@@ -6,6 +6,8 @@
   --color-background: #fdfbf7;
   --color-foreground: #3a3530;
   --color-primary: #a67c6d;
+  /* Text/icon colour for use ON a --color-primary fill. Contrast 4.9:1 */
+  --color-primary-foreground: #fdfbf7;
   --color-accent: #7b8c73;
   --color-muted: #8c857d;
   --color-card: #f5f2eb;
@@ -16,6 +18,8 @@
   --color-background: #12100e;
   --color-foreground: #fdfbf7;
   --color-primary: #d4a373;
+  /* Dark ink on the light tan primary. Contrast 9.8:1 */
+  --color-primary-foreground: #12100e;
   --color-accent: #a3b18a;
   --color-muted: #a8a096;
   --color-card: #1c1917;
@@ -26,11 +30,12 @@
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
   --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
   --color-accent: var(--color-accent);
   --color-muted: var(--color-muted);
   --color-card: var(--color-card);
   --color-border: var(--color-border);
-  
+
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Newsreader", ui-serif, Georgia, serif;
   --font-hand: "Caveat", cursive;
@@ -130,11 +135,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-glow {
-  text-shadow: 0 0 30px rgba(166, 124, 109, 0.15);
+  text-shadow: 0 0 30px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
 .text-glow-accent {
-  text-shadow: 0 0 30px rgba(123, 140, 115, 0.15);
+  text-shadow: 0 0 30px color-mix(in srgb, var(--color-accent) 15%, transparent);
 }
 
 /* Typography & Spacing Overrides */
@@ -174,6 +179,51 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose pre {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ── GFM Footnotes ──────────────────────────────────────────────────────────
+   remark-gfm emits <sup><a data-footnote-ref>1</a></sup> inline and a
+   <section data-footnotes> at the end. Both are styled here so references stay
+   legible without fighting the prose link styles. */
+.prose a[data-footnote-ref] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.1em 0.4em;
+  margin-inline-start: 0.15em;
+  border-radius: 0.35em;
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  color: var(--color-primary);
+  vertical-align: super;
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.prose a[data-footnote-ref]:hover {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.prose section[data-footnotes] {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9em;
+}
+
+.prose section[data-footnotes] li {
+  scroll-margin-top: 6rem;
+}
+
+.prose section[data-footnotes] li:target {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  border-radius: 0.5rem;
+}
+
+.prose a[data-footnote-backref] {
+  text-decoration: none;
+  margin-inline-start: 0.4em;
 }
 
 /* Custom Scrollbar for Code Blocks */

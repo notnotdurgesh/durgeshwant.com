@@ -186,7 +186,7 @@ export default function SidebarNav() {
           className={`w-5 h-5 transition-all duration-300 ${
             isActive
               ? 'text-primary scale-110'
-              : 'text-muted-foreground hover:text-foreground'
+              : 'text-muted hover:text-foreground'
           }`}
         />
 

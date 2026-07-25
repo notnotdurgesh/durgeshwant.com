@@ -15,17 +15,7 @@ import 'highlight.js/styles/github-dark.css';
 import 'katex/dist/katex.min.css';
 import {
   ArrowLeft, Calendar, Clock, Share2, Twitter, Linkedin,
-  Link as LinkIcon, Check, Copy, ArrowUp, List, X,
-  BookOpen, ChevronRight
-} from 'lucide-react';
-
-interface TocItem {
-  id: string;
-  text: string;
-  level: number;
-}
-
-import { 
+  Check, Copy, ArrowUp, List, X, BookOpen, ChevronRight,
   Zap, Info, AlertTriangle, CheckCircle2, XCircle, Sparkles,
   ShieldAlert, Lightbulb, MessageSquare
 } from 'lucide-react';
@@ -34,70 +24,16 @@ import { format } from 'date-fns';
 import { getPostBySlug, getAllPosts, getAssetUrl } from '../../lib/blog';
 import AudioPlayer from '../../components/AudioPlayer';
 
-// ─── TOC Heading type ─────────────────────────────────────────────────────────
+// ─── TOC ─────────────────────────────────────────────────────────────────────
+// Derived from the rendered DOM rather than re-slugged from the markdown source:
+// rehype-slug uses github-slugger, whose output can't be reproduced by a naive
+// regex (it preserves the double hyphens left by removed punctuation, and
+// de-duplicates repeated headings with a numeric suffix). Reading the real
+// heading ids back off the DOM is the only way to guarantee the anchors resolve.
 interface TocItem {
   id: string;
   text: string;
   level: number;
-}
-
-// ─── Extract TOC from markdown ───────────────────────────────────────────────
-function extractToc(content: string): TocItem[] {
-  const headingRegex = /^(#{2,4})\s+(.+)$/gm;
-  const items: TocItem[] = [];
-  let match;
-  while ((match = headingRegex.exec(content)) !== null) {
-    const level = match[1].length;
-    const text = match[2].replace(/[*_`[\]]/g, '').trim();
-    // replicate rehype-slug logic
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-    items.push({ id, text, level });
-  }
-  return items;
-}
-
-// ─── Code block with copy button ─────────────────────────────────────────────
-function CodeBlock({ children, className, ...props }: any) {
-  const [copied, setCopied] = useState(false);
-  const codeRef = useRef<HTMLElement>(null);
-
-  const handleCopy = () => {
-    const text = codeRef.current?.innerText || '';
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  return (
-    <div className="relative group/code">
-      <pre className={`${className || ''}`} {...props}>
-        <code ref={codeRef}>{children}</code>
-      </pre>
-      <button
-        onClick={handleCopy}
-        className="absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white opacity-0 group-hover/code:opacity-100 transition-all duration-200 backdrop-blur-sm border border-white/10"
-        title="Copy code"
-      >
-        <AnimatePresence mode="wait">
-          {copied ? (
-            <motion.div key="check" initial={{ scale: 0.5 }} animate={{ scale: 1 }} exit={{ scale: 0.5 }}>
-              <Check className="w-3.5 h-3.5 text-green-400" />
-            </motion.div>
-          ) : (
-            <motion.div key="copy" initial={{ scale: 0.5 }} animate={{ scale: 1 }} exit={{ scale: 0.5 }}>
-              <Copy className="w-3.5 h-3.5" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </button>
-    </div>
-  );
 }
 
 // ─── Article Content Component (Memoized) ───────────────────────────────────
@@ -293,9 +229,6 @@ const ArticleContent = memo(({ content, slug, articleRef }: { content: string, s
         </div>
       );
     },
-    sup() {
-      return null;
-    },
   }), [slug]);
 
   return (
@@ -381,43 +314,77 @@ export default function BlogPost() {
   }, [tocOpen]);
 
   const articleRef = useRef<HTMLElement>(null);
-  const tocItems = useMemo(() => post ? extractToc(post.content) : [], [post]);
+  const headingsRef = useRef<HTMLElement[]>([]);
+  const [tocItems, setTocItems] = useState<TocItem[]>([]);
 
-  // ── Scroll events ────────────────────────────────────────────────────────────
+  // Splitting the article on whitespace is O(n) over several thousand words, so
+  // it is computed once per post rather than on every scroll tick.
+  const wordCount = useMemo(
+    () => (post ? post.content.trim().split(/\s+/).length : 0),
+    [post]
+  );
+
+  // ── Build the TOC from the rendered headings ─────────────────────────────────
   useEffect(() => {
-    const handleScroll = () => {
+    if (!post) return;
+    // Runs after ReactMarkdown has committed, so rehype-slug's ids are on the DOM.
+    const article = articleRef.current;
+    if (!article) return;
+
+    const headings = Array.from(
+      article.querySelectorAll<HTMLElement>('h2[id], h3[id], h4[id]')
+    );
+    headingsRef.current = headings;
+    setTocItems(
+      headings.map((el) => ({
+        id: el.id,
+        text: el.textContent?.trim() ?? '',
+        level: Number(el.tagName.slice(1)),
+      }))
+    );
+  }, [post]);
+
+  // ── Scroll events (rAF-throttled) ────────────────────────────────────────────
+  useEffect(() => {
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
       const y = window.scrollY;
       setShowBackToTop(y > 600);
       setStickyHeader(y > 500);
 
       // Remaining reading time (avg 200 wpm)
-      if (post) {
-        const wordCount = post.content.split(/\s+/).length;
-        const articleEl = articleRef.current;
-        if (articleEl) {
-          const rect = articleEl.getBoundingClientRect();
-          const totalHeight = articleEl.offsetHeight;
-          const scrolled = Math.max(0, -rect.top);
-          const fraction = Math.min(1, scrolled / totalHeight);
-          const wordsRead = Math.floor(fraction * wordCount);
-          const remaining = Math.max(0, Math.ceil((wordCount - wordsRead) / 200));
-          setReadingTimeLeft(remaining > 0 ? `${remaining} min left` : 'Done!');
-        }
+      const articleEl = articleRef.current;
+      if (articleEl && wordCount > 0) {
+        const rect = articleEl.getBoundingClientRect();
+        const totalHeight = articleEl.offsetHeight || 1;
+        const scrolled = Math.max(0, -rect.top);
+        const fraction = Math.min(1, scrolled / totalHeight);
+        const remaining = Math.max(0, Math.ceil(((1 - fraction) * wordCount) / 200));
+        setReadingTimeLeft(remaining > 0 ? `${remaining} min left` : 'Done!');
       }
 
-      // Active heading highlight in TOC
-      const headings = document.querySelectorAll('article h2, article h3, article h4');
+      // Active heading highlight in TOC — uses the cached node list
       let current = '';
-      headings.forEach((el) => {
-        const top = el.getBoundingClientRect().top;
-        if (top < 120) current = el.id;
-      });
+      for (const el of headingsRef.current) {
+        if (el.getBoundingClientRect().top < 120) current = el.id;
+        else break;
+      }
       setActiveHeading(current);
     };
 
+    const handleScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(measure);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [post]);
+    measure();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [wordCount, tocItems]);
 
   useEffect(() => {
     const foundPost = getPostBySlug(slug || '');
@@ -605,7 +572,9 @@ export default function BlogPost() {
                     <button
                       key={item.id}
                       onClick={() => scrollToHeading(item.id)}
+                      aria-current={activeHeading === item.id ? 'location' : undefined}
                       className={`w-full text-left text-sm py-2 px-3 rounded-lg transition-all duration-200 flex items-start gap-2
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
                         ${item.level === 2 ? 'font-medium' : 'pl-5 text-xs'}
                         ${activeHeading === item.id
                           ? 'bg-primary/10 text-primary'
@@ -670,7 +639,7 @@ export default function BlogPost() {
               </div>
               <div className="flex items-center gap-2">
                 <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span>{post.content.split(/\s+/).length} words</span>
+                <span>{wordCount.toLocaleString()} words</span>
               </div>
             </div>
           </div>
@@ -813,8 +782,10 @@ export default function BlogPost() {
                   <button
                     key={item.id}
                     onClick={() => scrollToHeading(item.id)}
+                    aria-current={activeHeading === item.id ? 'location' : undefined}
                     className={`
                       w-full text-left text-xs py-1.5 px-2 rounded-lg transition-all duration-200
+                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
                       ${item.level === 2 ? 'font-medium' : 'pl-4 opacity-80'}
                       ${activeHeading === item.id
                         ? 'text-primary bg-primary/8 font-semibold'
