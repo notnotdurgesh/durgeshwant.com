@@ -2,15 +2,20 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Github, ArrowUpRight } from 'lucide-react';
 import { CONFIG } from '../config';
 import { prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/** "https://github.com/notnotdurgesh" -> "github.com/notnotdurgesh" */
+const GITHUB_HANDLE = CONFIG.personal.links.github.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  // Wraps the tagline and the GitHub link so both share one entrance.
+  const subtitleRef = useRef<HTMLDivElement>(null);
   const handRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -88,12 +93,37 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p
-          ref={subtitleRef}
-          className="text-lg md:text-2xl text-muted max-w-xl mx-auto font-sans font-light leading-relaxed text-balance"
-        >
-          {CONFIG.personal.tagline}
-        </p>
+        <div ref={subtitleRef} className="flex flex-col items-center">
+          <p className="text-lg md:text-2xl text-muted max-w-xl mx-auto font-sans font-light leading-relaxed text-balance">
+            {CONFIG.personal.tagline}
+          </p>
+
+          {/*
+            GitHub sits here rather than in a call-to-action button: for a
+            developer it is the primary evidence, but it should not compete with
+            the name for attention. Quiet monospace, muted until hover.
+          */}
+          <a
+            href={CONFIG.personal.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-7 md:mt-9 inline-flex items-center gap-2.5 rounded-full px-3 py-1.5
+                       font-mono text-[10px] md:text-[11px] tracking-[0.18em] text-muted
+                       border border-border/60 bg-card/25 backdrop-blur-sm
+                       hover:text-primary hover:border-primary/40 transition-colors duration-300
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                       focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span>{GITHUB_HANDLE}</span>
+            <ArrowUpRight
+              className="w-3 h-3 shrink-0 opacity-40 group-hover:opacity-100
+                         group-hover:-translate-y-px group-hover:translate-x-px transition-all duration-300"
+              aria-hidden="true"
+            />
+            <span className="sr-only">(opens GitHub in a new tab)</span>
+          </a>
+        </div>
       </div>
 
       <div className="relative flex flex-col items-center gap-4 opacity-40 mt-8">
